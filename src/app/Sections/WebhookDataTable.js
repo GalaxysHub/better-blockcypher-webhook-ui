@@ -64,13 +64,11 @@ const NoWrapCell = ({ children }) => {
 
 const WebhookDataTableBody = ({ webhookData, coin }) => {
   const [data, setData] = useState({});
-  const [fetched, setFetched] = useState(false);
   let webhookIds = Object.keys(data);
 
   useEffect(() => {
     console.log("new data");
     setData(webhookData.data);
-    setFetched(webhookData.fetched);
   }, [webhookData]);
 
   const deleteWebhook = async (id, event) => {
@@ -90,50 +88,29 @@ const WebhookDataTableBody = ({ webhookData, coin }) => {
   };
 
   return (
-    <>
-      {fetched ? (
-        <TableBody>
-          {webhookIds.map((id, index) => {
-            let webhook = data[id];
-            const { address, event, url, callback_errors, deleting } = webhook;
-            return (
-              <StyledTableRow key={id}>
-                <NoWrapCell>{index + 1}</NoWrapCell>
-                <NoWrapCell>{id}</NoWrapCell>
-                <NoWrapCell>{address}</NoWrapCell>
-                <NoWrapCell>{event}</NoWrapCell>
-                <NoWrapCell>{url}</NoWrapCell>
-                <NoWrapCell>{callback_errors}</NoWrapCell>
-                <StyledTableCell>
-                  {deleting ? (
-                    <CircularProgress />
-                  ) : (
-                    <DeleteIconBtn
-                      action={(event) => deleteWebhook(id, event)}
-                    />
-                  )}
-                </StyledTableCell>
-              </StyledTableRow>
-            );
-          })}
-        </TableBody>
-      ) : (
-        <div
-          style={{
-            alignItems: "center",
-            display: "flex",
-            justifyContent: "center",
-            width: "100vw",
-          }}
-        >
-          <CircularProgress
-            style={{
-              transform: "translateX(-50%)",
-            }}
-          />
-        </div>
-      )}
-    </>
+    <TableBody>
+      {webhookIds.map((id, index) => {
+        let webhook = data[id];
+        const { address, event, url, callback_errors, deleting } = webhook;
+        return (
+          <StyledTableRow key={id}>
+            <NoWrapCell>{index + 1}</NoWrapCell>
+            <NoWrapCell>{id}</NoWrapCell>
+            <NoWrapCell>{address}</NoWrapCell>
+            <NoWrapCell>{event}</NoWrapCell>
+            <NoWrapCell>{url}</NoWrapCell>
+            <NoWrapCell>{callback_errors}</NoWrapCell>
+            <StyledTableCell>
+              {deleting ? (
+                <CircularProgress />
+              ) : (
+                <DeleteIconBtn action={(event) => deleteWebhook(id, event)} />
+              )}
+            </StyledTableCell>
+          </StyledTableRow>
+        );
+      })}
+    </TableBody>
   );
 };
 
@@ -155,14 +132,37 @@ const WebhookDataTable = ({ coin }) => {
     fetchCoinData();
   }, [dispatch, coin]);
 
-  return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table}>
-        <WebhookTableHeaders />
-        <WebhookDataTableBody webhookData={webhookData} coin={coin} />
-      </Table>
-    </TableContainer>
-  );
+  const renderTable = () => {
+    if (!webhookData.fetched) {
+      return <CircularProgress />;
+    } else if (Object.keys(webhookData.data).length === 0) {
+      return (
+        <Paper style={{ width: "300px", margin: "auto" }} elevation={12}>
+          <div
+            style={{
+              color: "red",
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "center",
+              height: "80px",
+            }}
+          >
+            No Webhooks Found
+          </div>
+        </Paper>
+      );
+    } else {
+      return (
+        <TableContainer component={Paper}>
+          <Table className={classes.table}>
+            <WebhookTableHeaders />
+            <WebhookDataTableBody webhookData={webhookData} coin={coin} />
+          </Table>
+        </TableContainer>
+      );
+    }
+  };
+  return <>{renderTable()}</>;
 };
 
 export default connect()(WebhookDataTable);
