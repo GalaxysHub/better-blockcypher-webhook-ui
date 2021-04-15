@@ -33,10 +33,32 @@ const CreateWebhookForm = ({ coin }) => {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
 
+  const valid = () => {
+    const { eventType, address, URL } = values;
+    const errs = {};
+    if (eventType === "") errs["eventType"] = "Event Type Required";
+    if (
+      [
+        "unconfirmed-tx",
+        "confirmed-tx",
+        "tx-confirmation",
+        "tx-confidence",
+      ].includes(values.eventType)
+    ) {
+      if (address === "") errs["address"] = "Address Required";
+    }
+    if (URL === "") errs["URL"] = "Webhook URL Required";
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
   const submit = async () => {
-    setLoading(true);
     setMsg("");
+
+    if (!valid()) return setMsg("Form Field Errors");
+
     try {
+      setLoading(true);
       let res = await createWebhook({
         addr: values.address,
         targetURL: values.URL,
@@ -46,15 +68,17 @@ const CreateWebhookForm = ({ coin }) => {
       console.log(`res`, res);
       dispatch(addWebhookData({ coin, data: res.data }));
       setMsg("Webhook created successfully");
+      setValues({ eventType: "", address: "", URL: "" });
     } catch (err) {
       setMsg(err.message);
-      console.log(`Error creating new webhook`, err);
     } finally {
       setLoading(false);
     }
   };
 
   const changeEventType = (event) => {
+    setMsg("");
+    setErrors("");
     setValues({
       ...values,
       eventType: event.target.value,
@@ -62,11 +86,56 @@ const CreateWebhookForm = ({ coin }) => {
   };
 
   const handleChange = (e) => {
+    setMsg("");
+    setErrors("");
     const { name, value } = e.target;
     setValues({
       ...values,
       [name]: value,
     });
+  };
+
+  const renderURLField = () => {
+    if (values.eventType !== "") {
+      return (
+        <TextField
+          fullWidth
+          variant="outlined"
+          name={"URL"}
+          label={"Webhook URL"}
+          value={values.URL}
+          onChange={handleChange}
+          error={errors.URL}
+          helperText={errors.URL}
+          className={classes.fields}
+        />
+      );
+    }
+  };
+
+  const renderAddrField = () => {
+    if (
+      [
+        "unconfirmed-tx",
+        "confirmed-tx",
+        "tx-confirmation",
+        "tx-confidence",
+      ].includes(values.eventType)
+    ) {
+      return (
+        <TextField
+          fullWidth
+          variant="outlined"
+          name={"address"}
+          label={"Address"}
+          value={values.address}
+          onChange={handleChange}
+          error={errors.address}
+          helperText={errors.address}
+          className={classes.fields}
+        />
+      );
+    }
   };
 
   return (
@@ -77,28 +146,9 @@ const CreateWebhookForm = ({ coin }) => {
         error={errors.eventType}
         className={classes.fields}
       />
-      <TextField
-        fullWidth
-        variant="outlined"
-        name={"address"}
-        label={"Withdrawl Address"}
-        value={values.address}
-        onChange={handleChange}
-        error={errors.address}
-        helperText={errors.address}
-        className={classes.fields}
-      />
-      <TextField
-        fullWidth
-        variant="outlined"
-        name={"URL"}
-        label={"Webhook URL"}
-        value={values.URL}
-        onChange={handleChange}
-        error={errors.URL}
-        helperText={errors.URL}
-        className={classes.fields}
-      />
+      {renderURLField()}
+      {renderAddrField()}
+
       {loading ? (
         <CircularProgress />
       ) : (
