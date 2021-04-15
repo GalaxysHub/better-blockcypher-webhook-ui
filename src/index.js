@@ -1,9 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "styles/index.css";
-import App from "./app/App";
-import theme from "config/theme";
-import { ThemeProvider } from "@material-ui/core/styles";
+import ThemedApp from "./app/ThemedApp";
 import { Provider } from "react-redux";
 import store from "redux/store.js";
 
@@ -12,9 +10,7 @@ import reportWebVitals from "./reportWebVitals";
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
+      <ThemedApp />
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

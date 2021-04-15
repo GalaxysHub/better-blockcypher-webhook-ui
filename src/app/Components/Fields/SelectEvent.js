@@ -32,7 +32,7 @@ const EventTypeOptions = [
   },
 ];
 
-export default function SelectCoin({ value, handleChange, error }) {
+export default function SelectEventType({ value, handleChange, error }) {
   const RenderDropDownList = () => {
     return EventTypeOptions.map((event) => {
       return (

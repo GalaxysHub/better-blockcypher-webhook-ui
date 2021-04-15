@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
+  tabList: {
+    backgroundColor: theme.palette.primary[theme.mode],
+  },
   tab: {
     // padding: "0px",
   },
@@ -37,6 +40,7 @@ export default function LabTabs() {
       <TabContext value={value}>
         <AppBar position="static">
           <TabList
+            className={classes.tabList}
             onChange={handleChange}
             variant="scrollable"
             scrollButtons="auto"
@@ -54,6 +58,7 @@ export default function LabTabs() {
                   <CreateWebhookForm coin={coin.abbr} />
                 </AccordionComp>
               </Container>
+              <br />
               <WebhookDataTable coin={coin.abbr} />
             </TabPanel>
           );

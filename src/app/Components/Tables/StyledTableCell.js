@@ -1,12 +1,11 @@
 import TableCell from "@material-ui/core/TableCell";
-import Typography from "@material-ui/core/Typography";
 
 import { withStyles } from "@material-ui/core/styles";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    backgroundColor: theme.palette.primary[theme.mode],
+    color: theme.palette.text[theme.mode],
   },
   body: {
     fontSize: 12,

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 
 import SelectEvent from "app/Components/Fields/SelectEvent";
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "20px",
   },
   fields: {
-    margin: "5px 0px",
+    margin: "16px 0px",
   },
 }));
 
@@ -105,7 +105,6 @@ const CreateWebhookForm = ({ coin }) => {
       return (
         <TextField
           fullWidth
-          variant="outlined"
           name={"URL"}
           label={"Webhook URL"}
           value={values.URL}
@@ -130,7 +129,6 @@ const CreateWebhookForm = ({ coin }) => {
       return (
         <TextField
           fullWidth
-          variant="outlined"
           name={"address"}
           label={"Address"}
           value={values.address}

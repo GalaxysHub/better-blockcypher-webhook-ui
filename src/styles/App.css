@@ -2,9 +2,11 @@
   text-align: center;
 }
 
-body {background-color: lightgrey}
-body, ul {
+body {
+  /* background-color: lightgrey; */
+}
+body,
+ul {
   margin: 0;
   padding: 0;
 }
-
