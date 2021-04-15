@@ -13,6 +13,8 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
+import { toast } from "react-toastify";
+
 import DeleteIconBtn from "app/Components/Buttons/IconBtns/DeleteIconBtn";
 
 import { getWebhooksByCoin, deleteWebhookByID } from "APIs/blockcypherWebhooks";
@@ -72,13 +74,16 @@ const WebhookDataTableBody = ({ webhookData, coin }) => {
   }, [webhookData]);
 
   const deleteWebhook = async (id, event) => {
-    console.log(`id`, id);
     try {
       data[id].deleting = true;
       setData({ ...data });
       await deleteWebhookByID({ coin, id });
       await removeWebhookById({ coin, id });
       delete data[id];
+      toast("Webhook Deleted successfully", {
+        type: "success",
+        position: "bottom-center",
+      });
       setData({ ...data });
     } catch (err) {
       data[id].deleting = false;
