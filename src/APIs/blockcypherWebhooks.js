@@ -2,7 +2,7 @@ const { TOKEN } = require("../config/blockcypher");
 const { CoinData } = require("../config/coinData");
 const axios = require("axios");
 
-function createWebhook(addr, targetURL, coin, event) {
+function createWebhook({ addr, targetURL, coin, event }) {
   const EventObj = {
     event,
     address: addr,
@@ -12,19 +12,10 @@ function createWebhook(addr, targetURL, coin, event) {
 
   const { COIN, NETWORK } = CoinData[coin];
 
-  return axios
-    .post(
-      `https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks?token=${TOKEN}`,
-      EventObj
-    )
-    .then((res) => {
-      console.log("webhook response data:", res.data);
-      return res.data;
-    })
-    .catch((err) => {
-      console.log("err", err);
-      return err;
-    });
+  return axios.post(
+    `https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks?token=${TOKEN}`,
+    EventObj
+  );
 }
 
 function createTXConfirmationWebhook(addr, targetURL, coin) {
@@ -51,24 +42,15 @@ function getWebhooksByCoin(coin) {
     })
     .catch((err) => {
       console.log("Error fetching coin webhook data", err);
-      return err;
+      throw err;
     });
 }
 
 function getWebhookByID({ id, coin }) {
   const { COIN, NETWORK } = CoinData[coin];
-  return axios
-    .get(
-      `https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks/${id}?token=${TOKEN}`
-    )
-    .then((res) => {
-      console.log("web hook deleted successfully");
-      return res;
-    })
-    .catch((err) => {
-      console.log("err", err);
-      return err;
-    });
+  return axios.get(
+    `https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks/${id}?token=${TOKEN}`
+  );
 }
 
 function deleteWebhookByID({ id, coin }) {
@@ -83,7 +65,7 @@ function deleteWebhookByID({ id, coin }) {
     })
     .catch((err) => {
       console.log("err", err);
-      return err;
+      throw err;
     });
 }
 

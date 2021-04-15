@@ -6,9 +6,12 @@ import TabContext from "@material-ui/lab/TabContext";
 import TabList from "@material-ui/lab/TabList";
 import TabPanel from "@material-ui/lab/TabPanel";
 import Paper from "@material-ui/core/Paper";
+import Container from "@material-ui/core/Container";
 
 import { CoinList, CoinData } from "config/coinData";
 
+import CreateWebhookForm from "./CreateWebhookForm";
+import AccordionComp from "app/Components/AccordionComp";
 import WebhookDataTable from "./WebhookDataTable";
 
 const useStyles = makeStyles((theme) => ({
@@ -17,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   tab: {
-    padding: "0px",
+    // padding: "0px",
   },
 }));
 
@@ -46,6 +49,11 @@ export default function LabTabs() {
         {CoinList.map((coin) => {
           return (
             <TabPanel value={coin.abbr} classes={{ root: classes.tab }}>
+              <Container>
+                <AccordionComp title={"Create Webhook"}>
+                  <CreateWebhookForm coin={coin.abbr} />
+                </AccordionComp>
+              </Container>
               <WebhookDataTable coin={coin.abbr} />
             </TabPanel>
           );

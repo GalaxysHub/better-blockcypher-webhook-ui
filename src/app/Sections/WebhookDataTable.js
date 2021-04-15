@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   tableCell: {
-    fontSize: "12px",
+    fontSize: "16px",
   },
 }));
 
