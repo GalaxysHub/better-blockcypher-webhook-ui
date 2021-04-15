@@ -33,17 +33,17 @@ const FieldSelector = () => {
   const fieldKeys = Object.keys(fields);
 
   return (
-    <Paper elevation={11} className={classes.paper}>
-      <FormControl component="fieldset">
+    <FormControl component="fieldset">
+      <Paper elevation={11} className={classes.paper}>
         <div className={classes.header}>Show Fields</div>
         <Container>
           {fieldKeys.map((key) => {
             let field = fields[key];
             return (
               <FormControlLabel
+                key={field.key}
                 control={
                   <Checkbox
-                    key={field.key}
                     name={field.name}
                     checked={field.checked}
                     onChange={(event) =>
@@ -57,8 +57,8 @@ const FieldSelector = () => {
             );
           })}
         </Container>
-      </FormControl>
-    </Paper>
+      </Paper>
+    </FormControl>
   );
 };
 

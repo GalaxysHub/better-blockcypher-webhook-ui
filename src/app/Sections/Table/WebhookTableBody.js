@@ -45,7 +45,9 @@ const NoWrapCell = ({ children }) => {
 const WebhookTableBody = ({ setData, data, coin }) => {
   let webhookIds = Object.keys(data);
   const fields = useSelector((state) => state.fieldsReducer);
+  const { itemsPerPage, pageNum } = useSelector((state) => state.pageReducer);
   const fieldKeys = Object.keys(fields);
+  const startIndex = (pageNum - 1) * itemsPerPage;
 
   const deleteWebhook = async (id, event) => {
     try {
@@ -73,6 +75,10 @@ const WebhookTableBody = ({ setData, data, coin }) => {
     }
   };
 
+  const renderRows = () => {
+    for (let i = 0; i < itemsPerPage; i++) {}
+  };
+
   return (
     <TableBody>
       {webhookIds.map((id, index) => {
@@ -81,13 +87,17 @@ const WebhookTableBody = ({ setData, data, coin }) => {
         return (
           <StyledTableRow key={id}>
             <NoWrapCell>{index + 1}</NoWrapCell>
-            {fieldKeys.map((name) => {
-              let field = fields[name];
-              let key = field.key;
-              if (field.checked) {
-                return <NoWrapCell>{webhook[key]}</NoWrapCell>;
-              }
-            })}
+            {fieldKeys
+              .slice(startIndex, startIndex + itemsPerPage)
+              .map((name) => {
+                let field = fields[name];
+                let key = field.key;
+                if (field.checked) {
+                  return (
+                    <NoWrapCell key={key + "" + id}>{webhook[key]}</NoWrapCell>
+                  );
+                }
+              })}
             <NoWrapCell>{renderOptionBtns({ id, deleting })}</NoWrapCell>
           </StyledTableRow>
         );

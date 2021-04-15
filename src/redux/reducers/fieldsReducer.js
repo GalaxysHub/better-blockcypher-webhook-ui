@@ -9,7 +9,7 @@ const initialState = {
   Event: { name: "Event", key: "event", sortable: true, checked: true },
   URL: { name: "URL", key: "url", sortable: true, checked: true },
   CallbackErrors: {
-    name: "Callback Errors",
+    name: "CallbackErrors",
     key: "callback_errors",
     sortable: true,
     checked: true,

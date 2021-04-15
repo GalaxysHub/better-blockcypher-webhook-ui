@@ -35,6 +35,8 @@ const WebhookDataTable = ({ coin }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const webhookData = useSelector((state) => state.webhookReducer[coin]);
+  const pageNum = useSelector((state) => state.pageReducer.pageNum);
+
   const [data, setData] = useState({});
   const [fetching, setFetching] = useState(false);
 
@@ -52,7 +54,7 @@ const WebhookDataTable = ({ coin }) => {
   useEffect(() => {
     if (!webhookData.fetched) fetchCoinData();
     else setData(webhookData.data);
-  }, [coin, webhookData, dispatch]);
+  }, [coin]);
 
   const renderTable = (data) => {
     if (!webhookData.fetched) {
@@ -82,7 +84,7 @@ const WebhookDataTable = ({ coin }) => {
             <RefreshIconBtn
               action={async () => {
                 await setFetching(true);
-                // await fetchCoinData();
+                await fetchCoinData();
                 await setFetching(false);
               }}
             />
