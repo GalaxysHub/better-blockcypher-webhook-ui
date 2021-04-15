@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 
 import SelectEvent from "app/Components/Fields/SelectEvent";
@@ -8,6 +9,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 
 import { createWebhook } from "APIs/blockcypherWebhooks";
+
+import { addWebhookData } from "redux/actions/webhookActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CreateWebhookForm = ({ coin }) => {
-  console.log(`coin`, coin);
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [values, setValues] = useState({
     eventType: "",
@@ -41,6 +44,7 @@ const CreateWebhookForm = ({ coin }) => {
         event: values.eventType,
       });
       console.log(`res`, res);
+      dispatch(addWebhookData({ coin, data: res.data }));
       setMsg("Webhook created successfully");
     } catch (err) {
       setMsg(err.message);
@@ -107,4 +111,4 @@ const CreateWebhookForm = ({ coin }) => {
   );
 };
 
-export default CreateWebhookForm;
+export default connect()(CreateWebhookForm);

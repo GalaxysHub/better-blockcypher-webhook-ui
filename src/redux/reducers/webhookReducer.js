@@ -38,6 +38,13 @@ const webhookReducer = (state = initialState, action) => {
       delete newData[id];
       return { ...state, [coin]: { ...state[coin], data: newData } };
     }
+    case "ADD_WEBHOOK_DATA": {
+      let payload = { ...action.payload };
+      const { coin, data } = payload;
+      let newData = state[coin].data;
+      newData[data.id] = data;
+      return { ...state, [coin]: { ...state[coin], data: newData } };
+    }
     default:
       return state;
   }
