@@ -7,3 +7,8 @@ export const setPageNum = (payload) => ({
   type: "SET_PAGE_NUMBER",
   payload,
 });
+
+export const setActiveCoin = (payload) => ({
+  type: "SET_ACTIVE_COIN",
+  payload,
+});

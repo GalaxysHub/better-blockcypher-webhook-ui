@@ -5,7 +5,8 @@ import Paper from "@material-ui/core/Paper";
 
 import FetchWebhooksBtn from "app/Components/Buttons/IconBtns/FetchWebhooksBtn";
 
-const NumWebhooksNote = ({ coin }) => {
+const NumWebhooksNote = () => {
+  const coin = useSelector((state) => state.pageReducer.activeCoin);
   const webhooks = useSelector((state) => state.webhookReducer[coin].data);
   const [msg, setMsg] = useState("");
 
@@ -19,7 +20,7 @@ const NumWebhooksNote = ({ coin }) => {
   }, [webhooks]);
 
   return (
-    <Paper style={{ width: "300px", margin: "auto" }} elevation={12}>
+    <Paper style={{ width: "300px", margin: "20px auto" }} elevation={12}>
       <div
         style={{
           color: "red",

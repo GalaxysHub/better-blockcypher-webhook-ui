@@ -5,10 +5,9 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import StyledTableCell from "app/Components/Tables/StyledTableCell";
 import StyledTableRow from "app/Components/Tables/StyledTableRow";
-
 import TableBody from "@material-ui/core/TableBody";
-
 import Typography from "@material-ui/core/Typography";
+import { CircularProgress } from "@material-ui/core";
 
 import { toast } from "react-toastify";
 
@@ -17,9 +16,6 @@ import DeleteIconBtn from "app/Components/Buttons/IconBtns/DeleteIconBtn";
 import { deleteWebhookByID } from "APIs/blockcypherWebhooks";
 
 import { removeWebhookById } from "redux/actions/webhookActions";
-import { CircularProgress } from "@material-ui/core";
-
-import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -42,37 +38,47 @@ const NoWrapCell = ({ children }) => {
   );
 };
 
-const WebhookTableBody = ({ setData, data, coin }) => {
-  let webhookIds = Object.keys(data);
+const WebhookTableBody = () => {
+  const dispatch = useDispatch();
   const fields = useSelector((state) => state.fieldsReducer);
-  const { itemsPerPage, pageNum } = useSelector((state) => state.pageReducer);
+  const { itemsPerPage, pageNum, activeCoin: coin } = useSelector(
+    (state) => state.pageReducer
+  );
+  const { data } = useSelector((state) => state.webhookReducer[coin]);
+  const [deletingMap, setDeletingMap] = useState({});
+  let webhookIds = Object.keys(data);
+
   const fieldKeys = Object.keys(fields);
   let start = (pageNum - 1) * itemsPerPage;
   let end = start + itemsPerPage;
 
-  const deleteWebhook = async (id, event) => {
+  useEffect(() => {
+    console.log("new data");
+  }, [data]);
+
+  const deleteWebhook = async (id) => {
     try {
-      data[id].deleting = true;
-      setData({ ...data });
+      setDeletingMap({ ...deletingMap, [id]: true });
       await deleteWebhookByID({ coin, id });
-      await removeWebhookById({ coin, id });
-      delete data[id];
-      toast("Webhook Deleted successfully", {
+      dispatch(removeWebhookById({ coin, id }));
+      toast(`Deleted Webhook ${id}`, {
         type: "success",
         position: "bottom-center",
       });
     } catch (err) {
-      data[id].deleting = false;
+      console.log("error deleting webhook", err);
     } finally {
-      setData({ ...data });
+      let newMap = { ...deletingMap };
+      delete newMap[id];
+      setDeletingMap(newMap);
     }
   };
 
-  const renderOptionBtns = ({ id, deleting }) => {
-    if (deleting) {
+  const renderOptionBtns = ({ id }) => {
+    if (deletingMap[id]) {
       return <CircularProgress />;
     } else {
-      return <DeleteIconBtn action={(event) => deleteWebhook(id, event)} />;
+      return <DeleteIconBtn action={(event) => deleteWebhook(id)} />;
     }
   };
 
@@ -80,7 +86,6 @@ const WebhookTableBody = ({ setData, data, coin }) => {
     <TableBody>
       {webhookIds.slice(start, end).map((id, index) => {
         let webhook = data[id];
-        let { deleting } = webhook;
         index = index + start;
         return (
           <StyledTableRow key={id}>
@@ -94,18 +99,12 @@ const WebhookTableBody = ({ setData, data, coin }) => {
                 );
               } else return <></>;
             })}
-            <NoWrapCell>{renderOptionBtns({ id, deleting })}</NoWrapCell>
+            <NoWrapCell>{renderOptionBtns({ id })}</NoWrapCell>
           </StyledTableRow>
         );
       })}
     </TableBody>
   );
-};
-
-WebhookTableBody.propTypes = {
-  data: PropTypes.object.isRequired,
-  setData: PropTypes.func.isRequired,
-  coin: PropTypes.string.isRequired,
 };
 
 export default connect()(WebhookTableBody);

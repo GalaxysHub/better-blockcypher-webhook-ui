@@ -57,6 +57,7 @@ const FieldSelector = () => {
             );
           })}
         </Container>
+        <PageSelector />
       </Paper>
     </FormControl>
   );

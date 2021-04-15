@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect, useDispatch } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 
 import SelectEvent from "app/Components/Fields/SelectEvent";
@@ -23,9 +23,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CreateWebhookForm = ({ coin }) => {
+const CreateWebhookForm = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const coin = useSelector((state) => state.pageReducer.activeCoin);
 
   const [values, setValues] = useState({
     eventType: "",

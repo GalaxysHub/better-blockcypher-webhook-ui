@@ -28,18 +28,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WebhookDataTable = ({ coin }) => {
+const WebhookDataTable = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const webhookData = useSelector((state) => state.webhookReducer[coin]);
-
-  const [data, setData] = useState({}); //keep a separate set of data from redux so it can be sorted
+  const coin = useSelector((state) => state.pageReducer.activeCoin);
+  const { fetched, data } = useSelector((state) => state.webhookReducer[coin]);
 
   async function fetchCoinData() {
     try {
       let fetchedData = await getWebhooksByCoin(coin);
       let dataObj = convertWebhookArrToObj(fetchedData);
-      setData(dataObj);
       dispatch(setWebhookData({ coin, data: dataObj }));
     } catch (err) {
       console.log(`Error fetching coin webhook data:`, err);
@@ -47,19 +45,18 @@ const WebhookDataTable = ({ coin }) => {
   }
 
   useEffect(() => {
-    if (!webhookData.fetched) fetchCoinData();
-    else setData(webhookData.data);
+    if (!fetched) fetchCoinData();
   }, [coin]);
 
   const renderTable = (data) => {
-    if (!webhookData.fetched) {
+    if (!fetched) {
       return <CircularProgress />;
     } else {
       return (
         <TableContainer component={Paper}>
           <Table className={classes.table}>
-            <WebhookTableHeaders setData={setData} data={data} />
-            <WebhookTableBody setData={setData} data={data} coin={coin} />
+            <WebhookTableHeaders />
+            <WebhookTableBody />
           </Table>
         </TableContainer>
       );

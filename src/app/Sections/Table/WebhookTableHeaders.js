@@ -1,5 +1,5 @@
 import React from "react";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 
 import TableHead from "@material-ui/core/TableHead";
@@ -14,6 +14,8 @@ import StyledTableCell from "app/Components/Tables/StyledTableCell";
 
 import PropTypes from "prop-types";
 
+import { setWebhookData } from "redux/actions/webhookActions";
+
 const useStyles = makeStyles((theme) => ({
   tableHeader: {
     display: "flex",
@@ -27,14 +29,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WebhookTableHeaders = ({ data, setData }) => {
+const WebhookTableHeaders = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const fields = useSelector((state) => state.fieldsReducer);
+  const coin = useSelector((state) => state.pageReducer.activeCoin);
+  const data = useSelector((state) => state.webhookReducer[coin].data);
+
   const fieldKeys = Object.keys(fields);
 
   const sort = (key, order) => {
     let sortedData = createSortedKeyMap(data, key, order);
-    setData(sortedData);
+    dispatch(setWebhookData({ coin, data: sortedData }));
   };
 
   return (

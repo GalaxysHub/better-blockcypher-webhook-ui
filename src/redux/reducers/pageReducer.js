@@ -1,6 +1,7 @@
 const initialState = {
   itemsPerPage: 10,
   pageNum: 1,
+  activeCoin: "BCY",
 };
 
 const pageReducer = (state = initialState, action) => {
@@ -16,6 +17,12 @@ const pageReducer = (state = initialState, action) => {
       return {
         ...state,
         pageNum: payload,
+      };
+    }
+    case "SET_ACTIVE_COIN": {
+      return {
+        ...state,
+        activeCoin: payload,
       };
     }
     default:

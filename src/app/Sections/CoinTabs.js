@@ -1,4 +1,5 @@
 import React from "react";
+import { connect, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tab from "@material-ui/core/Tab";
@@ -16,7 +17,7 @@ import TableSection from "./Table/TableSection";
 
 import NumWebhooksNote from "./NumWebhooksNote";
 
-import FetchWebhooksBtn from "app/Components/Buttons/IconBtns/FetchWebhooksBtn";
+import { setActiveCoin } from "redux/actions/pageActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,12 +32,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LabTabs() {
+const LabTabs = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [value, setValue] = React.useState("BCY");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    dispatch(setActiveCoin(newValue));
   };
 
   return (
@@ -65,16 +68,18 @@ export default function LabTabs() {
             >
               <Container>
                 <AccordionComp title={"Create Webhook"}>
-                  <CreateWebhookForm coin={coin.abbr} />
+                  <CreateWebhookForm />
                 </AccordionComp>
-                <NumWebhooksNote coin={coin.abbr} />
+                <NumWebhooksNote />
               </Container>
               <br />
-              <TableSection coin={coin.abbr} />
+              <TableSection />
             </TabPanel>
           );
         })}
       </TabContext>
     </Paper>
   );
-}
+};
+
+export default connect()(LabTabs);
