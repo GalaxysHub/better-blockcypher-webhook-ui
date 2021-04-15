@@ -12,6 +12,8 @@ import { createWebhook } from "APIs/blockcypherWebhooks";
 
 import { addWebhookData } from "redux/actions/webhookActions";
 
+import { toast } from "react-toastify";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: "20px",
@@ -24,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 const CreateWebhookForm = ({ coin }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
+
   const [values, setValues] = useState({
     eventType: "",
     address: "",
@@ -65,9 +68,11 @@ const CreateWebhookForm = ({ coin }) => {
         coin: coin,
         event: values.eventType,
       });
-      console.log(`res`, res);
       dispatch(addWebhookData({ coin, data: res.data }));
-      setMsg("Webhook created successfully");
+      toast("Webhook created successfully", {
+        type: "success",
+        position: "bottom-center",
+      });
       setValues({ eventType: "", address: "", URL: "" });
     } catch (err) {
       setMsg(err.message);
