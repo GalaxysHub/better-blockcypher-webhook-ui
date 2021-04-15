@@ -6,8 +6,8 @@ import IconBtnTemplate from "./IconBtnTemplate";
 export default function DeleteIconBtn({
   action,
   type = "danger",
-  size = "medium",
-  tip = "Cancel",
+  size = "small",
+  tip = "Delete",
 }) {
   return (
     <IconBtnTemplate

@@ -1,6 +1,6 @@
-import axios from "axios";
-import { TOKEN } from "config/blockcypher";
-import { CoinData } from "config/coinData";
+const { TOKEN } = require("../config/blockcypher");
+const { CoinData } = require("../config/coinData");
+const axios = require("axios");
 
 function createWebhook(addr, targetURL, coin, event) {
   const EventObj = {
@@ -55,7 +55,7 @@ function getWebhooksByCoin(coin) {
     });
 }
 
-function getWebhookByID(id, coin) {
+function getWebhookByID({ id, coin }) {
   const { COIN, NETWORK } = CoinData[coin];
   return axios
     .get(
@@ -71,7 +71,7 @@ function getWebhookByID(id, coin) {
     });
 }
 
-function deleteWebhookByID(id, coin) {
+function deleteWebhookByID({ id, coin }) {
   const { COIN, NETWORK } = CoinData[coin];
   return axios
     .delete(
@@ -87,7 +87,7 @@ function deleteWebhookByID(id, coin) {
     });
 }
 
-export default {
+module.exports = {
   createTXConfirmationWebhook,
   createUnconfirmedTXWebhook,
   createConfirmedTXWebhook,

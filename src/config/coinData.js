@@ -13,7 +13,7 @@ const CoinData = {
     WIF: "80",
     addr: "00",
     COIN: "btc",
-    NETWORK: "test",
+    NETWORK: "main",
     addrStarts: ["1", "3"], //todo: add support for bech32 addrs
   },
   BTCt: {

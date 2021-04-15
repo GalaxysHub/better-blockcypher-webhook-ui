@@ -3,7 +3,7 @@ export const setWebhookData = ({ coin, webhookData }) => ({
   payload: { coin, webhookData },
 });
 
-export const deleteWebhookDatapoint = ({ coin, id }) => ({
+export const removeWebhookById = ({ coin, id }) => ({
   type: "DELETE_DATAPOINT",
   payload: { coin, id },
 });

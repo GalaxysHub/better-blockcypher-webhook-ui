@@ -1,4 +1,6 @@
 import TableCell from "@material-ui/core/TableCell";
+import Typography from "@material-ui/core/Typography";
+
 import { withStyles } from "@material-ui/core/styles";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -7,7 +9,8 @@ const StyledTableCell = withStyles((theme) => ({
     color: theme.palette.common.white,
   },
   body: {
-    fontSize: 14,
+    fontSize: 12,
+    padding: "0px 8px",
   },
 }))(TableCell);
 
