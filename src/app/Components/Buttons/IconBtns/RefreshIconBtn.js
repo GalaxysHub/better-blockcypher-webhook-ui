@@ -1,17 +1,17 @@
 import React from "react";
 
-import DeleteIcon from "@material-ui/icons/Delete";
+import RefreshIcon from "@material-ui/icons/Refresh";
 import IconBtnTemplate from "./IconBtnTemplate";
 
 export default function DeleteIconBtn({
   action,
-  type = "danger",
-  size = "small",
-  tip = "Delete",
+  type = "info",
+  size = "medium",
+  tip = "Refetch Webhooks",
 }) {
   return (
     <IconBtnTemplate type={type} action={action} tip={tip}>
-      <DeleteIcon size={size} />
+      <RefreshIcon size={size} />
     </IconBtnTemplate>
   );
 }

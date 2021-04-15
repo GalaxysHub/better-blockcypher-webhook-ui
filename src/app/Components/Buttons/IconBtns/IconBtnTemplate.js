@@ -39,8 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function IconBtnTemplate(props) {
   const classes = useStyles();
-  let { action, type, size, icon, tip, children, className } = props;
-  const Icon = icon;
+  let { action, type, tip, children, className } = props;
 
   return (
     <Tooltip title={tip} placement="top">
@@ -50,9 +49,6 @@ export default function IconBtnTemplate(props) {
           action(event);
         }}
       >
-        {React.cloneElement(Icon, {
-          fontSize: size,
-        })}
         {children}
       </IconButton>
     </Tooltip>

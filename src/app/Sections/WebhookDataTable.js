@@ -16,6 +16,7 @@ import Typography from "@material-ui/core/Typography";
 import { toast } from "react-toastify";
 
 import DeleteIconBtn from "app/Components/Buttons/IconBtns/DeleteIconBtn";
+import RefreshIconBtn from "app/Components/Buttons/IconBtns/RefreshIconBtn";
 
 import { getWebhooksByCoin, deleteWebhookByID } from "APIs/blockcypherWebhooks";
 import { convertWebhookArrToObj, createSortedKeyMap } from "utils";
@@ -104,7 +105,7 @@ const WebhookTableHeaders = ({ data, setData }) => {
   );
 };
 
-const WebhookDataTable = ({ setData, data, coin }) => {
+const WebhookTableBody = ({ setData, data, coin }) => {
   let webhookIds = Object.keys(data);
 
   const deleteWebhook = async (id, event) => {
@@ -118,11 +119,10 @@ const WebhookDataTable = ({ setData, data, coin }) => {
         type: "success",
         position: "bottom-center",
       });
-      setData({ ...data });
     } catch (err) {
       data[id].deleting = false;
-      setData({ ...data });
     } finally {
+      setData({ ...data });
     }
   };
 
@@ -153,27 +153,27 @@ const WebhookDataTable = ({ setData, data, coin }) => {
   );
 };
 
-const FetchedWebhookTable = ({ coin }) => {
+const WebhookTable = ({ coin }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const webhookData = useSelector((state) => state.webhookReducer[coin]);
   const [data, setData] = useState({});
+  const [fetching, setFetching] = useState(false);
+
+  async function fetchCoinData() {
+    try {
+      let fetchedData = await getWebhooksByCoin(coin);
+      let dataObj = convertWebhookArrToObj(fetchedData);
+      setData(dataObj);
+      dispatch(setWebhookData({ coin, data: dataObj }));
+    } catch (err) {
+      console.log(`Error fetching coin webhook data:`, err);
+    }
+  }
 
   useEffect(() => {
-    console.log("new Data");
     if (!webhookData.fetched) fetchCoinData();
     else setData(webhookData.data);
-
-    async function fetchCoinData() {
-      try {
-        let fetchedData = await getWebhooksByCoin(coin);
-        let dataObj = convertWebhookArrToObj(fetchedData);
-        setData(dataObj);
-        dispatch(setWebhookData({ coin, data: dataObj }));
-      } catch (err) {
-        console.log(`Error fetching coin webhook data:`, err);
-      }
-    }
   }, [dispatch, coin, webhookData]);
 
   const renderTable = (data) => {
@@ -197,16 +197,29 @@ const FetchedWebhookTable = ({ coin }) => {
       );
     } else {
       return (
-        <TableContainer component={Paper}>
-          <Table className={classes.table}>
-            <WebhookTableHeaders setData={setData} data={data} />
-            <WebhookDataTable setData={setData} data={data} coin={coin} />
-          </Table>
-        </TableContainer>
+        <div>
+          {fetching ? (
+            <CircularProgress />
+          ) : (
+            <RefreshIconBtn
+              action={async () => {
+                await setFetching(true);
+                await fetchCoinData();
+                await setFetching(false);
+              }}
+            />
+          )}
+          <TableContainer component={Paper}>
+            <Table className={classes.table}>
+              <WebhookTableHeaders setData={setData} data={data} />
+              <WebhookTableBody setData={setData} data={data} coin={coin} />
+            </Table>
+          </TableContainer>
+        </div>
       );
     }
   };
   return <>{renderTable(data)}</>;
 };
 
-export default connect()(FetchedWebhookTable);
+export default connect()(WebhookTable);
