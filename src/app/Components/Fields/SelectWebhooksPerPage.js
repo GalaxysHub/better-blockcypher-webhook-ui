@@ -5,9 +5,8 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
 
-import { setItemsPerPage } from "redux/actions/pageActions";
+import { setItemsPerPage, setPageNum } from "redux/actions/pageActions";
 
 const ItemsPerPageOptions = [
   {
@@ -65,7 +64,10 @@ const SelectWebhooksPerPage = () => {
         id="Select-Webhooks-Per-Page"
         label="Webhooks Per Page"
         value={itemsPerPage}
-        onChange={(event) => dispatch(setItemsPerPage(event.target.value))}
+        onChange={(event) => {
+          dispatch(setPageNum(1)); //page number must be reset in case currentPage>lastPage
+          dispatch(setItemsPerPage(event.target.value));
+        }}
       >
         {RenderDropDownList()}
       </Select>

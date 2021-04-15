@@ -14,6 +14,10 @@ import CreateWebhookForm from "./CreateWebhookForm";
 import AccordionComp from "app/Components/AccordionComp";
 import TableSection from "./Table/TableSection";
 
+import NumWebhooksNote from "./NumWebhooksNote";
+
+import FetchWebhooksBtn from "app/Components/Buttons/IconBtns/FetchWebhooksBtn";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -63,6 +67,7 @@ export default function LabTabs() {
                 <AccordionComp title={"Create Webhook"}>
                   <CreateWebhookForm coin={coin.abbr} />
                 </AccordionComp>
+                <NumWebhooksNote coin={coin.abbr} />
               </Container>
               <br />
               <TableSection coin={coin.abbr} />

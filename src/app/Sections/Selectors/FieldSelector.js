@@ -10,6 +10,8 @@ import Container from "@material-ui/core/Container";
 
 import { selectField } from "redux/actions/fieldsActions";
 
+import PageSelector from "app/Sections/Selectors/PageSelector";
+
 const useStyles = makeStyles((theme) => ({
   header: {
     borderRadius: "15px 0px 0px 0px",

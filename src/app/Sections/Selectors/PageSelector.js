@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    borderRadius: "8px",
   },
   container: {
     margin: "10px",
@@ -24,8 +25,15 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     alignItems: "center",
   },
+
   tableCell: {
     fontSize: "16px",
+  },
+  clickAble: {
+    cursor: "pointer",
+  },
+  invisible: {
+    visibility: "hidden",
   },
 }));
 
@@ -40,21 +48,29 @@ const PageSelector = ({ coin }) => {
   console.log(`lastPageNum`, lastPageNum);
 
   const renderPrevBtn = () => {
-    if (pageNum > 1) {
-      return (
-        <ArrowBackIosIcon onClick={() => dispatch(setPageNum(pageNum - 1))} />
-      );
+    let cls = [classes.clickAble];
+    if (!(pageNum > 1)) {
+      cls.push(classes.invisible);
     }
+    return (
+      <ArrowBackIosIcon
+        className={cls.join(" ")}
+        onClick={() => dispatch(setPageNum(pageNum - 1))}
+      />
+    );
   };
 
   const renderNextBtn = () => {
-    if (pageNum < lastPageNum) {
-      return (
-        <ArrowForwardIosIcon
-          onClick={() => dispatch(setPageNum(pageNum + 1))}
-        />
-      );
+    let cls = [classes.clickAble];
+    if (!(pageNum < lastPageNum)) {
+      cls.push(classes.invisible);
     }
+    return (
+      <ArrowForwardIosIcon
+        className={cls.join(" ")}
+        onClick={() => dispatch(setPageNum(pageNum + 1))}
+      />
+    );
   };
 
   return (
@@ -63,7 +79,13 @@ const PageSelector = ({ coin }) => {
         <Grid item xs={4}>
           <SelectWebhooksPerPage />
         </Grid>
-        <Grid item xs={8}>
+        <Grid
+          container
+          xs={8}
+          direction="row"
+          justify="center"
+          alignItems="center"
+        >
           {renderPrevBtn()}
           {`Page: ${pageNum} of ${lastPageNum}`}
           {renderNextBtn()}
