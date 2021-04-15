@@ -18,7 +18,10 @@ import { toast } from "react-toastify";
 import DeleteIconBtn from "app/Components/Buttons/IconBtns/DeleteIconBtn";
 
 import { getWebhooksByCoin, deleteWebhookByID } from "APIs/blockcypherWebhooks";
-import { convertWebhookArrToObj } from "utils";
+import { convertWebhookArrToObj, createSortedKeyMap } from "utils";
+
+import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 import {
   setWebhookData,
@@ -31,26 +34,20 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     position: "relative",
   },
+  tableHeader: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  clickAble: {
+    cursor: "pointer",
+  },
   tableCell: {
     fontSize: "16px",
   },
 }));
-
-const WebhookTableHeaders = () => {
-  return (
-    <TableHead>
-      <TableRow>
-        <StyledTableCell align="center"></StyledTableCell>
-        <StyledTableCell align="center">ID</StyledTableCell>
-        <StyledTableCell align="center">Address</StyledTableCell>
-        <StyledTableCell align="center">Event</StyledTableCell>
-        <StyledTableCell align="center">URL</StyledTableCell>
-        <StyledTableCell align="center">CallbackErrors</StyledTableCell>
-        <StyledTableCell align="center">Options</StyledTableCell>
-      </TableRow>
-    </TableHead>
-  );
-};
 
 const NoWrapCell = ({ children }) => {
   const classes = useStyles();
@@ -64,7 +61,9 @@ const NoWrapCell = ({ children }) => {
   );
 };
 
-const WebhookDataTableBody = ({ webhookData, coin }) => {
+const WebhookDataTable = ({ webhookData, coin }) => {
+  const classes = useStyles();
+
   const [data, setData] = useState({});
   let webhookIds = Object.keys(data);
 
@@ -92,34 +91,83 @@ const WebhookDataTableBody = ({ webhookData, coin }) => {
     }
   };
 
+  const WebhookTableHeaders = () => {
+    const SortableHeaders = [
+      { name: "ID", value: "id", sort: "asc" },
+      { name: "Address", value: "address" },
+      { name: "Event", value: "event" },
+      { name: "URL", value: "url" },
+      { name: "CallbackErrors", value: "callback_errors" },
+    ];
+
+    const sort = (key, order) => {
+      let sortedData = createSortedKeyMap(data, key, order);
+      console.log(`sortedData`, sortedData);
+      setData(sortedData);
+    };
+
+    return (
+      <TableHead>
+        <TableRow>
+          <StyledTableCell align="center"></StyledTableCell>
+          {SortableHeaders.map((header) => {
+            return (
+              <StyledTableCell align="center">
+                <div className={classes.tableHeader}>
+                  <ArrowDropUpIcon
+                    className={classes.clickAble}
+                    onClick={(event) => sort(header.value, "asc", event)}
+                  />
+                  {header.name}
+                  <ArrowDropDownIcon
+                    className={classes.clickAble}
+                    onClick={(event) => sort(header.value, "desc", event)}
+                  />
+                </div>
+              </StyledTableCell>
+            );
+          })}
+          <StyledTableCell align="center">Options</StyledTableCell>
+        </TableRow>
+      </TableHead>
+    );
+  };
+
   return (
-    <TableBody>
-      {webhookIds.map((id, index) => {
-        let webhook = data[id];
-        const { address, event, url, callback_errors, deleting } = webhook;
-        return (
-          <StyledTableRow key={id}>
-            <NoWrapCell>{index + 1}</NoWrapCell>
-            <NoWrapCell>{id}</NoWrapCell>
-            <NoWrapCell>{address}</NoWrapCell>
-            <NoWrapCell>{event}</NoWrapCell>
-            <NoWrapCell>{url}</NoWrapCell>
-            <NoWrapCell>{callback_errors}</NoWrapCell>
-            <StyledTableCell>
-              {deleting ? (
-                <CircularProgress />
-              ) : (
-                <DeleteIconBtn action={(event) => deleteWebhook(id, event)} />
-              )}
-            </StyledTableCell>
-          </StyledTableRow>
-        );
-      })}
-    </TableBody>
+    <TableContainer component={Paper}>
+      <Table className={classes.table}>
+        <WebhookTableHeaders />
+        <TableBody>
+          {webhookIds.map((id, index) => {
+            let webhook = data[id];
+            const { address, event, url, callback_errors, deleting } = webhook;
+            return (
+              <StyledTableRow key={id}>
+                <NoWrapCell>{index + 1}</NoWrapCell>
+                <NoWrapCell>{id}</NoWrapCell>
+                <NoWrapCell>{address}</NoWrapCell>
+                <NoWrapCell>{event}</NoWrapCell>
+                <NoWrapCell>{url}</NoWrapCell>
+                <NoWrapCell>{callback_errors}</NoWrapCell>
+                <StyledTableCell>
+                  {deleting ? (
+                    <CircularProgress />
+                  ) : (
+                    <DeleteIconBtn
+                      action={(event) => deleteWebhook(id, event)}
+                    />
+                  )}
+                </StyledTableCell>
+              </StyledTableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 
-const WebhookDataTable = ({ coin }) => {
+const FetchedWebhookTable = ({ coin }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const webhookData = useSelector((state) => state.webhookReducer[coin]);
@@ -157,17 +205,10 @@ const WebhookDataTable = ({ coin }) => {
         </Paper>
       );
     } else {
-      return (
-        <TableContainer component={Paper}>
-          <Table className={classes.table}>
-            <WebhookTableHeaders />
-            <WebhookDataTableBody webhookData={webhookData} coin={coin} />
-          </Table>
-        </TableContainer>
-      );
+      return <WebhookDataTable webhookData={webhookData} coin={coin} />;
     }
   };
   return <>{renderTable()}</>;
 };
 
-export default connect()(WebhookDataTable);
+export default connect()(FetchedWebhookTable);
