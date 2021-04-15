@@ -1,3 +1,4 @@
 import { combineReducers } from "redux";
+import webhookReducer from "./webhookReducer";
 
-export default combineReducers({});
+export default combineReducers({ webhookReducer });

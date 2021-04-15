@@ -1,5 +1,5 @@
 import { createMuiTheme } from "@material-ui/core";
-import { lightBlue, blue, red } from "@material-ui/core/colors";
+import { lightBlue, blue, red, blueGrey } from "@material-ui/core/colors";
 
 // Create a theme instance.
 const theme = createMuiTheme({
@@ -24,7 +24,7 @@ const theme = createMuiTheme({
       main: red[700],
     },
     background: {
-      default: "#fff",
+      default: blueGrey[500],
     },
   },
   container: {

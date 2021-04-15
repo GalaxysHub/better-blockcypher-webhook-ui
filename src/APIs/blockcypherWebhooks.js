@@ -87,7 +87,7 @@ function deleteWebhookByID(id, coin) {
     });
 }
 
-module.exports = {
+export default {
   createTXConfirmationWebhook,
   createUnconfirmedTXWebhook,
   createConfirmedTXWebhook,
