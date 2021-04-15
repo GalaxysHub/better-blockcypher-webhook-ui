@@ -1,6 +1,6 @@
-export const setWebhookData = ({ coin, webhookData }) => ({
+export const setWebhookData = ({ coin, data }) => ({
   type: "SET_FETCHED_WEBHOOK_DATA",
-  payload: { coin, webhookData },
+  payload: { coin, data },
 });
 
 export const removeWebhookById = ({ coin, id }) => ({

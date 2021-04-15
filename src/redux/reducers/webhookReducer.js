@@ -28,8 +28,8 @@ const initialState = {
 const webhookReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_FETCHED_WEBHOOK_DATA": {
-      const { coin, webhookData } = action.payload;
-      return { ...state, [coin]: { fetched: true, data: webhookData } };
+      const { coin, data } = action.payload;
+      return { ...state, [coin]: { fetched: true, data: data } };
     }
     case "DELETE_DATAPOINT": {
       let payload = { ...action.payload };

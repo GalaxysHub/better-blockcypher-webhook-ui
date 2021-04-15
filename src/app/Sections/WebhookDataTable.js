@@ -27,7 +27,7 @@ import {
   setWebhookData,
   removeWebhookById,
 } from "redux/actions/webhookActions";
-import { CircularProgress, LinearProgress } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -61,16 +61,51 @@ const NoWrapCell = ({ children }) => {
   );
 };
 
-const WebhookDataTable = ({ webhookData, coin }) => {
+const WebhookTableHeaders = ({ data, setData }) => {
   const classes = useStyles();
 
-  const [data, setData] = useState({});
-  let webhookIds = Object.keys(data);
+  const SortableHeaders = [
+    { name: "ID", value: "id", sort: "asc" },
+    { name: "Address", value: "address" },
+    { name: "Event", value: "event" },
+    { name: "URL", value: "url" },
+    { name: "CallbackErrors", value: "callback_errors" },
+  ];
 
-  useEffect(() => {
-    console.log("new data");
-    setData(webhookData.data);
-  }, [webhookData]);
+  const sort = (key, order) => {
+    let sortedData = createSortedKeyMap(data, key, order);
+    setData(sortedData);
+  };
+
+  return (
+    <TableHead>
+      <TableRow>
+        <StyledTableCell align="center"></StyledTableCell>
+        {SortableHeaders.map((header) => {
+          return (
+            <StyledTableCell align="center">
+              <div className={classes.tableHeader}>
+                <ArrowDropUpIcon
+                  className={classes.clickAble}
+                  onClick={(event) => sort(header.value, "asc", event)}
+                />
+                {header.name}
+                <ArrowDropDownIcon
+                  className={classes.clickAble}
+                  onClick={(event) => sort(header.value, "desc", event)}
+                />
+              </div>
+            </StyledTableCell>
+          );
+        })}
+        <StyledTableCell align="center">Options</StyledTableCell>
+      </TableRow>
+    </TableHead>
+  );
+};
+
+const WebhookDataTable = ({ setData, data, coin }) => {
+  let webhookIds = Object.keys(data);
 
   const deleteWebhook = async (id, event) => {
     try {
@@ -91,79 +126,30 @@ const WebhookDataTable = ({ webhookData, coin }) => {
     }
   };
 
-  const WebhookTableHeaders = () => {
-    const SortableHeaders = [
-      { name: "ID", value: "id", sort: "asc" },
-      { name: "Address", value: "address" },
-      { name: "Event", value: "event" },
-      { name: "URL", value: "url" },
-      { name: "CallbackErrors", value: "callback_errors" },
-    ];
-
-    const sort = (key, order) => {
-      let sortedData = createSortedKeyMap(data, key, order);
-      console.log(`sortedData`, sortedData);
-      setData(sortedData);
-    };
-
-    return (
-      <TableHead>
-        <TableRow>
-          <StyledTableCell align="center"></StyledTableCell>
-          {SortableHeaders.map((header) => {
-            return (
-              <StyledTableCell align="center">
-                <div className={classes.tableHeader}>
-                  <ArrowDropUpIcon
-                    className={classes.clickAble}
-                    onClick={(event) => sort(header.value, "asc", event)}
-                  />
-                  {header.name}
-                  <ArrowDropDownIcon
-                    className={classes.clickAble}
-                    onClick={(event) => sort(header.value, "desc", event)}
-                  />
-                </div>
-              </StyledTableCell>
-            );
-          })}
-          <StyledTableCell align="center">Options</StyledTableCell>
-        </TableRow>
-      </TableHead>
-    );
-  };
-
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table}>
-        <WebhookTableHeaders />
-        <TableBody>
-          {webhookIds.map((id, index) => {
-            let webhook = data[id];
-            const { address, event, url, callback_errors, deleting } = webhook;
-            return (
-              <StyledTableRow key={id}>
-                <NoWrapCell>{index + 1}</NoWrapCell>
-                <NoWrapCell>{id}</NoWrapCell>
-                <NoWrapCell>{address}</NoWrapCell>
-                <NoWrapCell>{event}</NoWrapCell>
-                <NoWrapCell>{url}</NoWrapCell>
-                <NoWrapCell>{callback_errors}</NoWrapCell>
-                <StyledTableCell>
-                  {deleting ? (
-                    <CircularProgress />
-                  ) : (
-                    <DeleteIconBtn
-                      action={(event) => deleteWebhook(id, event)}
-                    />
-                  )}
-                </StyledTableCell>
-              </StyledTableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <TableBody>
+      {webhookIds.map((id, index) => {
+        let webhook = data[id];
+        const { address, event, url, callback_errors, deleting } = webhook;
+        return (
+          <StyledTableRow key={id}>
+            <NoWrapCell>{index + 1}</NoWrapCell>
+            <NoWrapCell>{id}</NoWrapCell>
+            <NoWrapCell>{address}</NoWrapCell>
+            <NoWrapCell>{event}</NoWrapCell>
+            <NoWrapCell>{url}</NoWrapCell>
+            <NoWrapCell>{callback_errors}</NoWrapCell>
+            <StyledTableCell>
+              {deleting ? (
+                <CircularProgress />
+              ) : (
+                <DeleteIconBtn action={(event) => deleteWebhook(id, event)} />
+              )}
+            </StyledTableCell>
+          </StyledTableRow>
+        );
+      })}
+    </TableBody>
   );
 };
 
@@ -171,24 +157,29 @@ const FetchedWebhookTable = ({ coin }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const webhookData = useSelector((state) => state.webhookReducer[coin]);
+  const [data, setData] = useState({});
 
   useEffect(() => {
+    console.log("new Data");
+    if (!webhookData.fetched) fetchCoinData();
+    else setData(webhookData.data);
+
     async function fetchCoinData() {
       try {
-        let data = await getWebhooksByCoin(coin);
-        let webhookData = convertWebhookArrToObj(data);
-        dispatch(setWebhookData({ coin, webhookData }));
+        let fetchedData = await getWebhooksByCoin(coin);
+        let dataObj = convertWebhookArrToObj(fetchedData);
+        setData(dataObj);
+        dispatch(setWebhookData({ coin, data: dataObj }));
       } catch (err) {
         console.log(`Error fetching coin webhook data:`, err);
       }
     }
-    fetchCoinData();
-  }, [dispatch, coin]);
+  }, [dispatch, coin, webhookData]);
 
-  const renderTable = () => {
+  const renderTable = (data) => {
     if (!webhookData.fetched) {
       return <CircularProgress />;
-    } else if (Object.keys(webhookData.data).length === 0) {
+    } else if (Object.keys(data).length === 0) {
       return (
         <Paper style={{ width: "300px", margin: "auto" }} elevation={12}>
           <div
@@ -205,10 +196,17 @@ const FetchedWebhookTable = ({ coin }) => {
         </Paper>
       );
     } else {
-      return <WebhookDataTable webhookData={webhookData} coin={coin} />;
+      return (
+        <TableContainer component={Paper}>
+          <Table className={classes.table}>
+            <WebhookTableHeaders setData={setData} data={data} />
+            <WebhookDataTable setData={setData} data={data} coin={coin} />
+          </Table>
+        </TableContainer>
+      );
     }
   };
-  return <>{renderTable()}</>;
+  return <>{renderTable(data)}</>;
 };
 
 export default connect()(FetchedWebhookTable);
