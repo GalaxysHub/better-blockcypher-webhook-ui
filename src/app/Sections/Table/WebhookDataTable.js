@@ -5,11 +5,11 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import StyledTableCell from "app/Components/Tables/StyledTableCell";
 import StyledTableRow from "app/Components/Tables/StyledTableRow";
+
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
@@ -21,29 +21,19 @@ import RefreshIconBtn from "app/Components/Buttons/IconBtns/RefreshIconBtn";
 import { getWebhooksByCoin, deleteWebhookByID } from "APIs/blockcypherWebhooks";
 import { convertWebhookArrToObj, createSortedKeyMap } from "utils";
 
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-
 import {
   setWebhookData,
   removeWebhookById,
 } from "redux/actions/webhookActions";
 import { CircularProgress } from "@material-ui/core";
 
+import FieldSelector from "./FieldSelector";
+import WebhookTableHeaders from "./WebhookTableHeaders";
+
 const useStyles = makeStyles((theme) => ({
   table: {
     width: "100%",
     position: "relative",
-  },
-  tableHeader: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    alignContent: "center",
-    justifyContent: "center",
-  },
-  clickAble: {
-    cursor: "pointer",
   },
   tableCell: {
     fontSize: "16px",
@@ -59,49 +49,6 @@ const NoWrapCell = ({ children }) => {
         {children}
       </Typography>
     </StyledTableCell>
-  );
-};
-
-const WebhookTableHeaders = ({ data, setData }) => {
-  const classes = useStyles();
-
-  const SortableHeaders = [
-    { name: "ID", value: "id", sort: "asc" },
-    { name: "Address", value: "address" },
-    { name: "Event", value: "event" },
-    { name: "URL", value: "url" },
-    { name: "CallbackErrors", value: "callback_errors" },
-  ];
-
-  const sort = (key, order) => {
-    let sortedData = createSortedKeyMap(data, key, order);
-    setData(sortedData);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        <StyledTableCell align="center"></StyledTableCell>
-        {SortableHeaders.map((header) => {
-          return (
-            <StyledTableCell align="center">
-              <div className={classes.tableHeader}>
-                <ArrowDropUpIcon
-                  className={classes.clickAble}
-                  onClick={(event) => sort(header.value, "asc", event)}
-                />
-                {header.name}
-                <ArrowDropDownIcon
-                  className={classes.clickAble}
-                  onClick={(event) => sort(header.value, "desc", event)}
-                />
-              </div>
-            </StyledTableCell>
-          );
-        })}
-        <StyledTableCell align="center">Options</StyledTableCell>
-      </TableRow>
-    </TableHead>
   );
 };
 
@@ -159,6 +106,35 @@ const WebhookTable = ({ coin }) => {
   const webhookData = useSelector((state) => state.webhookReducer[coin]);
   const [data, setData] = useState({});
   const [fetching, setFetching] = useState(false);
+  const [fields, setFields] = useState([
+    { ID: { name: "ID", key: "id", sortable: true, checked: true } },
+    {
+      Address: {
+        name: "Address",
+        key: "address",
+        sortable: true,
+        checked: true,
+      },
+    },
+    { Event: { name: "Event", key: "event", sortable: true, checked: true } },
+    { URL: { name: "URL", key: "url", sortable: true, checked: true } },
+    {
+      CallbackErrorsname: {
+        name: "CallbackErrors",
+        key: "callback_errors",
+        sortable: true,
+        checked: true,
+      },
+    },
+    {
+      Options: {
+        name: "Options",
+        key: "options",
+        sortable: false,
+        checked: true,
+      },
+    },
+  ]);
 
   async function fetchCoinData() {
     try {
@@ -174,7 +150,7 @@ const WebhookTable = ({ coin }) => {
   useEffect(() => {
     if (!webhookData.fetched) fetchCoinData();
     else setData(webhookData.data);
-  }, [dispatch, coin, webhookData]);
+  }, [coin, webhookData, fetchCoinData, dispatch]);
 
   const renderTable = (data) => {
     if (!webhookData.fetched) {
@@ -198,6 +174,8 @@ const WebhookTable = ({ coin }) => {
     } else {
       return (
         <div>
+          <FieldSelector fields={fields} setFields={setFields} />
+          <br />
           {fetching ? (
             <CircularProgress />
           ) : (

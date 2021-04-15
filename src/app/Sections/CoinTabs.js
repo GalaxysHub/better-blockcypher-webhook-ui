@@ -8,11 +8,11 @@ import TabPanel from "@material-ui/lab/TabPanel";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
 
-import { CoinList, CoinData } from "config/coinData";
+import { CoinList } from "config/coinData";
 
 import CreateWebhookForm from "./CreateWebhookForm";
 import AccordionComp from "app/Components/AccordionComp";
-import WebhookDataTable from "./WebhookDataTable";
+import WebhookDataTable from "./Table/WebhookDataTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,13 +46,19 @@ export default function LabTabs() {
             scrollButtons="auto"
           >
             {CoinList.map((coin) => {
-              return <Tab label={coin.name} value={coin.abbr} />;
+              return (
+                <Tab key={coin.name} label={coin.name} value={coin.abbr} />
+              );
             })}
           </TabList>
         </AppBar>
         {CoinList.map((coin) => {
           return (
-            <TabPanel value={coin.abbr} classes={{ root: classes.tab }}>
+            <TabPanel
+              key={coin.name}
+              value={coin.abbr}
+              classes={{ root: classes.tab }}
+            >
               <Container>
                 <AccordionComp title={"Create Webhook"}>
                   <CreateWebhookForm coin={coin.abbr} />
