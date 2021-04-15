@@ -44,11 +44,9 @@ const FieldSelector = () => {
                 key={field.key}
                 control={
                   <Checkbox
-                    name={field.name}
+                    name={field.key}
                     checked={field.checked}
-                    onChange={(event) =>
-                      dispatch(selectField(event.target.name))
-                    }
+                    onChange={(event) => dispatch(selectField(key))}
                     inputProps={{ "aria-label": "primary checkbox" }}
                   />
                 }

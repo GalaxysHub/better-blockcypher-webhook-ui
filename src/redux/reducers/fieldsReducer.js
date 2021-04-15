@@ -1,15 +1,15 @@
 const initialState = {
-  ID: { name: "ID", key: "id", sortable: true, checked: true },
-  Address: {
+  id: { name: "ID", key: "id", sortable: true, checked: true },
+  address: {
     name: "Address",
     key: "address",
     sortable: true,
     checked: true,
   },
-  Event: { name: "Event", key: "event", sortable: true, checked: true },
-  URL: { name: "URL", key: "url", sortable: true, checked: true },
-  CallbackErrors: {
-    name: "CallbackErrors",
+  event: { name: "Event", key: "event", sortable: true, checked: true },
+  url: { name: "URL", key: "url", sortable: true, checked: true },
+  callback_errors: {
+    name: "Callback Errors",
     key: "callback_errors",
     sortable: true,
     checked: true,
