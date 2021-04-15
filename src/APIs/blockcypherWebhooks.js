@@ -2,7 +2,7 @@ const { TOKEN } = require("../config/blockcypher");
 const { CoinData } = require("../config/coinData");
 const axios = require("axios");
 
-function createWebhook({ addr, targetURL, coin, event }) {
+export function createWebhook({ addr, targetURL, coin, event }) {
   const EventObj = {
     event,
     address: addr,
@@ -18,19 +18,19 @@ function createWebhook({ addr, targetURL, coin, event }) {
   );
 }
 
-function createTXConfirmationWebhook(addr, targetURL, coin) {
+export function createTXConfirmationWebhook(addr, targetURL, coin) {
   return createWebhook(addr, targetURL, coin, "tx-confirmation");
 }
 
-function createUnconfirmedTXWebhook(addr, targetURL, coin) {
+export function createUnconfirmedTXWebhook(addr, targetURL, coin) {
   return createWebhook(addr, targetURL, coin, "unconfirmed-tx");
 }
 
-async function createConfirmedTXWebhook(addr, targetURL, coin) {
+export async function createConfirmedTXWebhook(addr, targetURL, coin) {
   return createWebhook(addr, targetURL, coin, "confirmed-tx");
 }
 
-function getWebhooksByCoin(coin) {
+export function getWebhooksByCoin(coin) {
   const { COIN, NETWORK } = CoinData[coin];
   return axios
     .get(
@@ -46,14 +46,14 @@ function getWebhooksByCoin(coin) {
     });
 }
 
-function getWebhookByID({ id, coin }) {
+export function getWebhookByID({ id, coin }) {
   const { COIN, NETWORK } = CoinData[coin];
   return axios.get(
     `https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks/${id}?token=${TOKEN}`
   );
 }
 
-function deleteWebhookByID({ id, coin }) {
+export function deleteWebhookByID({ id, coin }) {
   const { COIN, NETWORK } = CoinData[coin];
   return axios
     .delete(
@@ -68,13 +68,3 @@ function deleteWebhookByID({ id, coin }) {
       throw err;
     });
 }
-
-module.exports = {
-  createTXConfirmationWebhook,
-  createUnconfirmedTXWebhook,
-  createConfirmedTXWebhook,
-  createWebhook,
-  getWebhooksByCoin,
-  getWebhookByID,
-  deleteWebhookByID,
-};
