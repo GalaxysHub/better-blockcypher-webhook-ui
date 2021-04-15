@@ -9,15 +9,9 @@ const initialState = {
   Event: { name: "Event", key: "event", sortable: true, checked: true },
   URL: { name: "URL", key: "url", sortable: true, checked: true },
   CallbackErrors: {
-    name: "CallbackErrors",
+    name: "Callback Errors",
     key: "callback_errors",
     sortable: true,
-    checked: true,
-  },
-  Options: {
-    name: "Options",
-    key: "options",
-    sortable: false,
     checked: true,
   },
 };

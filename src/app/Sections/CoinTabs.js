@@ -12,7 +12,7 @@ import { CoinList } from "config/coinData";
 
 import CreateWebhookForm from "./CreateWebhookForm";
 import AccordionComp from "app/Components/AccordionComp";
-import WebhookDataTable from "./Table/WebhookDataTable";
+import TableSection from "./Table/TableSection";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,7 +65,7 @@ export default function LabTabs() {
                 </AccordionComp>
               </Container>
               <br />
-              <WebhookDataTable coin={coin.abbr} />
+              <TableSection coin={coin.abbr} />
             </TabPanel>
           );
         })}

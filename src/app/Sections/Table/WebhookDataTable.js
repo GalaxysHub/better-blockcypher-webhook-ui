@@ -3,32 +3,23 @@ import { connect, useSelector, useDispatch } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 
-import StyledTableCell from "app/Components/Tables/StyledTableCell";
-import StyledTableRow from "app/Components/Tables/StyledTableRow";
-
 import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
 
 import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
 
-import { toast } from "react-toastify";
-
-import DeleteIconBtn from "app/Components/Buttons/IconBtns/DeleteIconBtn";
 import RefreshIconBtn from "app/Components/Buttons/IconBtns/RefreshIconBtn";
 
-import { getWebhooksByCoin, deleteWebhookByID } from "APIs/blockcypherWebhooks";
-import { convertWebhookArrToObj, createSortedKeyMap } from "utils";
+import { getWebhooksByCoin } from "APIs/blockcypherWebhooks";
+import { convertWebhookArrToObj } from "utils";
 
-import {
-  setWebhookData,
-  removeWebhookById,
-} from "redux/actions/webhookActions";
+import { setWebhookData } from "redux/actions/webhookActions";
 import { CircularProgress } from "@material-ui/core";
 
-import FieldSelector from "./FieldSelector";
 import WebhookTableHeaders from "./WebhookTableHeaders";
+import WebhookTableBody from "./WebhookTableBody";
+
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -40,101 +31,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NoWrapCell = ({ children }) => {
-  const classes = useStyles();
-
-  return (
-    <StyledTableCell align="center">
-      <Typography className={classes.tableCell} noWrap>
-        {children}
-      </Typography>
-    </StyledTableCell>
-  );
-};
-
-const WebhookTableBody = ({ setData, data, coin }) => {
-  let webhookIds = Object.keys(data);
-
-  const deleteWebhook = async (id, event) => {
-    try {
-      data[id].deleting = true;
-      setData({ ...data });
-      await deleteWebhookByID({ coin, id });
-      await removeWebhookById({ coin, id });
-      delete data[id];
-      toast("Webhook Deleted successfully", {
-        type: "success",
-        position: "bottom-center",
-      });
-    } catch (err) {
-      data[id].deleting = false;
-    } finally {
-      setData({ ...data });
-    }
-  };
-
-  return (
-    <TableBody>
-      {webhookIds.map((id, index) => {
-        let webhook = data[id];
-        const { address, event, url, callback_errors, deleting } = webhook;
-        return (
-          <StyledTableRow key={id}>
-            <NoWrapCell>{index + 1}</NoWrapCell>
-            <NoWrapCell>{id}</NoWrapCell>
-            <NoWrapCell>{address}</NoWrapCell>
-            <NoWrapCell>{event}</NoWrapCell>
-            <NoWrapCell>{url}</NoWrapCell>
-            <NoWrapCell>{callback_errors}</NoWrapCell>
-            <StyledTableCell>
-              {deleting ? (
-                <CircularProgress />
-              ) : (
-                <DeleteIconBtn action={(event) => deleteWebhook(id, event)} />
-              )}
-            </StyledTableCell>
-          </StyledTableRow>
-        );
-      })}
-    </TableBody>
-  );
-};
-
-const WebhookTable = ({ coin }) => {
+const WebhookDataTable = ({ coin }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const webhookData = useSelector((state) => state.webhookReducer[coin]);
   const [data, setData] = useState({});
   const [fetching, setFetching] = useState(false);
-  const [fields, setFields] = useState([
-    { ID: { name: "ID", key: "id", sortable: true, checked: true } },
-    {
-      Address: {
-        name: "Address",
-        key: "address",
-        sortable: true,
-        checked: true,
-      },
-    },
-    { Event: { name: "Event", key: "event", sortable: true, checked: true } },
-    { URL: { name: "URL", key: "url", sortable: true, checked: true } },
-    {
-      CallbackErrorsname: {
-        name: "CallbackErrors",
-        key: "callback_errors",
-        sortable: true,
-        checked: true,
-      },
-    },
-    {
-      Options: {
-        name: "Options",
-        key: "options",
-        sortable: false,
-        checked: true,
-      },
-    },
-  ]);
 
   async function fetchCoinData() {
     try {
@@ -150,7 +52,7 @@ const WebhookTable = ({ coin }) => {
   useEffect(() => {
     if (!webhookData.fetched) fetchCoinData();
     else setData(webhookData.data);
-  }, [coin, webhookData, fetchCoinData, dispatch]);
+  }, [coin, webhookData, dispatch]);
 
   const renderTable = (data) => {
     if (!webhookData.fetched) {
@@ -174,15 +76,13 @@ const WebhookTable = ({ coin }) => {
     } else {
       return (
         <div>
-          <FieldSelector fields={fields} setFields={setFields} />
-          <br />
           {fetching ? (
             <CircularProgress />
           ) : (
             <RefreshIconBtn
               action={async () => {
                 await setFetching(true);
-                await fetchCoinData();
+                // await fetchCoinData();
                 await setFetching(false);
               }}
             />
@@ -200,4 +100,8 @@ const WebhookTable = ({ coin }) => {
   return <>{renderTable(data)}</>;
 };
 
-export default connect()(WebhookTable);
+WebhookDataTable.propTypes = {
+  coin: PropTypes.string.isRequired,
+};
+
+export default connect()(WebhookDataTable);

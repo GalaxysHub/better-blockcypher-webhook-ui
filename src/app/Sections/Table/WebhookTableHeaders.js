@@ -8,10 +8,11 @@ import TableRow from "@material-ui/core/TableRow";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
-import { convertWebhookArrToObj, createSortedKeyMap } from "utils";
+import { createSortedKeyMap } from "utils";
 
 import StyledTableCell from "app/Components/Tables/StyledTableCell";
-import StyledTableRow from "app/Components/Tables/StyledTableRow";
+
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   tableHeader: {
@@ -42,26 +43,35 @@ const WebhookTableHeaders = ({ data, setData }) => {
         <StyledTableCell align="center"></StyledTableCell>
         {fieldKeys.map((key) => {
           let field = fields[key];
-          if (!field.checked) return;
-          return (
-            <StyledTableCell align="center" key={field.key}>
-              <div className={classes.tableHeader}>
-                <ArrowDropUpIcon
-                  className={classes.clickAble}
-                  onClick={(event) => sort(field.key, "asc", event)}
-                />
-                {field.name}
-                <ArrowDropDownIcon
-                  className={classes.clickAble}
-                  onClick={(event) => sort(field.key, "desc", event)}
-                />
-              </div>
-            </StyledTableCell>
-          );
+          if (field.checked) {
+            return (
+              <StyledTableCell align="center" key={field.key}>
+                <div className={classes.tableHeader}>
+                  <ArrowDropUpIcon
+                    className={classes.clickAble}
+                    onClick={(event) => sort(field.key, "asc", event)}
+                  />
+                  {field.name}
+                  <ArrowDropDownIcon
+                    className={classes.clickAble}
+                    onClick={(event) => sort(field.key, "desc", event)}
+                  />
+                </div>
+              </StyledTableCell>
+            );
+          } else {
+            return <></>;
+          }
         })}
+        <StyledTableCell align="center">Options</StyledTableCell>
       </TableRow>
     </TableHead>
   );
+};
+
+WebhookTableHeaders.propTypes = {
+  data: PropTypes.object.isRequired,
+  setData: PropTypes.func.isRequired,
 };
 
 export default connect()(WebhookTableHeaders);
