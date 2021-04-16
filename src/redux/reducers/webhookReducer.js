@@ -32,6 +32,13 @@ const webhookReducer = (state = initialState, action) => {
       const { coin, data } = payload;
       return { ...state, [coin]: { fetched: true, data: data } };
     }
+    case "SET_SELECTED_WEBHOOK_DATA": {
+      let payload = { ...action.payload };
+      const { coin, data } = payload;
+      let newState = { ...state };
+      newState[coin].selected = { ...data };
+      return newState;
+    }
     case "DELETE_WEBHOOK": {
       const { coin, id } = action.payload;
       let newData = { ...state[coin].data };

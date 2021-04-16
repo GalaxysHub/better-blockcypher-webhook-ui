@@ -19,6 +19,8 @@ import { removeWebhookById } from "redux/actions/webhookActions";
 
 import CustomCheckBox from "app/Components/Fields/CustomCheckBox";
 
+import { CoinData } from "config/coinData";
+
 const useStyles = makeStyles((theme) => ({
   table: {
     width: "100%",
@@ -100,9 +102,8 @@ const WebhookTableBody = () => {
               <CustomCheckBox />
               {index + 1}
             </NoWrapCell>
-            {fieldKeys.map((name) => {
-              let field = fields[name];
-              let key = field.key;
+            {fieldKeys.map((key) => {
+              let field = fields[key];
               if (field.checked) {
                 return (
                   <NoWrapCell key={key + "" + id}>{webhook[key]}</NoWrapCell>

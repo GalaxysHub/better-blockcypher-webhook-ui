@@ -3,6 +3,11 @@ export const setWebhookData = ({ coin, data }) => ({
   payload: { coin, data },
 });
 
+export const setSelectedWebhook = ({ coin, id }) => ({
+  type: "SELECT_WEBOOK",
+  payload: { coin, id },
+});
+
 export const removeWebhookById = ({ coin, id }) => ({
   type: "DELETE_WEBHOOK",
   payload: { coin, id },
