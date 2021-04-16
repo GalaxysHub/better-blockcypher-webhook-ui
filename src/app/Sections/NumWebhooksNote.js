@@ -5,6 +5,8 @@ import Paper from "@material-ui/core/Paper";
 
 import FetchWebhooksBtn from "app/Components/Buttons/IconBtns/FetchWebhooksBtn";
 
+import { CoinData } from "config/coinData";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     color: theme.palette.primary["main"],
@@ -22,7 +24,7 @@ const NumWebhooksNote = () => {
   useEffect(() => {
     let numWebhooks = Object.keys(webhooks).length;
     if (numWebhooks) {
-      setMsg(`${numWebhooks} Webhooks`);
+      setMsg(`${numWebhooks} ${CoinData[coin].name} Webhooks`);
     } else {
       setMsg("No Webhooks Found");
     }
@@ -30,7 +32,7 @@ const NumWebhooksNote = () => {
 
   return (
     <Paper
-      style={{ width: "300px", margin: "20px auto" }}
+      style={{ width: "320px", margin: "20px auto" }}
       elevation={12}
       className={classes.paper}
     >

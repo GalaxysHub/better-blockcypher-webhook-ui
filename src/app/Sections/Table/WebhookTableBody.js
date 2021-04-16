@@ -53,17 +53,13 @@ const WebhookTableBody = () => {
   const { itemsPerPage, pageNum, activeCoin: coin } = useSelector(
     (state) => state.pageReducer
   );
-  const { data } = useSelector((state) => state.webhookReducer[coin]);
+  const webhooks = useSelector((state) => state.webhookReducer[coin].data);
   const [deletingMap, setDeletingMap] = useState({});
-  let webhookIds = Object.keys(data);
+  let webhookIds = Object.keys(webhooks);
 
   const fieldKeys = Object.keys(fields);
   let start = (pageNum - 1) * itemsPerPage;
   let end = start + itemsPerPage;
-
-  useEffect(() => {
-    console.log("new data");
-  }, [data]);
 
   const deleteWebhook = async (id) => {
     try {
@@ -91,10 +87,40 @@ const WebhookTableBody = () => {
     }
   };
 
+  const renderAddressCellContent = (address) => {
+    let param = CoinData[coin].COIN;
+    if (coin === "BTCt") param = "btc-testnet";
+    let url = `https://live.blockcypher.com/${param}/address/${address}/`;
+    return (
+      <NoWrapCell>
+        <a href={url} style={{ textDecoration: "none", color: "inherit" }}>
+          {address}
+        </a>
+      </NoWrapCell>
+    );
+  };
+
+  const renderCells = (id) => {
+    let webhook = webhooks[id];
+    return (
+      <>
+        {fieldKeys.map((key) => {
+          let field = fields[key];
+          let name = field.name;
+          if (field.checked) {
+            if (name === "Address") {
+              return renderAddressCellContent(webhook["address"]);
+            }
+            return <NoWrapCell key={key + "" + id}>{webhook[key]}</NoWrapCell>;
+          } else return <></>;
+        })}
+      </>
+    );
+  };
+
   return (
     <TableBody>
       {webhookIds.slice(start, end).map((id, index) => {
-        let webhook = data[id];
         index = index + start;
         return (
           <StyledTableRow key={id}>
@@ -102,14 +128,7 @@ const WebhookTableBody = () => {
               <CustomCheckBox />
               {index + 1}
             </NoWrapCell>
-            {fieldKeys.map((key) => {
-              let field = fields[key];
-              if (field.checked) {
-                return (
-                  <NoWrapCell key={key + "" + id}>{webhook[key]}</NoWrapCell>
-                );
-              } else return <></>;
-            })}
+            {renderCells(id)}
             <NoWrapCell>{renderOptionBtns({ id })}</NoWrapCell>
           </StyledTableRow>
         );
