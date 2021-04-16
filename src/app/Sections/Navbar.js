@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   toolbar: {
-    backgroundColor: theme.palette.primary[theme.mode],
+    background: theme.palette.primary[theme.mode],
     display: "flex",
     justifyContent: "space-between",
     height: "100% !important",

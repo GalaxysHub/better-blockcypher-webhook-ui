@@ -18,7 +18,8 @@ import { setWebhookData } from "redux/actions/webhookActions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    borderRadius: "8px",
+    borderRadius: "12px",
+    backgroundColor: theme.palette.grey.light[theme.mode],
   },
 }));
 

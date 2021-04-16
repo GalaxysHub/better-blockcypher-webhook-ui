@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { connect, useSelector } from "react-redux";
-
+import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 
 import FetchWebhooksBtn from "app/Components/Buttons/IconBtns/FetchWebhooksBtn";
 
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    color: theme.palette.primary["main"],
+    backgroundColor: theme.palette.grey.light[theme.mode],
+    borderRadius: "20px",
+  },
+}));
+
 const NumWebhooksNote = () => {
+  const classes = useStyles();
   const coin = useSelector((state) => state.pageReducer.activeCoin);
   const webhooks = useSelector((state) => state.webhookReducer[coin].data);
   const [msg, setMsg] = useState("");
@@ -13,17 +22,20 @@ const NumWebhooksNote = () => {
   useEffect(() => {
     let numWebhooks = Object.keys(webhooks).length;
     if (numWebhooks) {
-      setMsg(`Found ${numWebhooks} Webhooks`);
+      setMsg(`${numWebhooks} Webhooks`);
     } else {
       setMsg("No Webhooks Found");
     }
   }, [webhooks]);
 
   return (
-    <Paper style={{ width: "300px", margin: "20px auto" }} elevation={12}>
+    <Paper
+      style={{ width: "300px", margin: "20px auto" }}
+      elevation={12}
+      className={classes.paper}
+    >
       <div
         style={{
-          color: "red",
           alignItems: "center",
           display: "flex",
           justifyContent: "center",

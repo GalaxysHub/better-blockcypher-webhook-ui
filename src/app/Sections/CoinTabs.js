@@ -1,5 +1,5 @@
 import React from "react";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tab from "@material-ui/core/Tab";
@@ -9,12 +9,11 @@ import TabPanel from "@material-ui/lab/TabPanel";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
 
-import { CoinList } from "config/coinData";
+import { CoinList, CoinData } from "config/coinData";
 
 import CreateWebhookForm from "./CreateWebhookForm";
 import AccordionComp from "app/Components/AccordionComp";
 import TableSection from "./Table/TableSection";
-
 import NumWebhooksNote from "./NumWebhooksNote";
 
 import { setActiveCoin } from "redux/actions/pageActions";
@@ -22,10 +21,10 @@ import { setActiveCoin } from "redux/actions/pageActions";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.grey.light[theme.mode],
   },
   tabList: {
-    backgroundColor: theme.palette.primary[theme.mode],
+    background: theme.palette.primary[theme.mode],
   },
   tab: {
     // padding: "0px",
@@ -35,7 +34,8 @@ const useStyles = makeStyles((theme) => ({
 const LabTabs = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [value, setValue] = React.useState("BCY");
+  const coin = useSelector((state) => state.pageReducer.activeCoin);
+  const [value, setValue] = React.useState(coin);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -67,7 +67,9 @@ const LabTabs = () => {
               classes={{ root: classes.tab }}
             >
               <Container>
-                <AccordionComp title={"Create Webhook"}>
+                <AccordionComp
+                  title={`Create ${CoinData[coin.abbr].name} Webhook`}
+                >
                   <CreateWebhookForm />
                 </AccordionComp>
                 <NumWebhooksNote />

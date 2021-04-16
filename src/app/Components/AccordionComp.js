@@ -14,18 +14,20 @@ const Accordion = withStyles({
   expanded: {},
 })(MuiAccordion);
 
-const AccordionSummary = withStyles({
+const AccordionSummary = withStyles((theme) => ({
   root: {
-    width: "100%",
-    backgroundColor: "rgba(0, 0, 0, .03)",
+    color: theme.palette.text[theme.mode],
+    backgroundColor: theme.palette.green[theme.mode],
+    border: "2px solid green",
     borderBottom: "1px solid rgba(0, 0, 0, .125)",
     borderRadius: "10px",
-    marginBottom: -1,
+    margin: -1,
     minHeight: 56,
     "&$expanded": {
       minHeight: 56,
     },
   },
+  icon: {},
   content: {
     flexGrow: 0,
     "&$expanded": {
@@ -33,15 +35,23 @@ const AccordionSummary = withStyles({
     },
   },
   expanded: {},
-})(MuiAccordionSummary);
+}))(MuiAccordionSummary);
 
 const AccordionDetails = withStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
+    backgroundColor: theme.palette.grey.ghost[theme.mode],
   },
 }))(MuiAccordionDetails);
 
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    color: theme.palette.text[theme.mode],
+  },
+}));
+
 const AccordionComp = ({ title, children }) => {
+  const classes = useStyles();
   const [expanded, setExpanded] = React.useState();
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -54,7 +64,7 @@ const AccordionComp = ({ title, children }) => {
       onChange={handleChange("panel1")}
     >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={<ExpandMoreIcon className={classes.icon} />}
         aria-controls="panel1d-content"
         id="panel1d-header"
       >

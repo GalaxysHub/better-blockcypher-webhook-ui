@@ -10,6 +10,7 @@ const CoinList = [
 const CoinData = {
   BTC: {
     id: "bitcoin",
+    name: "Bitcoin",
     WIF: "80",
     addr: "00",
     COIN: "btc",
@@ -18,6 +19,7 @@ const CoinData = {
   },
   BTCt: {
     id: "bitcoin",
+    name: "Bitcoin Testnet",
     WIF: "ef",
     addr: "6F",
     COIN: "btc",
@@ -26,6 +28,7 @@ const CoinData = {
   },
   BCY: {
     id: "bitcoin",
+    name: "Blockcypher",
     WIF: "ef",
     addr: "1B",
     COIN: "bcy",
@@ -34,6 +37,7 @@ const CoinData = {
   },
   LTC: {
     id: "litecoin",
+    name: "Litecoin",
     WIF: "b0",
     addr: "30",
     COIN: "ltc",
@@ -41,6 +45,7 @@ const CoinData = {
   },
   DOGE: {
     id: "dogecoin",
+    name: "Dogecoin",
     WIF: "9e",
     addr: "1e",
     COIN: "doge",
@@ -48,6 +53,7 @@ const CoinData = {
   },
   DASH: {
     id: "dash",
+    name: "Dash",
     WIF: "cc",
     addr: "4c",
     COIN: "dash",

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 import StyledTableCell from "app/Components/Tables/StyledTableCell";
 import StyledTableRow from "app/Components/Tables/StyledTableRow";
@@ -17,23 +17,30 @@ import { deleteWebhookByID } from "APIs/blockcypherWebhooks";
 
 import { removeWebhookById } from "redux/actions/webhookActions";
 
+import CustomCheckBox from "app/Components/Fields/CustomCheckBox";
+
 const useStyles = makeStyles((theme) => ({
   table: {
     width: "100%",
     position: "relative",
   },
-  tableCell: {
+  tableCell: {},
+}));
+
+const StyledTypography = withStyles((theme) => ({
+  root: {
+    color: theme.palette.grey.contrastText[theme.mode],
     fontSize: "16px",
   },
-}));
+}))(Typography);
 
 const NoWrapCell = ({ children }) => {
   const classes = useStyles();
   return (
     <StyledTableCell align="center">
-      <Typography className={classes.tableCell} noWrap>
+      <StyledTypography className={classes.tableCell} noWrap>
         {children}
-      </Typography>
+      </StyledTypography>
     </StyledTableCell>
   );
 };
@@ -89,7 +96,10 @@ const WebhookTableBody = () => {
         index = index + start;
         return (
           <StyledTableRow key={id}>
-            <NoWrapCell>{index + 1}</NoWrapCell>
+            <NoWrapCell>
+              <CustomCheckBox />
+              {index + 1}
+            </NoWrapCell>
             {fieldKeys.map((name) => {
               let field = fields[name];
               let key = field.key;

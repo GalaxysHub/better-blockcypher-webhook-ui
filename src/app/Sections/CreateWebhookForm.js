@@ -7,12 +7,10 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
+import { toast } from "react-toastify";
 
 import { createWebhook } from "APIs/blockcypherWebhooks";
-
 import { addWebhookData } from "redux/actions/webhookActions";
-
-import { toast } from "react-toastify";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,6 +18,15 @@ const useStyles = makeStyles((theme) => ({
   },
   fields: {
     margin: "16px 0px",
+  },
+  button: {
+    color: theme.palette.text[theme.mode],
+    backgroundColor: theme.palette.green["light"],
+    "&:hover": {
+      color: theme.palette.text[theme.mode],
+      backgroundColor: theme.palette.green["main"],
+      boxShadow: "1px 3px 3px 3px #888888",
+    },
   },
 }));
 
@@ -156,7 +163,7 @@ const CreateWebhookForm = () => {
       {loading ? (
         <CircularProgress />
       ) : (
-        <Button variant="contained" onClick={submit} color="primary">
+        <Button variant="contained" onClick={submit} className={classes.button}>
           Create Webhook
         </Button>
       )}

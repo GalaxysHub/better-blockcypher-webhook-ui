@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 import { setPageNum } from "redux/actions/pageActions";
 
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
@@ -17,6 +18,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  paper: {
+    borderRadius: "15px 0px 15px 0px",
+    backgroundColor: theme.palette.grey.light[theme.mode],
+    width: "100&",
+    height: "100&",
   },
   gridContainer: {
     marginLeft: "25px",
