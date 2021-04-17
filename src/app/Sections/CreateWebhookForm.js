@@ -65,7 +65,8 @@ const CreateWebhookForm = () => {
     return Object.keys(errs).length === 0;
   };
 
-  const submit = async () => {
+  const submit = async (event) => {
+    event.preventDefault();
     setMsg("");
 
     if (!valid()) return setMsg("Form Field Errors");
@@ -78,6 +79,7 @@ const CreateWebhookForm = () => {
         coin: coin,
         event: values.eventType,
       });
+      console.log(`res`, res);
       dispatch(addWebhookData({ coin, data: res.data }));
       toast(`${values.eventType} webhook created successfully`, {
         type: "success",

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import TableCell from "@material-ui/core/TableCell";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -14,4 +15,4 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-export default StyledTableCell;
+export default memo(StyledTableCell);

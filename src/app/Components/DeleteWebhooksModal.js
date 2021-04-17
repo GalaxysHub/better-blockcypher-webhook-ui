@@ -33,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const displayMax = 25;
+
 const DeleteWebhooksModal = ({ open, setOpen }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -41,38 +43,36 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
   );
   const rate = useSelector((state) => state.tokenReducer.limits["api/second"]);
   const coin = useSelector((state) => state.pageReducer.activeCoin);
-  const IdsArr = Object.keys(selectedWebhooks);
+  let IdsArr = Object.keys(selectedWebhooks);
   const [totalSelected, setTotalSelected] = useState(0);
-  const [maxDisplay, setMaxDisplay] = useState(25);
+  const [maxDisplay, setMaxDisplay] = useState(displayMax);
   const [status, setStatus] = useState("pending");
   const [canClose, setCanClose] = useState(true);
   const [msg, setMsg] = useState("");
 
   const handleClose = () => {
     setOpen(false);
-    setMaxDisplay(10);
+    setMaxDisplay(displayMax);
     setStatus("");
   };
 
-  const batchDelete = async () => {
+  const asyncChainDelete = async () => {
     if (!IdsArr.length) {
-      setCanClose(true);
-      setStatus("completed");
+      //timeout to let the user see the progress bar at 100%
+      setTimeout(() => {
+        setCanClose(true);
+        setStatus("completed");
+      }, 1000);
       return;
     }
-    const batch = IdsArr.splice(0, rate);
-    const promArr = batch.map((id) => deleteWebhookByID({ coin, id }));
 
     setTimeout(() => {
-      Promise.all(promArr)
-        .then((res) => {
-          let unselected = {};
-          batch.forEach((id) => {
-            unselected[id] = false;
-            dispatch(removeWebhookById({ coin, id })); // can be optimized by batching
-          });
-          dispatch(markWebhooks(unselected));
-          batchDelete();
+      let removeId = IdsArr.splice(0, 1)[0];
+      deleteWebhookByID({ coin, id: removeId })
+        .then(() => {
+          dispatch(removeWebhookById({ coin, id: [removeId] }));
+          dispatch(markWebhooks({ [removeId]: false }));
+          asyncChainDelete();
         })
         .catch((err) => {
           setMsg(err.message);
@@ -80,41 +80,76 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
           setCanClose(true);
           return;
         });
-    }, 1200);
+    }, 1000 / rate);
+  };
+
+  const batchDelete = () => {
+    if (!IdsArr.length) {
+      setCanClose(true);
+      setStatus("completed");
+      return;
+    }
+    // const batch = IdsArr.splice(0, rate);
+    // const promArr = batch.map((id) => deleteWebhookByID({ coin, id }));
+    // setTimeout(() => {
+    //   Promise.all(promArr)
+    //     .then((res) => {
+    //       let unselected = {};
+    //       batch.forEach((id) => {
+    //         unselected[id] = false;
+    //         dispatch(removeWebhookById({ coin, id })); // can be optimized by batching
+    //       });
+    //       dispatch(markWebhooks(unselected));
+    //       batchDelete();
+    //     })
+    //     .catch((err) => {
+    //       setMsg(err.message);
+    //       setStatus("error");
+    //       setCanClose(true);
+    //       return;
+    //     });
+    // }, 1200);
   };
 
   const deleteAllWebhooks = async (start) => {
     setStatus("deleting");
     setCanClose(false);
     setTotalSelected(IdsArr.length);
-    batchDelete();
+    asyncChainDelete();
   };
 
-  const showSelectedWebhooks = (
-    <>
-      {IdsArr.slice(0, maxDisplay)
-        .map((id) => id.substring(0, 5) + "...")
-        .join(", ")}
-      {IdsArr.length > maxDisplay ? (
-        <div
-          style={{ color: "teal", cursor: "pointer", marginTop: "16px" }}
-          onClick={() => setMaxDisplay(IdsArr.length)}
-        >
-          {`show ${IdsArr.length - maxDisplay} more`}
+  const showSelectedWebhooks = () => {
+    if (IdsArr.length <= 5) {
+      return IdsArr.map((id) => {
+        return <div>{id}</div>;
+      });
+    } else {
+      return (
+        <div>
+          {IdsArr.slice(0, maxDisplay)
+            .map((id) => id.substring(0, 5) + "...")
+            .join(", ")}
+          {IdsArr.length > maxDisplay ? (
+            <div
+              style={{ color: "teal", cursor: "pointer", marginTop: "16px" }}
+              onClick={() => setMaxDisplay(IdsArr.length)}
+            >
+              {`show ${IdsArr.length - maxDisplay} more`}
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
-      ) : (
-        <></>
-      )}
-    </>
-  );
+      );
+    }
+  };
 
   const body = (
     <div>
       <h2
         className={classes.title}
       >{`Are You Sure You Want To Delete The Following Webhooks?`}</h2>
-      <div>{showSelectedWebhooks}</div>
-      <br />
+      <div>{showSelectedWebhooks()}</div>
       <br />
       <ConfirmIconBtn action={deleteAllWebhooks} />
       <CancelIconBtn action={handleClose} />
@@ -127,7 +162,6 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
       <div>{`Deleted ${
         totalSelected - IdsArr.length
       } of ${totalSelected}`}</div>
-      <br />
       <br />
       <ProgressBar
         completed={Math.floor(
@@ -151,7 +185,7 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
       <h3 style={{ color: "red" }}>{msg}</h3>
       <div>{`The following webhooks were not deleted:`}</div>
       <br />
-      <div>{showSelectedWebhooks}</div>
+      <div>{showSelectedWebhooks()}</div>
       <CancelIconBtn action={handleClose} tip={"Close"} />
     </div>
   );

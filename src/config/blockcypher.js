@@ -1,4 +1,5 @@
-const TOKEN = "4f3f0278c2344404bb94d760b7dc7404";
+// const TOKEN = "327017b780414a8ca26bb2bf3e86fe47";
+const TOKEN = null;
 
 module.exports = {
   TOKEN,

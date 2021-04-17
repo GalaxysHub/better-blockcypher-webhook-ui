@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { connect } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
-
 import Paper from "@material-ui/core/Paper";
 
 import WebhookTableHeaders from "./WebhookTableHeaders";

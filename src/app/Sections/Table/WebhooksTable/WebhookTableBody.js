@@ -78,12 +78,17 @@ const WebhookTableBody = () => {
       setDeletingMap({ ...deletingMap, [id]: true });
       await deleteWebhookByID({ coin, id });
       dispatch(removeWebhookById({ coin, id }));
+      dispatch(markWebhooks({ [id]: false }));
       toast(`Deleted Webhook ${id}`, {
         type: "success",
         position: "bottom-center",
       });
     } catch (err) {
       console.log("error deleting webhook", err);
+      toast(`Error Deleting Webhook ${id}: ${err.message}`, {
+        type: "error",
+        position: "bottom-center",
+      });
     } finally {
       let newMap = { ...deletingMap };
       delete newMap[id];

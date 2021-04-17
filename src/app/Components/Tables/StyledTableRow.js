@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import TableRow from "@material-ui/core/TableRow";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -13,4 +15,4 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default StyledTableRow;
+export default memo(StyledTableRow);

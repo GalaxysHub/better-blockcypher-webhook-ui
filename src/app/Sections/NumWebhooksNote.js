@@ -20,15 +20,15 @@ const NumWebhooksNote = () => {
   const coin = useSelector((state) => state.pageReducer.activeCoin);
   const webhooks = useSelector((state) => state.webhookReducer[coin].data);
   const [msg, setMsg] = useState("");
+  let numWebhooks = Object.keys(webhooks).length;
 
   useEffect(() => {
-    let numWebhooks = Object.keys(webhooks).length;
     if (numWebhooks) {
       setMsg(`${numWebhooks} ${CoinData[coin].name} Webhooks`);
     } else {
       setMsg("No Webhooks Found");
     }
-  }, [webhooks]);
+  }, [numWebhooks]);
 
   return (
     <Paper

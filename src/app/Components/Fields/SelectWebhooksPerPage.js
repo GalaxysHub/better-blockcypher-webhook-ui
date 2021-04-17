@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 
 import Select from "@material-ui/core/Select";

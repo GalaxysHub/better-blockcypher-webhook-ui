@@ -1,6 +1,4 @@
 import {
-  blue,
-  pink,
   red,
   grey,
   blueGrey,
@@ -12,7 +10,7 @@ import {
 const primaryMain = "#000000";
 
 const initialState = {
-  mode: "dark",
+  mode: "light",
   palette: {
     primary: {
       light:

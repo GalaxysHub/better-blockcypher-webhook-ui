@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteWebhooksModal from "app/Components/DeleteWebhooksModal";
@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
       filter: "brightness(85%)",
     },
   },
+  invisible: {
+    visibility: "hidden",
+  },
 }));
 
 function DeleteAllBtn() {
@@ -30,18 +33,17 @@ function DeleteAllBtn() {
   const selectedWebhooks = useSelector(
     (state) => state.webhookReducer.selected
   );
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  let numSelected = Object.keys(selectedWebhooks).length;
+  let btnClasses = [classes.button];
+  if (numSelected === 0) btnClasses = [classes.button, classes.invisible];
 
   return (
     <div className={classes.root}>
       <DeleteWebhooksModal open={open} setOpen={setOpen} />
-      {Object.keys(selectedWebhooks).length ? (
-        <button className={classes.button} onClick={() => setOpen(true)}>
-          {`Delete ${Object.keys(selectedWebhooks).length} Webhooks?`}
-        </button>
-      ) : (
-        <></>
-      )}
+      <button className={btnClasses.join(" ")} onClick={() => setOpen(true)}>
+        {`Delete ${numSelected} Webhooks?`}
+      </button>
     </div>
   );
 }

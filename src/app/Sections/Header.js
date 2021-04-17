@@ -1,20 +1,16 @@
 import React from "react";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 
 import { TOKEN } from "config/blockcypher";
 
 const Header = () => {
-  const renderTokenLimits = () => {
-    return (
-      <div>
-        <h5>Limits</h5>
-      </div>
-    );
-  };
-
   return (
     <div>
-      <h3>Active Webhooks for Token {TOKEN}</h3>
+      {TOKEN ? (
+        <h3>Active Webhooks for Token {TOKEN}</h3>
+      ) : (
+        <h3>No Token Found. Using Mock Data</h3>
+      )}
     </div>
   );
 };

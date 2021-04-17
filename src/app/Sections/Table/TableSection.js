@@ -28,22 +28,22 @@ const TableSection = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const coin = useSelector((state) => state.pageReducer.activeCoin);
-  const { fetched, data: webhooks } = useSelector(
-    (state) => state.webhookReducer[coin]
-  );
+  const fetched = useSelector((state) => state.webhookReducer[coin].fetched);
+  const webhooks = useSelector((state) => state.webhookReducer[coin].data);
   const [error, setError] = useState(null);
 
-  async function fetchCoinData() {
-    try {
-      let fetchedData = await getWebhooksByCoin(coin);
-      let dataObj = convertWebhookArrToObj(fetchedData);
-      dispatch(setWebhookData({ coin, data: dataObj }));
-    } catch (err) {
-      setError(`Error Fetching Webhooks: ${err.message}`);
-      console.warn(`Error in webhook data table`, err);
-    }
-  }
   useEffect(() => {
+    async function fetchCoinData() {
+      try {
+        let fetchedData = await getWebhooksByCoin(coin);
+        let dataObj = convertWebhookArrToObj(fetchedData);
+        dispatch(setWebhookData({ coin, data: dataObj }));
+      } catch (err) {
+        setError(`Error Fetching Webhooks: ${err.message}`);
+        console.warn(`Error Fetching Webhooks:`, err);
+      }
+    }
+
     if (!fetched) fetchCoinData();
   }, [coin]);
 
@@ -52,7 +52,7 @@ const TableSection = () => {
       return <h3 style={{ color: "red" }}>{error}</h3>;
     } else if (!fetched) {
       return <CircularProgress />;
-    } else if (Object.keys(webhooks).length) {
+    } else if (Object.keys(webhooks).length === 0) {
       return <></>;
     } else {
       return (
@@ -63,7 +63,6 @@ const TableSection = () => {
           alignItems="center"
         >
           <FieldSelector />
-          <br />
           <DeleteAllBtn />
           <WebhookDataTable />
           <br />

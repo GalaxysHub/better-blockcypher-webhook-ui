@@ -1,6 +1,9 @@
 import React from "react";
+import { connect, useSelector } from "react-redux";
 
-const ProgressBar = ({ bgcolor, completed }) => {
+const ProgressBar = ({ completed }) => {
+  const theme = useSelector((state) => state.themeReducer);
+
   const containerStyles = {
     height: 20,
     width: "100%",
@@ -12,7 +15,7 @@ const ProgressBar = ({ bgcolor, completed }) => {
   const fillerStyles = {
     height: "100%",
     width: `${completed}%`,
-    backgroundColor: "purple",
+    backgroundColor: theme.palette.primary.main,
     borderRadius: "inherit",
     textAlign: "right",
     transition: "width 1s ease-in-out",
@@ -33,4 +36,4 @@ const ProgressBar = ({ bgcolor, completed }) => {
   );
 };
 
-export default ProgressBar;
+export default connect()(ProgressBar);
