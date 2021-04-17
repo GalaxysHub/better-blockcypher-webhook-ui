@@ -9,8 +9,8 @@ import { CoinData } from "config/coinData";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    color: theme.palette.primary["main"],
-    backgroundColor: theme.palette.grey.light[theme.mode],
+    color: theme.palette.page.text[theme.mode],
+    backgroundColor: theme.palette.card.background[theme.mode],
     borderRadius: "20px",
   },
 }));

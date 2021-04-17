@@ -1,5 +1,5 @@
 const initialState = {
-  itemsPerPage: 10,
+  itemsPerPage: 100,
   pageNum: 1,
   activeCoin: "BCY",
 };

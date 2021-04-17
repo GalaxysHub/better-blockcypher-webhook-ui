@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect, useSelector } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Paper from "@material-ui/core/Paper";
@@ -9,11 +9,13 @@ import CancelIconBtn from "app/Components/Buttons/IconBtns/CancelIconBtn";
 
 import { deleteWebhookByID } from "APIs/blockcypherWebhooks";
 
-import { markWebhooks } from "redux/actions/webhookActions";
+import { removeWebhookById, markWebhooks } from "redux/actions/webhookActions";
+
+import ProgressBar from "app/Components/ProgressBar";
 
 const useStyles = makeStyles((theme) => ({
   title: {
-    color: theme.palette.primary.main,
+    color: theme.palette.page.text[theme.mode],
   },
   paper: {
     textAlign: "center",
@@ -31,75 +33,148 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const sendRequest = (id) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      let date = new Date(Date.now());
-      console.log(`request sent ${id}`, date.getSeconds());
-      resolve();
-    }, 1000);
-  });
-};
-
 const DeleteWebhooksModal = ({ open, setOpen }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const selectedWebhooks = useSelector(
     (state) => state.webhookReducer.selected
   );
+  const rate = useSelector((state) => state.tokenReducer.limits["api/second"]);
   const coin = useSelector((state) => state.pageReducer.activeCoin);
   const IdsArr = Object.keys(selectedWebhooks);
-  const [maxDisplay, setMaxDisplay] = useState(5);
+  const [totalSelected, setTotalSelected] = useState(0);
+  const [maxDisplay, setMaxDisplay] = useState(25);
+  const [status, setStatus] = useState("pending");
+  const [canClose, setCanClose] = useState(true);
+  const [msg, setMsg] = useState("");
 
   const handleClose = () => {
     setOpen(false);
     setMaxDisplay(10);
+    setStatus("");
+  };
+
+  const batchDelete = async () => {
+    if (!IdsArr.length) {
+      setCanClose(true);
+      setStatus("completed");
+      return;
+    }
+    const batch = IdsArr.splice(0, rate);
+    const promArr = batch.map((id) => deleteWebhookByID({ coin, id }));
+
+    setTimeout(() => {
+      Promise.all(promArr)
+        .then((res) => {
+          let unselected = {};
+          batch.forEach((id) => {
+            unselected[id] = false;
+            dispatch(removeWebhookById({ coin, id })); // can be optimized by batching
+          });
+          dispatch(markWebhooks(unselected));
+          batchDelete();
+        })
+        .catch((err) => {
+          console.log(`err deleting all webhooks`, err);
+          console.log(err);
+          setMsg(err.message);
+          setStatus("error");
+          setCanClose(true);
+          return;
+        });
+    }, 1200);
   };
 
   const deleteAllWebhooks = async (start) => {
-    const promArr = arr.map((id) => deleteWebhookByID(id));
-    const promArr = IdsArr.slice(start, start + 3).map((id) => sendRequest(id));
-    setTimeout(() => {
-      return Promise.all(promArr)
-        .then((res) => {
-          let date = new Date(Date.now());
-          console.log(`request sent`, date);
-          return deleteAllWebhooks(start + 3);
-        })
-        .catch((err) => {
-          console.log(`err`, err);
-          throw err;
-        });
-    }, 1000);
+    setStatus("deleting");
+    setCanClose(false);
+    setTotalSelected(IdsArr.length);
+    batchDelete();
   };
 
+  const showSelectedWebhooks = (
+    <>
+      {IdsArr.slice(0, maxDisplay)
+        .map((id) => id.substring(0, 5) + "...")
+        .join(", ")}
+      {IdsArr.length > maxDisplay ? (
+        <div
+          style={{ color: "teal", cursor: "pointer", marginTop: "16px" }}
+          onClick={() => setMaxDisplay(IdsArr.length)}
+        >
+          {`show ${IdsArr.length - maxDisplay} more`}
+        </div>
+      ) : (
+        <></>
+      )}
+    </>
+  );
+
   const body = (
-    <Paper className={classes.paper}>
-      <h2 className={classes.title}>{`Delete ${IdsArr.length} Webhooks?`}</h2>
-      <div>
-        {IdsArr.slice(0, maxDisplay)
-          .map((id) => id.substring(0, 5) + "...")
-          .join(", ")}
-        {IdsArr.length > maxDisplay ? (
-          <div
-            style={{ color: "teal", cursor: "pointer", marginTop: "16px" }}
-            onClick={() => setMaxDisplay(999999)}
-          >
-            {`show ${IdsArr.length - maxDisplay} more`}
-          </div>
-        ) : (
-          <></>
-        )}
-      </div>
+    <div>
+      <h2
+        className={classes.title}
+      >{`Are You Sure You Want To Delete The Following Webhooks?`}</h2>
+      <div>{showSelectedWebhooks}</div>
       <br />
       <br />
       <ConfirmIconBtn action={deleteAllWebhooks} />
       <CancelIconBtn action={handleClose} />
-    </Paper>
+    </div>
   );
 
+  const bodyOnDelete = (
+    <>
+      <h2 className={classes.title}>{"Deleting Webhooks"}</h2>
+      <div>{`Deleted ${
+        totalSelected - IdsArr.length
+      } of ${totalSelected}`}</div>
+      <br />
+      <br />
+      <ProgressBar
+        completed={Math.floor(
+          ((totalSelected - IdsArr.length) * 100) / totalSelected
+        )}
+      />
+    </>
+  );
+
+  const bodyOnComplete = (
+    <div>
+      <h2 className={classes.title}>{"Webhooks Deleted Successfully"}</h2>
+      <br />
+      <ConfirmIconBtn action={handleClose} />
+    </div>
+  );
+
+  const bodyOnError = (
+    <div>
+      <h2 className={classes.title}>{"Error Deleting All Webhooks"}</h2>
+      <div>{msg}</div>
+      <br />
+      <div>{`The following webhooks were not deleted:`}</div>
+      <br />
+      <div>{showSelectedWebhooks}</div>
+      <CancelIconBtn action={handleClose} tip={"Close"} />
+    </div>
+  );
+
+  const renderBody = () => {
+    switch (status) {
+      case "deleting":
+        return bodyOnDelete;
+      case "completed":
+        return bodyOnComplete;
+      case "error":
+        return bodyOnError;
+      default:
+        return body;
+    }
+  };
+
   return (
-    <Modal open={open} onClose={handleClose}>
-      {body}
+    <Modal disableBackdropClick={!canClose} open={open} onClose={handleClose}>
+      <Paper className={classes.paper}>{renderBody()}</Paper>
     </Modal>
   );
 };

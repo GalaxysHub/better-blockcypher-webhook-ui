@@ -1,5 +1,13 @@
 const initialState = {
   fetched: false,
+  limits: {
+    "api/day": 2000,
+    "api/hour": 200,
+    "api/second": 3,
+    "confidence/hour": 15,
+    "hooks": 200,
+    "hooks/hour": 200
+  },
 };
 
 const fieldReducer = (state = initialState, action) => {

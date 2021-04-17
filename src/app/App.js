@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { connect, useSelector } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import Header from "./Sections/Header";
 
 import CoinTabs from "./Sections/CoinTabs";
@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { getTokenDets } from "APIs/blockcypherWebhooks";
 import { TOKEN } from "config/blockcypher";
+
+import { setTokenDets } from "redux/actions/tokenActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,9 +32,16 @@ toast.configure();
 
 function App() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getTokenDets();
+    getTokenDets(TOKEN)
+      .then((res) => {
+        dispatch(setTokenDets(res.data));
+      })
+      .catch((err) => {
+        console.log(`Error fetching token details: `, err);
+      });
   }, []);
 
   return (

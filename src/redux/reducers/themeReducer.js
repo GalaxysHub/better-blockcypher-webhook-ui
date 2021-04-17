@@ -1,5 +1,6 @@
 import {
   blue,
+  pink,
   red,
   grey,
   blueGrey,
@@ -11,7 +12,7 @@ import {
 const primaryMain = "#000000";
 
 const initialState = {
-  mode: "light",
+  mode: "dark",
   palette: {
     primary: {
       light:
@@ -37,7 +38,7 @@ const initialState = {
       },
       background: {
         light: grey[200],
-        dark: grey[900],
+        dark: grey[800],
       },
     },
     paper: {
@@ -51,7 +52,7 @@ const initialState = {
       },
       background: {
         light: "white",
-        dark: blueGrey[800],
+        dark: grey[900],
       },
     },
     error: {

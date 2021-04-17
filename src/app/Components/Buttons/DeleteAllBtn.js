@@ -37,7 +37,7 @@ function DeleteAllBtn() {
       <DeleteWebhooksModal open={open} setOpen={setOpen} />
       {Object.keys(selectedWebhooks).length ? (
         <button className={classes.button} onClick={() => setOpen(true)}>
-          Delete All Webhooks
+          {`Delete ${Object.keys(selectedWebhooks).length} Webhooks?`}
         </button>
       ) : (
         <></>

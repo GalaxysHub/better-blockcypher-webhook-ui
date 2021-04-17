@@ -1,10 +1,22 @@
 import React from "react";
-import { TOKEN } from "config/blockcypher.js";
+import { connect, useSelector } from "react-redux";
 
-export default function Header() {
+import { TOKEN } from "config/blockcypher";
+
+const Header = () => {
+  const renderTokenLimits = () => {
+    return (
+      <div>
+        <h5>Limits</h5>
+      </div>
+    );
+  };
+
   return (
     <div>
       <h3>Active Webhooks for Token {TOKEN}</h3>
     </div>
   );
-}
+};
+
+export default connect()(Header);
