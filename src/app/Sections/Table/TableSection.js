@@ -45,7 +45,7 @@ const TableSection = () => {
     }
 
     if (!fetched) fetchCoinData();
-  }, [coin]);
+  }, [coin, fetched, dispatch]);
 
   const renderSection = () => {
     if (error) {

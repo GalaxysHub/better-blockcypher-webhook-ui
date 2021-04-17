@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { connect, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -19,16 +19,7 @@ const NumWebhooksNote = () => {
   const classes = useStyles();
   const coin = useSelector((state) => state.pageReducer.activeCoin);
   const webhooks = useSelector((state) => state.webhookReducer[coin].data);
-  const [msg, setMsg] = useState("");
   let numWebhooks = Object.keys(webhooks).length;
-
-  useEffect(() => {
-    if (numWebhooks) {
-      setMsg(`${numWebhooks} ${CoinData[coin].name} Webhooks`);
-    } else {
-      setMsg("No Webhooks Found");
-    }
-  }, [numWebhooks]);
 
   return (
     <Paper
@@ -44,7 +35,11 @@ const NumWebhooksNote = () => {
           height: "80px",
         }}
       >
-        {msg}
+        {numWebhooks ? (
+          <div>{`${numWebhooks} ${CoinData[coin].name} Webhooks`}</div>
+        ) : (
+          <div>{"No Webhooks Found"}</div>
+        )}
         <FetchWebhooksBtn />
       </div>
     </Paper>

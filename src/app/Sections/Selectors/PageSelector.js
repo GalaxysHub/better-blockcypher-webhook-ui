@@ -72,7 +72,7 @@ const PageSelector = () => {
 
   return (
     <Container className={classes.container}>
-      <Grid item xs={4}>
+      <Grid item xs={6}>
         <SelectWebhooksPerPage />
       </Grid>
       <Grid container direction="column" justify="center" alignItems="center">

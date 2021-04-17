@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { connect, useSelector, useDispatch } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import Header from "./Sections/Header";
 
 import CoinTabs from "./Sections/CoinTabs";
@@ -42,7 +42,7 @@ function App() {
       .catch((err) => {
         console.log(`Error fetching token details: `, err);
       });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={classes.root}>

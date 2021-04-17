@@ -82,40 +82,42 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
         });
     }, 1000 / rate);
   };
-
+  /*
   const batchDelete = () => {
     if (!IdsArr.length) {
       setCanClose(true);
       setStatus("completed");
       return;
     }
-    // const batch = IdsArr.splice(0, rate);
-    // const promArr = batch.map((id) => deleteWebhookByID({ coin, id }));
-    // setTimeout(() => {
-    //   Promise.all(promArr)
-    //     .then((res) => {
-    //       let unselected = {};
-    //       batch.forEach((id) => {
-    //         unselected[id] = false;
-    //         dispatch(removeWebhookById({ coin, id })); // can be optimized by batching
-    //       });
-    //       dispatch(markWebhooks(unselected));
-    //       batchDelete();
-    //     })
-    //     .catch((err) => {
-    //       setMsg(err.message);
-    //       setStatus("error");
-    //       setCanClose(true);
-    //       return;
-    //     });
-    // }, 1200);
+    const batch = IdsArr.splice(0, rate);
+    const promArr = batch.map((id) => deleteWebhookByID({ coin, id }));
+    setTimeout(() => {
+      Promise.all(promArr)
+        .then((res) => {
+          let unselected = {};
+          batch.forEach((id) => {
+            unselected[id] = false;
+            dispatch(removeWebhookById({ coin, id })); // can be optimized by batching
+          });
+          dispatch(markWebhooks(unselected));
+          batchDelete();
+        })
+        .catch((err) => {
+          setMsg(err.message);
+          setStatus("error");
+          setCanClose(true);
+          return;
+        });
+    }, 1200);
   };
+  */
 
   const deleteAllWebhooks = async (start) => {
     setStatus("deleting");
     setCanClose(false);
     setTotalSelected(IdsArr.length);
     asyncChainDelete();
+    // batchDelete();
   };
 
   const showSelectedWebhooks = () => {
