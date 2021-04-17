@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import DeleteWebhooksModal from "app/Components/DeleteWebhooksModal";
+import DeleteWebhooksModal from "app/Sections/Modals/DeleteWebhooksModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {

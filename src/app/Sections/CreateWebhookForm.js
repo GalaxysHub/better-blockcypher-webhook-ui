@@ -13,6 +13,9 @@ import { toast } from "react-toastify";
 import { createWebhook } from "APIs/blockcypherWebhooks";
 import { addWebhookData } from "redux/actions/webhookActions";
 
+import { isValidAddr } from "utils/isValidAddr";
+import InvalidAddressModal from "./Modals/InvalidAddressModal";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: "20px",
@@ -41,36 +44,44 @@ const CreateWebhookForm = () => {
     address: "",
     URL: "",
   });
+  const [open, setOpen] = useState(false);
+  const [acknowledged, setAcknowledged] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
+
+  const addrReqEvents = [
+    "unconfirmed-tx",
+    "confirmed-tx",
+    "tx-confirmation",
+    "tx-confidence",
+  ];
 
   const valid = () => {
     const { eventType, address, URL } = values;
     const errs = {};
     if (eventType === "") errs["eventType"] = "Event Type Required";
-    if (
-      [
-        "unconfirmed-tx",
-        "confirmed-tx",
-        "tx-confirmation",
-        "tx-confidence",
-      ].includes(values.eventType)
-    ) {
-      if (address === "") errs["address"] = "Address Required";
-    }
     if (URL === "") errs["URL"] = "Webhook URL Required";
     setErrors(errs);
+
+    if (addrReqEvents.includes(values.eventType)) {
+      if (address === "") errs["address"] = "Address Required";
+    }
+
     return Object.keys(errs).length === 0;
   };
 
   const submit = async (event) => {
     event.preventDefault();
     setMsg("");
-
     if (!valid()) return setMsg("Form Field Errors");
 
     try {
+      if (addrReqEvents.includes(values.eventType)) {
+        if (isValidAddr(values.address, coin) !== true && !acknowledged) {
+          return setOpen(true);
+        }
+      }
       setLoading(true);
       let res = await createWebhook({
         addr: values.address.trim(),
@@ -143,7 +154,11 @@ const CreateWebhookForm = () => {
           name={"address"}
           label={"Address"}
           value={values.address}
-          onChange={handleChange}
+          onChange={(event) => {
+            handleChange(event);
+            //validates address and prompts user for reponse with each addr change
+            setAcknowledged(false);
+          }}
           error={errors.address}
           helperText={errors.address}
           className={classes.fields}
@@ -154,6 +169,15 @@ const CreateWebhookForm = () => {
 
   return (
     <Container className={classes.root}>
+      <InvalidAddressModal
+        open={open}
+        setOpen={setOpen}
+        cb={(event) => {
+          setOpen(false);
+          setAcknowledged(true);
+          submit(event);
+        }}
+      />
       <form>
         <SelectEvent
           value={values.eventType}
