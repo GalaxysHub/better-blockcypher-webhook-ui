@@ -3,14 +3,14 @@ import { withStyles } from "@material-ui/core/styles";
 
 import Checkbox from "@material-ui/core/Checkbox";
 
-const CustomCheckBox = withStyles((theme) => ({
+const WhiteCheckBox = withStyles((theme) => ({
   root: {
-    color: theme.palette.primary[theme.mode],
+    color: "white",
     "&$checked": {
-      color: theme.palette.secondary[theme.mode],
+      color: "white",
     },
   },
   checked: {},
 }))((props) => <Checkbox color="default" {...props} />);
 
-export default CustomCheckBox;
+export default WhiteCheckBox;

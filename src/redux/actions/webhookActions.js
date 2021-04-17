@@ -14,6 +14,12 @@ export const removeWebhookById = ({ coin, id }) => ({
 });
 
 export const addWebhookData = ({ coin, data }) => ({
-  type: "ADD_WEBHOOK_DATA",
+  type: "ADD_WEBHOOK",
   payload: { coin, data },
 });
+
+export const markWebhooks = (data)=>({
+  type: "SET_SELECTED_WEBHOOKS",
+  payload: data,
+})
+

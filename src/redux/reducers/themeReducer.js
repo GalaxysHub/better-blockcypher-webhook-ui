@@ -44,6 +44,16 @@ const initialState = {
       light: "white",
       dark: blueGrey[800],
     },
+    card: {
+      text: {
+        light: "black",
+        dark: "white",
+      },
+      background: {
+        light: "white",
+        dark: blueGrey[800],
+      },
+    },
     error: {
       main: red.A400,
     },

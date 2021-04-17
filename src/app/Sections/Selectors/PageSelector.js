@@ -85,7 +85,7 @@ const PageSelector = () => {
       <Grid item xs={4}>
         <SelectWebhooksPerPage />
       </Grid>
-      <Grid container xs={8} justify="center">
+      <Grid container direction="column" justify="center" alignItems="center">
         <div className={classes.gridContainer}>
           {renderPrevBtn()}
           {`Page: ${pageNum} of ${lastPageNum}`}

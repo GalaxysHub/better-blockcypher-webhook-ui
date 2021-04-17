@@ -1,20 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
-import { createSortedKeyMap } from "utils";
-
 import StyledTableCell from "app/Components/Tables/StyledTableCell";
+import WhiteCheckBox from "app/Components/Fields/WhiteCheckBox";
 
-import PropTypes from "prop-types";
+import { setWebhookData, markWebhooks } from "redux/actions/webhookActions";
 
-import { setWebhookData } from "redux/actions/webhookActions";
+import { createSortedKeyMap } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   tableHeader: {
@@ -33,20 +31,39 @@ const WebhookTableHeaders = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const fields = useSelector((state) => state.fieldsReducer);
-  const coin = useSelector((state) => state.pageReducer.activeCoin);
-  const data = useSelector((state) => state.webhookReducer[coin].data);
-
+  const { itemsPerPage, pageNum, activeCoin: coin } = useSelector(
+    (state) => state.pageReducer
+  );
+  const webhooks = useSelector((state) => state.webhookReducer[coin].data);
   const fieldKeys = Object.keys(fields);
 
+  const [selected, setSelected] = useState(false);
+
   const sort = (key, order) => {
-    let sortedData = createSortedKeyMap(data, key, order);
+    let sortedData = createSortedKeyMap(webhooks, key, order);
     dispatch(setWebhookData({ coin, data: sortedData }));
+  };
+
+  const onSelect = () => {
+    let start = (pageNum - 1) * itemsPerPage;
+    let end = start + itemsPerPage;
+    let webhookKeys = Object.keys(webhooks);
+    let data = {};
+    for (let i = start; i < end; i++) {
+      let key = webhookKeys[i];
+      if (!key) break; //out of bounds error
+      data[key] = !selected;
+    }
+    dispatch(markWebhooks(data));
+    setSelected(!selected);
   };
 
   return (
     <TableHead>
       <TableRow>
-        <StyledTableCell align="center"></StyledTableCell>
+        <StyledTableCell align="center" key={"checked"}>
+          <WhiteCheckBox checked={selected} onChange={onSelect} />
+        </StyledTableCell>
         {fieldKeys.map((key) => {
           let field = fields[key];
           if (field.checked) {
@@ -69,15 +86,12 @@ const WebhookTableHeaders = () => {
             return <></>;
           }
         })}
-        <StyledTableCell align="center">Options</StyledTableCell>
+        <StyledTableCell align="center" key={"options"}>
+          Options
+        </StyledTableCell>
       </TableRow>
     </TableHead>
   );
-};
-
-WebhookTableHeaders.propTypes = {
-  data: PropTypes.object.isRequired,
-  setData: PropTypes.func.isRequired,
 };
 
 export default connect()(WebhookTableHeaders);

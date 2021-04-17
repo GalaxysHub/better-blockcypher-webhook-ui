@@ -7,7 +7,8 @@ import StyledTableCell from "app/Components/Tables/StyledTableCell";
 import StyledTableRow from "app/Components/Tables/StyledTableRow";
 import TableBody from "@material-ui/core/TableBody";
 import Typography from "@material-ui/core/Typography";
-import { CircularProgress } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import CustomCheckBox from "app/Components/Fields/CustomCheckBox";
 
 import { toast } from "react-toastify";
 
@@ -15,9 +16,7 @@ import DeleteIconBtn from "app/Components/Buttons/IconBtns/DeleteIconBtn";
 
 import { deleteWebhookByID } from "APIs/blockcypherWebhooks";
 
-import { removeWebhookById } from "redux/actions/webhookActions";
-
-import CustomCheckBox from "app/Components/Fields/CustomCheckBox";
+import { removeWebhookById, markWebhooks } from "redux/actions/webhookActions";
 
 import { CoinData } from "config/coinData";
 
@@ -54,12 +53,25 @@ const WebhookTableBody = () => {
     (state) => state.pageReducer
   );
   const webhooks = useSelector((state) => state.webhookReducer[coin].data);
+  const selectedWebhooks = useSelector(
+    (state) => state.webhookReducer.selected
+  );
   const [deletingMap, setDeletingMap] = useState({});
+  const [selectedMap, setSelectedMap] = useState({});
   let webhookIds = Object.keys(webhooks);
 
   const fieldKeys = Object.keys(fields);
   let start = (pageNum - 1) * itemsPerPage;
   let end = start + itemsPerPage;
+
+  useEffect(() => {
+    setSelectedMap(selectedWebhooks);
+  }, [selectedWebhooks]);
+
+  const onSelect = (id) => {
+    dispatch(markWebhooks({ [id]: !selectedWebhooks[id] }));
+    setSelectedMap({ ...selectedMap, [id]: !selectedWebhooks[id] });
+  };
 
   const deleteWebhook = async (id) => {
     try {
@@ -100,7 +112,7 @@ const WebhookTableBody = () => {
     );
   };
 
-  const renderCells = (id) => {
+  const renderFieldCells = (id) => {
     let webhook = webhooks[id];
     return (
       <>
@@ -124,12 +136,17 @@ const WebhookTableBody = () => {
         index = index + start;
         return (
           <StyledTableRow key={id}>
-            <NoWrapCell>
-              <CustomCheckBox />
+            <NoWrapCell key={"checkbox" + id}>
+              <CustomCheckBox
+                checked={selectedMap[id] || false}
+                onChange={() => onSelect(id)}
+              />
               {index + 1}
             </NoWrapCell>
-            {renderCells(id)}
-            <NoWrapCell>{renderOptionBtns({ id })}</NoWrapCell>
+            {renderFieldCells(id)}
+            <NoWrapCell key={"options" + id}>
+              {renderOptionBtns({ id })}
+            </NoWrapCell>
           </StyledTableRow>
         );
       })}

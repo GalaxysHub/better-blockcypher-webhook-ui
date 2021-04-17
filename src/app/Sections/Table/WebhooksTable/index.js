@@ -34,17 +34,17 @@ const WebhookDataTable = () => {
   const coin = useSelector((state) => state.pageReducer.activeCoin);
   const { fetched, data } = useSelector((state) => state.webhookReducer[coin]);
 
-  async function fetchCoinData() {
-    try {
-      let fetchedData = await getWebhooksByCoin(coin);
-      let dataObj = convertWebhookArrToObj(fetchedData);
-      dispatch(setWebhookData({ coin, data: dataObj }));
-    } catch (err) {
-      console.log(`Error fetching coin webhook data:`, err);
-    }
-  }
-
   useEffect(() => {
+    async function fetchCoinData() {
+      try {
+        let fetchedData = await getWebhooksByCoin(coin);
+        let dataObj = convertWebhookArrToObj(fetchedData);
+        dispatch(setWebhookData({ coin, data: dataObj }));
+      } catch (err) {
+        console.log(`Error fetching coin webhook data:`, err);
+      }
+    }
+
     if (!fetched) fetchCoinData();
   }, [coin]);
 
@@ -63,10 +63,6 @@ const WebhookDataTable = () => {
     }
   };
   return <>{renderTable(data)}</>;
-};
-
-WebhookDataTable.propTypes = {
-  coin: PropTypes.string.isRequired,
 };
 
 export default connect()(WebhookDataTable);

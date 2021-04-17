@@ -6,7 +6,7 @@ const initialState = {
     sortable: true,
     checked: true,
   },
-  event: { name: "Event", key: "event", sortable: true, checked: false },
+  event: { name: "Event Type", key: "event", sortable: true, checked: true },
   url: { name: "URL", key: "url", sortable: true, checked: false },
   callback_errors: {
     name: "Callback Errors",

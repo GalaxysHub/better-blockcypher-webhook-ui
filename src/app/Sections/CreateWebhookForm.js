@@ -7,6 +7,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
+import FormControl from "@material-ui/core/FormControl";
+
 import { toast } from "react-toastify";
 
 import { createWebhook } from "APIs/blockcypherWebhooks";
@@ -71,13 +73,13 @@ const CreateWebhookForm = () => {
     try {
       setLoading(true);
       let res = await createWebhook({
-        addr: values.address,
-        targetURL: values.URL,
+        addr: values.address.trim(),
+        targetURL: values.URL.trim(),
         coin: coin,
         event: values.eventType,
       });
       dispatch(addWebhookData({ coin, data: res.data }));
-      toast("Webhook created successfully", {
+      toast(`${values.eventType} webhook created successfully`, {
         type: "success",
         position: "bottom-center",
       });
@@ -151,23 +153,29 @@ const CreateWebhookForm = () => {
 
   return (
     <Container className={classes.root}>
-      <SelectEvent
-        value={values.eventType}
-        handleChange={changeEventType}
-        error={errors.eventType}
-        className={classes.fields}
-      />
-      {renderURLField()}
-      {renderAddrField()}
-
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <Button variant="contained" onClick={submit} className={classes.button}>
-          Create Webhook
-        </Button>
-      )}
-      <div style={{ color: "red" }}>{msg}</div>
+      <form>
+        <SelectEvent
+          value={values.eventType}
+          handleChange={changeEventType}
+          error={errors.eventType}
+          className={classes.fields}
+        />
+        {renderURLField()}
+        {renderAddrField()}
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <Button
+            type="submit"
+            variant="contained"
+            onClick={submit}
+            className={classes.button}
+          >
+            Create Webhook
+          </Button>
+        )}
+        <div style={{ color: "red" }}>{msg}</div>
+      </form>
     </Container>
   );
 };

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -8,13 +7,15 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 
 import FieldSelector from "../Selectors/FieldSelector";
-import WebhookDataTable from "./WebhookDataTable";
+import WebhookDataTable from "./WebhooksTable";
 import PageSelector from "../Selectors/PageSelector";
 
 import { getWebhooksByCoin } from "APIs/blockcypherWebhooks";
 import { convertWebhookArrToObj } from "utils";
 
 import { setWebhookData } from "redux/actions/webhookActions";
+
+import DeleteAllBtn from "app/Components/Buttons/DeleteAllBtn";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -54,6 +55,7 @@ const TableSection = () => {
         >
           <FieldSelector />
           <br />
+          <DeleteAllBtn />
           <WebhookDataTable />
           <br />
           <Paper elevation={11} className={classes.paper}>
@@ -67,10 +69,6 @@ const TableSection = () => {
   };
 
   return <>{renderSection()}</>;
-};
-
-WebhookDataTable.propTypes = {
-  coin: PropTypes.string.isRequired,
 };
 
 export default connect()(TableSection);
