@@ -75,8 +75,6 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
           batchDelete();
         })
         .catch((err) => {
-          console.log(`err deleting all webhooks`, err);
-          console.log(err);
           setMsg(err.message);
           setStatus("error");
           setCanClose(true);
@@ -150,8 +148,7 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
   const bodyOnError = (
     <div>
       <h2 className={classes.title}>{"Error Deleting All Webhooks"}</h2>
-      <div>{msg}</div>
-      <br />
+      <h3 style={{ color: "red" }}>{msg}</h3>
       <div>{`The following webhooks were not deleted:`}</div>
       <br />
       <div>{showSelectedWebhooks}</div>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 
 import RefreshIcon from "@material-ui/icons/Refresh";
 import IconBtnTemplate from "./IconBtnTemplate";
@@ -11,16 +11,14 @@ import { getWebhooksByCoin } from "APIs/blockcypherWebhooks";
 import { setWebhookData } from "redux/actions/webhookActions";
 import { convertWebhookArrToObj } from "utils";
 
-import PropTypes from "prop-types";
-
 const FetchWebhooksBtn = ({
   type = "info",
   size = "medium",
   tip = "Refetch Webhooks",
-  coin,
 }) => {
-  const [fetching, setFetching] = useState(false);
   const dispatch = useDispatch();
+  const coin = useSelector((state) => state.pageReducer.activeCoin);
+  const [fetching, setFetching] = useState(false);
 
   async function fetchCoinData() {
     try {
@@ -46,10 +44,6 @@ const FetchWebhooksBtn = ({
       )}
     </>
   );
-};
-
-FetchWebhooksBtn.propTypes = {
-  coin: PropTypes.string.isRequired,
 };
 
 export default connect()(FetchWebhooksBtn);

@@ -1,4 +1,4 @@
-const TOKEN = "7a6eef0469d04299887208240c956f2f";
+const TOKEN = "4f3f0278c2344404bb94d760b7dc7404";
 
 module.exports = {
   TOKEN,

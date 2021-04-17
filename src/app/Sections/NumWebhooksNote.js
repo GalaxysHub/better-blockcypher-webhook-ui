@@ -45,7 +45,7 @@ const NumWebhooksNote = () => {
         }}
       >
         {msg}
-        <FetchWebhooksBtn coin={coin} />
+        <FetchWebhooksBtn />
       </div>
     </Paper>
   );
