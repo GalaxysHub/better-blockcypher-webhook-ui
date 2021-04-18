@@ -1,6 +1,6 @@
 const { TOKEN } = require("../config/blockcypher");
 const { CoinData } = require("../config/coinData");
-const MockData = require("../config/mockData");
+const mockWebhooks = require("__mock__/webhooks.json");
 
 const axios = require("axios");
 
@@ -41,7 +41,7 @@ export function createWebhook({ addr, targetURL, coin, event }) {
 }
 
 export function getWebhooksByCoin(coin) {
-  if (!TOKEN) return mockRequest(() => MockData[coin]);
+  if (!TOKEN) return mockRequest(() => mockWebhooks[coin]);
 
   const { COIN, NETWORK } = CoinData[coin];
   return axios

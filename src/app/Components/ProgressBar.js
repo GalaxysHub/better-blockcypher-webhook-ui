@@ -15,6 +15,7 @@ const ProgressBar = ({ completed }) => {
   const fillerStyles = {
     height: "100%",
     width: `${completed}%`,
+    border: theme.palette.secondary.main + " 1px solid",
     backgroundColor: theme.palette.primary.main,
     borderRadius: "inherit",
     textAlign: "right",

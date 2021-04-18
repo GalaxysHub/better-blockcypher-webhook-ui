@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const InvalidAddressModal = ({ open, setOpen, cb }) => {
+const InvalidAddressModal = ({ open, setOpen, address, cb }) => {
   const classes = useStyles();
   const coin = useSelector((state) => state.pageReducer.activeCoin);
 
@@ -40,8 +40,11 @@ const InvalidAddressModal = ({ open, setOpen, cb }) => {
   const body = (
     <>
       <h2>{"Invalid Address Detected"}</h2>
+
+      <div>{"Address: "}</div>
+      <div style={{ fontWeight: "bold", margin: "20px" }}>{address}</div>
       <div>
-        {`This Does Not Appear to be a Valid ${CoinData[coin].name} Address. Do You Wish To Continue?`}
+        {`Does Not Appear to be a Valid ${CoinData[coin].name} Address. Do You Wish To Continue?`}
       </div>
       <br />
       <ConfirmIconBtn action={cb} />

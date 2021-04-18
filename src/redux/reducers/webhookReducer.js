@@ -23,6 +23,14 @@ const initialState = {
     fetched: false,
     data: {},
   },
+  ETH: {
+    fetched: false,
+    data: {},
+  },
+  bETH: {
+    fetched: false,
+    data: {},
+  },
   selected: {},
 };
 
@@ -53,15 +61,15 @@ const webhookReducer = (state = initialState, action) => {
       delete newData[id];
       let newState = { ...state };
       newState[coin].data = newData;
-      return {...newState};
+      return { ...newState };
     }
     case "ADD_WEBHOOK": {
       const { coin, data: newWebhook } = action.payload;
-      let newData = {...state[coin].data};
+      let newData = { ...state[coin].data };
       newData[newWebhook.id] = newWebhook;
       let newState = { ...state };
       newState[coin].data = newData;
-      return {...newState};
+      return { ...newState };
     }
     default:
       return state;

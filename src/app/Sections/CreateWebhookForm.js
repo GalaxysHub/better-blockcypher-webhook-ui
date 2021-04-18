@@ -77,7 +77,10 @@ const CreateWebhookForm = () => {
     if (!valid()) return setMsg("Form Field Errors");
 
     try {
-      if (addrReqEvents.includes(values.eventType)) {
+      if (
+        addrReqEvents.includes(values.eventType) ||
+        !["ETH", "bETH"].includes[coin] //omits frontend validation for ethereum because checksum is different
+      ) {
         if (isValidAddr(values.address, coin) !== true && !acknowledged) {
           return setOpen(true);
         }
@@ -172,6 +175,7 @@ const CreateWebhookForm = () => {
       <InvalidAddressModal
         open={open}
         setOpen={setOpen}
+        address={values.address}
         cb={(event) => {
           setOpen(false);
           setAcknowledged(true);

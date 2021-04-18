@@ -5,11 +5,13 @@ const CoinList = [
   { name: "Litecoin", abbr: "LTC" },
   { name: "Dogecoin", abbr: "DOGE" },
   { name: "Dash", abbr: "DASH" },
+  { name: "Ethereum", abbr: "ETH" },
+  { name: "Ethereum BC Testnet", abbr: "bETH" },
 ];
 
 const CoinData = {
   BTC: {
-    id: "bitcoin",
+    id: "bitcoin", // poor nomenclature. need to check original intent before changing
     name: "Bitcoin",
     WIF: "80",
     addr: "00",
@@ -58,6 +60,20 @@ const CoinData = {
     addr: "4c",
     COIN: "dash",
     NETWORK: "main",
+  },
+  ETH: {
+    id: "eth",
+    name: "Ethereum",
+    COIN: "eth",
+    NETWORK: "main",
+    addrStarts: ["0x"],
+  },
+  //blockcypher specific testnet
+  bETH: {
+    id: "bETH",
+    name: "Ethereum BC Testnet",
+    COIN: "beth",
+    NETWORK: "test",
   },
 };
 
