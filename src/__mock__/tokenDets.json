@@ -1,0 +1,11 @@
+{
+  "limits": {
+    "api/hour": 200,
+    "api/second": 6,
+    "confidence/hour": 15,
+    "hooks": 200,
+    "hooks/hour": 200,
+    "payments": 0
+  },
+  "hits_history": []
+}

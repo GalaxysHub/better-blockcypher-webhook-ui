@@ -1,12 +1,19 @@
 const { TOKEN } = require("../config/blockcypher");
 const { CoinData } = require("../config/coinData");
 const mockWebhooks = require("__mock__/webhooks.json");
+const mockTokenDets = require("__mock__/tokenDets.json");
 
 const axios = require("axios");
 
 const proxyURL = "https://thingproxy.freeboard.io/fetch/";
 
 export function getTokenDets(TOKEN) {
+  if (!TOKEN) {
+    return mockRequest(() => {
+      return { data: mockTokenDets };
+    });
+  }
+
   return axios.get(`${proxyURL}https://api.blockcypher.com/v1/tokens/${TOKEN}`);
 }
 
