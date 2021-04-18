@@ -5,8 +5,8 @@ import { CoinData } from "config/coinData.js";
 
 export const isValidAddr = (addr, coin) => {
   let first = addr[0];
-  let addrStarts = CoinData[coin].addrStarts;
-  if (!addrStarts.includes(first)) return new Error("Wrong Address Type");
+  let addrPrefixes = CoinData[coin].addrPrefixes;
+  if (!addrPrefixes.includes(first)) return new Error("Wrong Address Type");
 
   if (addr.length !== 34) return new Error("Invalid Address format");
 

@@ -1,70 +1,118 @@
-# Getting Started with Create React App
+<p align=center>
+  <h1 align=center><a href="https://blockcypher-webhooks-ui.netlify.app/"> Better BlockCypher Webhook UI</a></h1>
+    <br/>
+    <p align=center>
+    Created with <a href="https://reactjs.org/">React</a> and <a href="https://material-ui.com/">Material-UI</a> styles
+    <p>
+  </p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<details open="open">
+  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+  <ol>
+    <li>
+      <a href="#about">About</a>
+    </li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#install">Installing</a></li>
+  </ol>
+</details>
 
-## Available Scripts
+## About
 
-In the project directory, you can run:
+<div #about>
 
-### `yarn start`
+The current BlockCypher UI, pictured below, looks like it was never completed.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<img src="./imgs/bcwebhookui.PNG" width="600">
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+There's broken stylings on the table body which overflows for small browser widths, and there's no scroll functionality, so the viewport must be large enough to view all the content.
 
-### `yarn test`
+In addition, it currently only support 2 coins, the Blockcypher testnet coin and Bitcoin mainnet.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+I've primarily used the command prompt to make API requests to view my webhooks, but for large number of webhooks, it is nice to be able to see them all visually.
 
-### `yarn build`
+So I decided to make a better UI that has the basic functionality that I or anyone else would need.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+</div>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Features
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<div #features>
 
-### `yarn eject`
+### Dark/Light Theme
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+> Change the theme between Light and Dark Mode by clicking the toggle switch in the upper right hand corner
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<p align=center>
+<img src="./imgs/overview-dark-theme.PNG" width="300" >;&nbsp;&nbsp;
+<img src="./imgs/overview-light-theme.PNG" width="300">
+</p>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Larger Coin Selection
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+> Webhook data can be retrieved for Bitcoin, BlockCypher Testnet, Bitcoin Testnet, Litecoin, DogeCoin, Dash, Ethereum, and BlockCypher Ethereum Testnet
 
-## Learn More
+### Delete Webhook
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+> Delete individual webhooks by clicking the trash can button to right in the table
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Batch Delete Webhooks
 
-### Code Splitting
+> Multiple webhooks can be deleting at once by clicking the select box to the left of the webhook in the table. Clicking the Delete All Webhooks button will delete them within the calculated rate limits of the API
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+<img src="./imgs/multi-delete.PNG" width="600">
 
-### Analyzing the Bundle Size
+### Create New Webhook
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+> Add new webhooks associated with your token by clicking the Create Webhook tab.
 
-### Making a Progressive Web App
+<img src="./imgs/create-webhook.PNG" width="600">
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+> Note that some event types have additional optional fields that cannot be added with this current UI.
 
-### Advanced Configuration
+> The API for blockcypher appears to only check the checksum of an address to see if it was created with SHA256. It does not check the prefixes to differentiate between each coin.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+> I've added the same checksum test on the front end and also checked against common prefixes. A problem with checking the prefixes is that new address types such as Bech32 cannot be checked the same way and will be invalidated. I've added an option for the user to override the validation and submit a webhook anyways.
 
-### Deployment
+> I've removed the validation logic from Ethereum since it will always return false since Ethereum uses a different hash algorithium to create their addresses.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Filter Headers
 
-### `yarn build` fails to minify
+> Filter which fields are shown as table headers by selecting/deselecting them in the Filter Fields box based on the field
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Sort By Header
+
+> The Table Headers can be clicked so that the webhooks are sorted in ascending or descending order
+
+### Address Field
+
+> The address field is shown for applicable event types when creating a new webhook. If it is clicked it will redirect to the BlockCypher block explorer for that address and coin. These all work with the exception of Blockcypher's Ethereum testnet.
+
+### Select Items Per Page and Paginate
+
+> Select how many webhooks should appear on the table at once, and the data will be rerendered in pages.
+
+</div>
+
+## Install
+
+    cmd
+
+    git clone https://github.com/GalaxysHub/better-blockcypher-webhook-ui.git
+
+    cd github.com/GalaxysHub/better-blockcypher-webhook-ui.git
+
+    npm i
+
+Replace the TOKEN variable in the src/config/blockcypher.js file with your BlockCypher token. If a token is not used, mock data will be imported.
+You can use the token below if you want to hit the API and see live data quickly, but it is tied to my free account and rate limited at the lowest tier.
+
+    const TOKEN = "327017b780414a8ca26bb2bf3e86fe47";
+
+Then cmd
+
+     npm run start
+
+## Deployed Version
+
+https://blockcypher-webhooks-ui.netlify.app/

@@ -7,6 +7,7 @@ import CoinTabs from "./Sections/CoinTabs";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Navbar from "app/Sections/Navbar";
+import Footer from "app/Sections/Footer";
 import { toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -51,6 +52,7 @@ function App() {
         <Header />
         <CoinTabs />
       </Container>
+      <Footer />
     </div>
   );
 }

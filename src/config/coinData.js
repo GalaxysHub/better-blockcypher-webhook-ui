@@ -17,7 +17,7 @@ const CoinData = {
     addr: "00",
     COIN: "btc",
     NETWORK: "main",
-    addrStarts: ["1", "3"], //todo: add support for bech32 addrs
+    addrPrefixes: ["1", "3"], //todo: add support for bech32 addrs
   },
   BTCt: {
     id: "bitcoin",
@@ -26,7 +26,7 @@ const CoinData = {
     addr: "6F",
     COIN: "btc",
     NETWORK: "test3",
-    addrStarts: ["n", "m"],
+    addrPrefixes: ["n", "m"],
   },
   BCY: {
     id: "bitcoin",
@@ -35,7 +35,7 @@ const CoinData = {
     addr: "1B",
     COIN: "bcy",
     NETWORK: "test",
-    addrStarts: ["B", "C"],
+    addrPrefixes: ["B", "C"],
   },
   LTC: {
     id: "litecoin",
@@ -66,7 +66,7 @@ const CoinData = {
     name: "Ethereum",
     COIN: "eth",
     NETWORK: "main",
-    addrStarts: ["0x"],
+    addrPrefixes: ["0x"],
   },
   //blockcypher specific testnet
   bETH: {
