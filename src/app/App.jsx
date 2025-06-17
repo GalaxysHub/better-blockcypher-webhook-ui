@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
-
 import { connect, useDispatch } from "react-redux";
-import Header from "./Sections/Header";
 
-import CoinTabs from "./Sections/CoinTabs";
 import { styled } from "@mui/material/styles";
 import Container from "@mui/material/Container";
-import Navbar from "./Sections/Navbar";
-import Footer from "./Sections/Footer";
-import { ToastContainer } from "react-toastify";
 
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { getTokenDets } from "APIs/blockcypherWebhooks";
 import { TOKEN } from "_config/blockcypher.json";
+
+import Header from "app/Sections/Header";
+import CoinTabs from "app/Sections/CoinTabs";
+import Navbar from "app/Sections/Navbar";
+import Footer from "app/Sections/Footer";
 
 import { setTokenDets } from "store/slices";
 

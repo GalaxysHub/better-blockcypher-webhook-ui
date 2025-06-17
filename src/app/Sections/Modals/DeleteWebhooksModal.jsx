@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import ConfirmIconBtn from "app/Components/Buttons/IconBtns/ConfirmIconBtn";
 import CancelIconBtn from "app/Components/Buttons/IconBtns/CancelIconBtn";
 
-import { deleteWebhookByID } from "../../../APIs/blockcypherWebhooks";
+import { deleteWebhookByID } from "APIs/blockcypherWebhooks";
 
 import { removeWebhookById, markWebhooks } from "store/slices";
 
