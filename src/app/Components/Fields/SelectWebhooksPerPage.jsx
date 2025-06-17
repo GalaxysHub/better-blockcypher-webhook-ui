@@ -1,5 +1,5 @@
 import React from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -74,4 +74,5 @@ const SelectWebhooksPerPage = () => {
     </FormControl>
   );
 };
-export default connect()(SelectWebhooksPerPage);
+
+export default SelectWebhooksPerPage;

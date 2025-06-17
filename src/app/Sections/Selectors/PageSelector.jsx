@@ -1,5 +1,5 @@
 import React from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { styled } from "@mui/material/styles";
 
 import Container from "@mui/material/Container";
@@ -79,4 +79,4 @@ const PageSelector = () => {
   );
 };
 
-export default connect()(PageSelector);
+export default PageSelector;

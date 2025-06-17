@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 
 import { TOKEN } from "_config/blockcypher";
 
@@ -15,4 +14,4 @@ const Header = () => {
   );
 };
 
-export default connect()(Header);
+export default Header;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { styled } from "@mui/material/styles";
 import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
@@ -205,4 +205,4 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
   );
 };
 
-export default connect()(DeleteWebhooksModal);
+export default DeleteWebhooksModal;

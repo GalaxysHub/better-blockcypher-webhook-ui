@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import RefreshIcon from "@mui/icons-material/Refresh";
 import IconBtnTemplate from "./IconBtnTemplate";
@@ -46,4 +46,4 @@ const FetchWebhooksBtn = ({
   );
 };
 
-export default connect()(FetchWebhooksBtn);
+export default FetchWebhooksBtn;

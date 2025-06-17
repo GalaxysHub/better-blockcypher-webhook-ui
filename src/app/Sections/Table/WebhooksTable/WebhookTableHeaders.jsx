@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 
 import TableHead from "@mui/material/TableHead";
@@ -90,4 +90,4 @@ const WebhookTableHeaders = () => {
   );
 };
 
-export default connect()(WebhookTableHeaders);
+export default WebhookTableHeaders;

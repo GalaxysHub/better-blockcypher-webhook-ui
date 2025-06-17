@@ -1,5 +1,5 @@
 import React from "react";
-import { connect, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
@@ -60,4 +60,4 @@ const InvalidAddressModal = ({ open, setOpen, address, cb }) => {
   );
 };
 
-export default connect()(InvalidAddressModal);
+export default InvalidAddressModal;

@@ -1,5 +1,5 @@
 import React from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Tab from "@mui/material/Tab";
@@ -81,4 +81,4 @@ const LabTabs = () => {
   );
 };
 
-export default connect()(LabTabs);
+export default LabTabs;

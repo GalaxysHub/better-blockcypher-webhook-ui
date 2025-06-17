@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import DeleteWebhooksModal from "app/Sections/Modals/DeleteWebhooksModal";
 
@@ -42,4 +42,4 @@ function DeleteAllBtn() {
   );
 }
 
-export default connect()(DeleteAllBtn);
+export default DeleteAllBtn;

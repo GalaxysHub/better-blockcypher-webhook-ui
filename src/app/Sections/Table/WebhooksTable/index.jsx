@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import { styled } from "@mui/material/styles";
 
 import Table from "@mui/material/Table";
@@ -26,4 +25,4 @@ const WebhookDataTable = () => {
   );
 };
 
-export default connect()(WebhookDataTable);
+export default WebhookDataTable;

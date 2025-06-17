@@ -1,5 +1,5 @@
 import React from "react";
-import { connect, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const ProgressBar = ({ completed }) => {
   const theme = useSelector((state) => state.themeReducer);
@@ -37,4 +37,4 @@ const ProgressBar = ({ completed }) => {
   );
 };
 
-export default connect()(ProgressBar);
+export default ProgressBar;

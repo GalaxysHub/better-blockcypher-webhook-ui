@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { styled } from "@mui/material/styles";
 
 import SelectEvent from "app/Components/Fields/SelectEvent";
@@ -208,4 +208,4 @@ const CreateWebhookForm = () => {
   );
 };
 
-export default connect()(CreateWebhookForm);
+export default CreateWebhookForm;

@@ -1,5 +1,5 @@
 import React from "react";
-import { connect, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 
@@ -41,4 +41,4 @@ const NumWebhooksNote = () => {
   );
 };
 
-export default connect()(NumWebhooksNote);
+export default NumWebhooksNote;

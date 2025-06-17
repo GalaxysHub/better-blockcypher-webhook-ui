@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { connect, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { styled } from "@mui/material/styles";
 import Container from "@mui/material/Container";
@@ -54,4 +54,4 @@ function App() {
   );
 }
 
-export default connect()(App);
+export default App;

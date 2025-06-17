@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { styled } from "@mui/material/styles";
 
 import CircularProgress from "@mui/material/CircularProgress";
@@ -74,4 +74,4 @@ const TableSection = () => {
   return <>{renderSection()}</>;
 };
 
-export default connect()(TableSection);
+export default TableSection;

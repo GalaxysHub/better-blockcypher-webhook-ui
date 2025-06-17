@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { styled } from "@mui/material/styles";
 
@@ -148,4 +148,4 @@ const WebhookTableBody = () => {
   );
 };
 
-export default connect()(WebhookTableBody);
+export default WebhookTableBody;

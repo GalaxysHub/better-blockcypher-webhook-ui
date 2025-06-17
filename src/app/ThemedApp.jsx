@@ -1,4 +1,5 @@
-import { connect, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { StyledEngineProvider } from "@mui/material/styles";
 import App from "app/App.jsx";
@@ -17,4 +18,4 @@ function AppWrapper() {
   );
 }
 
-export default connect()(AppWrapper);
+export default AppWrapper;

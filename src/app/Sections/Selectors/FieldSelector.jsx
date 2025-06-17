@@ -1,5 +1,5 @@
 import React from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 
 import FormControl from "@mui/material/FormControl";
@@ -61,4 +61,4 @@ const FieldSelector = () => {
   );
 };
 
-export default connect()(FieldSelector);
+export default FieldSelector;
