@@ -1,5 +1,1 @@
-const TOKEN = null;
-
-module.exports = {
-  TOKEN,
-};
+export const TOKEN = null;

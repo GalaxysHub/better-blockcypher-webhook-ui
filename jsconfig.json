@@ -1,5 +1,27 @@
 {
   "compilerOptions": {
-    "baseUrl": "src"
-  }
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"],
+      "app/*": ["app/*"],
+      "styles/*": ["styles/*"],
+      "utils/*": ["utils/*"],
+      "utils": ["utils"],
+      "APIs/*": ["APIs/*"],
+      "APIs": ["APIs"],
+      "config/*": ["config/*"],
+      "config": ["config"],
+      "store/*": ["store/*"],
+      "store": ["store"],
+      "__mock__/*": ["__mock__/*"],
+      "__mock__": ["__mock__"]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
 }

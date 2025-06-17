@@ -57,7 +57,4 @@ const CoinData = {
   },
 };
 
-module.exports = {
-  CoinList,
-  CoinData,
-};
+export { CoinList, CoinData };
