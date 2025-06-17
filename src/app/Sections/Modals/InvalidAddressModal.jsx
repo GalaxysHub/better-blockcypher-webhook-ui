@@ -1,6 +1,6 @@
 import React from "react";
 import { connect, useSelector } from "react-redux";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
 
@@ -9,28 +9,27 @@ import CancelIconBtn from "../../Components/Buttons/IconBtns/CancelIconBtn";
 
 import { CoinData } from "../../../config/coinData";
 
-const useStyles = makeStyles((theme) => ({
-  title: {
-    color: theme.palette.page.text[theme.mode],
-  },
-  paper: {
-    textAlign: "center",
-    position: "absolute",
-    width: 400,
-    color: theme.palette.card.text[theme.mode],
-    backgroundColor: theme.palette.card.background[theme.mode],
-    padding: theme.spacing(0, 4, 3),
-    top: `50%`,
-    left: `50%`,
-    transform: `translate(-50%, -50%)`,
-  },
-  button: {
-    margin: "0 20px",
-  },
+const Title = styled('h2')(({ theme }) => ({
+  color: theme.palette.page.text[theme.mode],
 }));
 
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  textAlign: "center",
+  position: "absolute",
+  width: 400,
+  color: theme.palette.card.text[theme.mode],
+  backgroundColor: theme.palette.card.background[theme.mode],
+  padding: theme.spacing(0, 4, 3),
+  top: `50%`,
+  left: `50%`,
+  transform: `translate(-50%, -50%)`,
+}));
+
+const ButtonContainer = styled('div')({
+  margin: "0 20px",
+});
+
 const InvalidAddressModal = ({ open, setOpen, address, cb }) => {
-  const classes = useStyles();
   const coin = useSelector((state) => state.pageReducer.activeCoin);
 
   const handleClose = () => {
@@ -39,7 +38,7 @@ const InvalidAddressModal = ({ open, setOpen, address, cb }) => {
 
   const body = (
     <>
-      <h2>{"Invalid Address Detected"}</h2>
+      <Title>{"Invalid Address Detected"}</Title>
 
       <div>{"Address: "}</div>
       <div style={{ fontWeight: "bold", margin: "20px" }}>{address}</div>
@@ -47,14 +46,16 @@ const InvalidAddressModal = ({ open, setOpen, address, cb }) => {
         {`Does Not Appear to be a Valid ${CoinData[coin].name} Address. Do You Wish To Continue?`}
       </div>
       <br />
-      <ConfirmIconBtn action={cb} />
-      <CancelIconBtn action={handleClose} />
+      <ButtonContainer>
+        <ConfirmIconBtn action={cb} />
+        <CancelIconBtn action={handleClose} />
+      </ButtonContainer>
     </>
   );
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <Paper className={classes.paper}>{body}</Paper>
+      <StyledPaper>{body}</StyledPaper>
     </Modal>
   );
 };

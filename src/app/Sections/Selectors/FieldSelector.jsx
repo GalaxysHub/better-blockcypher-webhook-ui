@@ -1,6 +1,6 @@
 import React from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -14,33 +14,29 @@ import PageSelector from "./PageSelector";
 
 import CustomCheckBox from "../../Components/Fields/CustomCheckBox";
 
-const useStyles = makeStyles((theme) => ({
-  header: {
-    borderRadius: "15px 0px 0px 0px",
-    fontSize: "16px",
-    background: theme.palette.primary[theme.mode],
-    color: theme.palette.text[theme.mode],
-    height: "100%",
-    padding: "10px",
-    borderBottom: "1px solid black",
-  },
-  paper: {
-    borderRadius: "15px 0px 15px 0px",
-    backgroundColor: theme.palette.grey.light[theme.mode],
-  },
+const Header = styled('div')(({ theme }) => ({
+  borderRadius: "15px 0px 0px 0px",
+  fontSize: "16px",
+  background: theme.palette.primary[theme.mode],
+  color: theme.palette.text[theme.mode],
+  padding: "10px",
+  borderBottom: "1px solid black",
+}));
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  borderRadius: "15px 0px 15px 0px",
+  backgroundColor: theme.palette.grey.light[theme.mode],
 }));
 
 const FieldSelector = () => {
-  const classes = useStyles();
-
   const dispatch = useDispatch();
   const fields = useSelector((state) => state.fieldsReducer);
   const fieldKeys = Object.keys(fields);
 
   return (
     <FormControl component="fieldset">
-      <Paper elevation={11} className={classes.paper}>
-        <div className={classes.header}>Filter Fields</div>
+      <StyledPaper elevation={11}>
+        <Header>Filter Fields</Header>
         <Container>
           {fieldKeys.map((key) => {
             let field = fields[key];
@@ -60,7 +56,7 @@ const FieldSelector = () => {
           })}
         </Container>
         <PageSelector />
-      </Paper>
+      </StyledPaper>
     </FormControl>
   );
 };

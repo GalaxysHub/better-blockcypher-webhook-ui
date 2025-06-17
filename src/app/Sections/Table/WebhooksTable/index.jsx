@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
@@ -10,25 +9,19 @@ import Paper from "@mui/material/Paper";
 import WebhookTableHeaders from "./WebhookTableHeaders";
 import WebhookTableBody from "./WebhookTableBody";
 
-const useStyles = makeStyles((theme) => ({
-  table: {
-    width: "100%",
-    position: "relative",
-  },
-  tableCell: {
-    fontSize: "16px",
-  },
-}));
+const StyledTable = styled(Table)({
+  width: "100%",
+  position: "relative",
+});
+
 
 const WebhookDataTable = () => {
-  const classes = useStyles();
-
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table}>
+      <StyledTable>
         <WebhookTableHeaders />
         <WebhookTableBody />
-      </Table>
+      </StyledTable>
     </TableContainer>
   );
 };

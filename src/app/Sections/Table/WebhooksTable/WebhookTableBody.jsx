@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 
-import { makeStyles } from "@mui/styles";
 import { styled } from "@mui/material/styles";
 
 import StyledTableCell from "../../../Components/Tables/StyledTableCell";
@@ -21,24 +20,15 @@ import { removeWebhookById, markWebhooks } from "../../../../store/slices";
 
 import { CoinData } from "../../../../config/coinData";
 
-const useStyles = makeStyles((theme) => ({
-  table: {
-    width: "100%",
-    position: "relative",
-  },
-  tableCell: {},
-}));
-
 const StyledTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.grey?.contrastText?.[theme.mode] || theme.palette.text.primary,
   fontSize: "16px",
 }));
 
 const NoWrapCell = ({ children }) => {
-  const classes = useStyles();
   return (
     <StyledTableCell align="center">
-      <StyledTypography className={classes.tableCell} noWrap>
+      <StyledTypography noWrap>
         {children}
       </StyledTypography>
     </StyledTableCell>

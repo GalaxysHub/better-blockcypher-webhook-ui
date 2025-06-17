@@ -7,8 +7,8 @@ import TableRow from "@mui/material/TableRow";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-import StyledTableCell from "../../../Components/Tables/StyledTableCell";
-import WhiteCheckBox from "../../../Components/Fields/WhiteCheckBox";
+import StyledTableCell from "app/Components/Tables/StyledTableCell";
+import WhiteCheckBox from "app/Components/Fields/WhiteCheckBox";
 
 import { setWebhookData, markWebhooks } from "store/slices";
 
