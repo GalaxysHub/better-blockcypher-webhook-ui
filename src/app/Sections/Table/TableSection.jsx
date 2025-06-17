@@ -6,9 +6,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 
-import FieldSelector from "../Selectors/FieldSelector";
+import FieldSelector from "app/Sections/Selectors/FieldSelector";
 import WebhookDataTable from "./WebhooksTable";
-import PageSelector from "../Selectors/PageSelector";
+import PageSelector from "app/Sections/Selectors/PageSelector";
 
 import { getWebhooksByCoin } from "APIs/blockcypherWebhooks";
 import { convertWebhookArrToObj } from "utils";

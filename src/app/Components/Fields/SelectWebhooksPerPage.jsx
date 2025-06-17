@@ -6,7 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 
-import { setItemsPerPage, setPageNum } from "../../../store/slices";
+import { setItemsPerPage, setPageNum } from "store/slices";
 
 const ItemsPerPageOptions = [
   {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
-import DeleteWebhooksModal from "../../Sections/Modals/DeleteWebhooksModal";
+import DeleteWebhooksModal from "app/Sections/Modals/DeleteWebhooksModal";
 
 const RootDiv = styled('div')(() => ({
   margin: "16px",

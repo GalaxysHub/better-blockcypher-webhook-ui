@@ -8,11 +8,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Paper from "@mui/material/Paper";
 import Container from "@mui/material/Container";
 
-import { selectField } from "../../../store/slices";
+import { selectField } from "store/slices";
 
-import PageSelector from "./PageSelector";
+import PageSelector from "app/Sections/Selectors/PageSelector";
 
-import CustomCheckBox from "../../Components/Fields/CustomCheckBox";
+import CustomCheckBox from "app/Components/Fields/CustomCheckBox";
 
 const Header = styled('div')(({ theme }) => ({
   borderRadius: "15px 0px 0px 0px",
