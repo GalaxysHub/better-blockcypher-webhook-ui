@@ -1,9 +1,9 @@
-const { TOKEN } = require("../config/blockcypher");
-const { CoinData } = require("../config/coinData");
-const mockWebhooks = require("__mock__/webhooks.json");
-const mockTokenDets = require("__mock__/tokenDets.json");
+import { TOKEN } from "config/blockcypher";
+import { CoinData } from "config/coinData";
+import mockWebhooks from "__mock__/webhooks.json";
+import mockTokenDets from "__mock__/tokenDets.json";
 
-const axios = require("axios");
+import axios from "axios";
 
 const proxyURL = "https://thingproxy.freeboard.io/fetch/";
 
