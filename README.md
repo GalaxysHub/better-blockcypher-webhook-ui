@@ -1,5 +1,5 @@
 <p align=center>
-  <h1 align=center><a href="https://blockcypher-webhooks-ui.netlify.app/"> Better BlockCypher Webhook UI</a></h1>
+  <h1 align=center><a href="https://better-blockcypher-webhook-ui.vercel.app/"> Better BlockCypher Webhook UI</a></h1>
     <br/>
     <p align=center>
     Created with <a href="https://reactjs.org/">React</a> and <a href="https://material-ui.com/">Material-UI</a> styles
@@ -23,7 +23,9 @@
 
 The current BlockCypher UI, pictured below, looks like it was never completed.
 
+<div align="center">
 <img src="./imgs/bcwebhookui.PNG" width="600">
+</div>
 
 There's broken stylings on the table body which overflows for small browser widths, and there's no scroll functionality, so the viewport must be large enough to view all the content.
 
@@ -43,10 +45,10 @@ So I decided to make a better UI that has the basic functionality that I or anyo
 
 > Change the theme between Light and Dark Mode by clicking the toggle switch in the upper right hand corner
 
-<p align=center>
+<div align="center">
 <img src="./imgs/overview-dark-theme.PNG" width="300" >;&nbsp;&nbsp;
 <img src="./imgs/overview-light-theme.PNG" width="300">
-</p>
+</div>
 
 ### Larger Coin Selection
 
@@ -60,13 +62,17 @@ So I decided to make a better UI that has the basic functionality that I or anyo
 
 > Multiple webhooks can be deleting at once by clicking the select box to the left of the webhook in the table. Clicking the Delete All Webhooks button will delete them within the calculated rate limits of the API
 
+<div align="center">
 <img src="./imgs/multi-delete.PNG" width="600">
+</div>
 
 ### Create New Webhook
 
 > Add new webhooks associated with your token by clicking the Create Webhook tab.
 
+<div align="center">
 <img src="./imgs/create-webhook.PNG" width="600">
+</div>
 
 > Note that some event types have additional optional fields that cannot be added with this current UI.
 
@@ -115,4 +121,4 @@ Then cmd
 
 ## Deployed Version
 
-https://blockcypher-webhooks-ui.netlify.app/
+https://better-blockcypher-webhook-ui.vercel.app/
