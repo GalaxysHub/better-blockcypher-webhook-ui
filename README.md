@@ -117,7 +117,7 @@ You can use the token below if you want to hit the API and see live data quickly
 
 Then cmd
 
-     npm run start
+     npm run dev
 
 ## Deployed Version
 
