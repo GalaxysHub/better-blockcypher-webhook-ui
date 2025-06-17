@@ -1,0 +1,93 @@
+{
+    "CoinList": [
+        {
+            "name": "Blockcypher",
+            "abbr": "BCY"
+        },
+        {
+            "name": "Bitcoin Testnet",
+            "abbr": "BTCt"
+        },
+        {
+            "name": "Bitcoin",
+            "abbr": "BTC"
+        },
+        {
+            "name": "Litecoin",
+            "abbr": "LTC"
+        },
+        {
+            "name": "Dogecoin",
+            "abbr": "DOGE"
+        },
+        {
+            "name": "Dash",
+            "abbr": "DASH"
+        },
+        {
+            "name": "Ethereum",
+            "abbr": "ETH"
+        },
+        {
+            "name": "Ethereum BC Testnet",
+            "abbr": "bETH"
+        }
+    ],
+    "CoinData": {
+        "BTC": {
+            "name": "Bitcoin",
+            "COIN": "btc",
+            "NETWORK": "main",
+            "addrPrefixes": [
+                "1",
+                "3"
+            ]
+        },
+        "BTCt": {
+            "name": "Bitcoin Testnet",
+            "COIN": "btc",
+            "NETWORK": "test3",
+            "addrPrefixes": [
+                "n",
+                "m"
+            ]
+        },
+        "BCY": {
+            "name": "Blockcypher",
+            "COIN": "bcy",
+            "NETWORK": "test",
+            "addrPrefixes": [
+                "B",
+                "C"
+            ]
+        },
+        "LTC": {
+            "name": "Litecoin",
+            "COIN": "ltc",
+            "NETWORK": "main"
+        },
+        "DOGE": {
+            "name": "Dogecoin",
+            "COIN": "doge",
+            "NETWORK": "main"
+        },
+        "DASH": {
+            "name": "Dash",
+            "COIN": "dash",
+            "NETWORK": "main"
+        },
+        "ETH": {
+            "name": "Ethereum",
+            "COIN": "eth",
+            "NETWORK": "main",
+            "addrPrefixes": [
+                "0x"
+            ]
+        },
+        "bETH": {
+            "name": "Ethereum BC Testnet",
+            "COIN": "beth",
+            "NETWORK": "test"
+        }
+    }
+}

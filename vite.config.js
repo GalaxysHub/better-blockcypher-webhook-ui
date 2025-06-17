@@ -24,7 +24,7 @@ export default defineConfig({
       'styles': path.resolve(__dirname, './src/styles'),
       'utils': path.resolve(__dirname, './src/utils'),
       'APIs': path.resolve(__dirname, './src/APIs'),
-      'config': path.resolve(__dirname, './src/config'),
+      '_config': path.resolve(__dirname, './src/_config'),
       'store': path.resolve(__dirname, './src/store'),
       '__mock__': path.resolve(__dirname, './src/__mock__'),
       buffer: 'buffer',

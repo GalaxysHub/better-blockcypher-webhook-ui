@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { styled } from "@mui/material/styles";
 
-import SelectEvent from "../Components/Fields/SelectEvent";
+import SelectEvent from "app/Components/Fields/SelectEvent";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -10,10 +10,10 @@ import Container from "@mui/material/Container";
 
 import { toast } from "react-toastify";
 
-import { createWebhook } from "../../APIs/blockcypherWebhooks";
+import { createWebhook } from "APIs/blockcypherWebhooks";
 import { addWebhookData } from "store/slices";
 
-import { isValidAddr } from "../../utils/isValidAddr";
+import { isValidAddr } from "utils/isValidAddr";
 import InvalidAddressModal from "./Modals/InvalidAddressModal";
 
 const StyledContainer = styled(Container)(() => ({

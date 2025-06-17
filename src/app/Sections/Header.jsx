@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { TOKEN } from "../../config/blockcypher";
+import { TOKEN } from "_config/blockcypher";
 
 const Header = () => {
   return (

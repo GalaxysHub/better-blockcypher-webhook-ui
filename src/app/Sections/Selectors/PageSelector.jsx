@@ -4,11 +4,11 @@ import { styled } from "@mui/material/styles";
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import { setPageNum } from "../../../store/slices";
+import { setPageNum } from "store/slices";
 
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import SelectWebhooksPerPage from "../../Components/Fields/SelectWebhooksPerPage";
+import SelectWebhooksPerPage from "app/Components/Fields/SelectWebhooksPerPage";
 
 const StyledContainer = styled(Container)({
   margin: "10px",

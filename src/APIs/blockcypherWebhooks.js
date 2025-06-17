@@ -1,5 +1,5 @@
-import { TOKEN } from "config/blockcypher";
-import { CoinData } from "config/coinData";
+import { TOKEN } from "_config/blockcypher.json";
+import { CoinData } from "_config/coinData.json";
 import mockWebhooks from "__mock__/webhooks.json";
 import mockTokenDets from "__mock__/tokenDets.json";
 

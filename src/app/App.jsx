@@ -13,7 +13,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { getTokenDets } from "APIs/blockcypherWebhooks";
-import { TOKEN } from "config/blockcypher";
+import { TOKEN } from "_config/blockcypher.json";
 
 import { setTokenDets } from "store/slices";
 

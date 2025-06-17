@@ -4,14 +4,14 @@ import { styled } from "@mui/material/styles";
 import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
 
-import ConfirmIconBtn from "../../Components/Buttons/IconBtns/ConfirmIconBtn";
-import CancelIconBtn from "../../Components/Buttons/IconBtns/CancelIconBtn";
+import ConfirmIconBtn from "app/Components/Buttons/IconBtns/ConfirmIconBtn";
+import CancelIconBtn from "app/Components/Buttons/IconBtns/CancelIconBtn";
 
 import { deleteWebhookByID } from "../../../APIs/blockcypherWebhooks";
 
 import { removeWebhookById, markWebhooks } from "store/slices";
 
-import ProgressBar from "../../Components/ProgressBar";
+import ProgressBar from "app/Components/ProgressBar";
 
 const ModalTitle = styled('h2')(({ theme }) => ({
   color: theme.palette.page.text[theme.mode],

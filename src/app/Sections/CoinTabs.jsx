@@ -9,7 +9,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import Paper from "@mui/material/Paper";
 import Container from "@mui/material/Container";
 
-import { CoinList, CoinData } from "../../config/coinData";
+import { CoinList, CoinData } from "../../_config/coinData";
 
 import CreateWebhookForm from "./CreateWebhookForm";
 import AccordionComp from "../Components/AccordionComp";

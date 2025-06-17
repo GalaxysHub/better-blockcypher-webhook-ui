@@ -15,7 +15,7 @@ import { convertWebhookArrToObj } from "utils";
 
 import { setWebhookData } from "store/slices";
 
-import DeleteAllBtn from "../../Components/Buttons/DeleteAllBtn";
+import DeleteAllBtn from "app/Components/Buttons/DeleteAllBtn";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   borderRadius: "12px",

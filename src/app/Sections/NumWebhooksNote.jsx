@@ -3,9 +3,9 @@ import { connect, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 
-import FetchWebhooksBtn from "../Components/Buttons/IconBtns/FetchWebhooksBtn";
+import FetchWebhooksBtn from "app/Components/Buttons/IconBtns/FetchWebhooksBtn";
 
-import { CoinData } from "config/coinData";
+import { CoinData } from "_config/coinData.json";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   color: theme.palette.page?.text?.[theme.mode] || theme.palette.text.primary,

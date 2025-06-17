@@ -3,22 +3,22 @@ import { connect, useSelector, useDispatch } from "react-redux";
 
 import { styled } from "@mui/material/styles";
 
-import StyledTableCell from "../../../Components/Tables/StyledTableCell";
-import StyledTableRow from "../../../Components/Tables/StyledTableRow";
+import StyledTableCell from "app/Components/Tables/StyledTableCell";
+import StyledTableRow from "app/Components/Tables/StyledTableRow";
 import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
-import CustomCheckBox from "../../../Components/Fields/CustomCheckBox";
+import CustomCheckBox from "app/Components/Fields/CustomCheckBox";
 
 import { toast } from "react-toastify";
 
-import DeleteIconBtn from "../../../Components/Buttons/IconBtns/DeleteIconBtn";
+import DeleteIconBtn from "app/Components/Buttons/IconBtns/DeleteIconBtn";
 
-import { deleteWebhookByID } from "../../../../APIs/blockcypherWebhooks";
+import { deleteWebhookByID } from "APIs/blockcypherWebhooks";
 
-import { removeWebhookById, markWebhooks } from "../../../../store/slices";
+import { removeWebhookById, markWebhooks } from "store/slices";
 
-import { CoinData } from "../../../../config/coinData";
+import { CoinData } from "_config/coinData";
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.grey?.contrastText?.[theme.mode] || theme.palette.text.primary,

@@ -1,7 +1,7 @@
 import bs58 from "bs58";
 import sha256 from "js-sha256";
 
-import { CoinData } from "config/coinData.js";
+import { CoinData } from "_config/coinData.json";
 
 export const isValidAddr = (addr, coin) => {
   let first = addr[0];
