@@ -56,7 +56,7 @@ function Navbar() {
       <AppBar position="static">
         <StyledToolbar>
           <Grid justify="space-between" container>
-            <NavlinkContainer item></NavlinkContainer>
+            <NavlinkContainer></NavlinkContainer>
             <Grid>
               <SwitchContainer>
                 <Switch
@@ -64,7 +64,11 @@ function Navbar() {
                   onChange={handleChange}
                   color="primary"
                   name="checkedB"
-                  inputProps={{ "aria-label": "primary checkbox" }}
+                  slotProps={{
+                    input: {
+                      "aria-label": "primary checkbox",
+                    },
+                  }}
                 />
               </SwitchContainer>
             </Grid>

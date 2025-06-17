@@ -3,18 +3,19 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 import eslint from 'vite-plugin-eslint'
 
-export default defineConfig({
+export default defineConfig(({ command, mode }) => ({
   plugins: [
     react(),
-    eslint({
+    ...(mode !== 'test' && command !== 'serve' ? [eslint({
       include: ['src/**/*.js', 'src/**/*.jsx', 'src/**/*.ts', 'src/**/*.tsx'],
+      exclude: ['**/__tests__/**', '**/test/**', '**/*.test.*', '**/*.spec.*'],
       cache: false,
       fix: true,
       emitWarning: true,
       emitError: true,
       failOnError: false,
       failOnWarning: false,
-    }),
+    })] : []),
   ],
   esbuild: {
     loader: "jsx",
@@ -59,5 +60,10 @@ export default defineConfig({
         }
       }
     }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.js',
   }
-})
+}))
