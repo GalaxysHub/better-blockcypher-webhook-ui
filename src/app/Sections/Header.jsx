@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <HeaderContainer>
       <Typography variant="h4" component="h1" gutterBottom>
-        {token.length  ? (
+        {token && token.length > 0 ? (
           `Active Webhooks for Token ${token.slice(0, 8)}...`
         ) : (
           "No Token Found. Using Mock Data"

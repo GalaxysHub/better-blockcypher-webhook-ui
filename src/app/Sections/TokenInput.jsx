@@ -42,8 +42,7 @@ const TokenInput = () => {
       } else {
         // Clear token details if no token and reset test data
         dispatch(resetAllWebhookData());
-        dispatch(setTokenDets({}));
-        dispatch(setToken(null));
+        dispatch(setTokenDets({token:null}));
         toast.info("Token cleared. Using mock data.");
       }
     } catch (error) {
