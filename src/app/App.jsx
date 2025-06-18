@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { getTokenDets } from "APIs/blockcypherWebhooks";
 
-import TokenInput from "app/Components/TokenInput";
+import TokenInput from "@/app/Sections/TokenInput";
 import Header from "app/Sections/Header";
 import CoinTabs from "app/Sections/CoinTabs";
 import Navbar from "app/Sections/Navbar";
@@ -25,6 +25,7 @@ const RootDiv = styled("div")(({ theme }) => ({
 }));
 
 const StyledContainer = styled(Container)({
+  paddingTop: "24px",
   paddingBottom: "24px",
 });
 

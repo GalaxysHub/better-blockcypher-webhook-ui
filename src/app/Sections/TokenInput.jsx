@@ -10,7 +10,6 @@ const TokenContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: "8px",
-  marginTop: "16px",
   marginBottom: "16px",
   padding: "16px",
   border: `1px solid ${theme.palette.divider}`,
