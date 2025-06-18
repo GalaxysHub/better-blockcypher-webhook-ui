@@ -38,11 +38,14 @@ const TokenInput = () => {
         const response = await getTokenDets(token);
         dispatch(setTokenDets(response.data));
         dispatch(setToken(token));
+        // Reset webhook data so fresh data will be fetched with new token
+        dispatch(resetAllWebhookData());
         toast.success("Token updated successfully!");
       } else {
         // Clear token details if no token and reset test data
+        dispatch(setTokenDets({}));
+        dispatch(setToken(null));
         dispatch(resetAllWebhookData());
-        dispatch(setTokenDets({token:null}));
         toast.info("Token cleared. Using mock data.");
       }
     } catch (error) {
@@ -70,7 +73,7 @@ const TokenInput = () => {
       <Button
         onClick={handleUpdateToken}
         variant="contained"
-        disabled={isLoading || inputToken === currentToken}
+        disabled={isLoading || inputToken === (currentToken || "")}
         sx={{ minWidth: "100px" }}
       >
         {isLoading ? "Updating..." : "Update"}

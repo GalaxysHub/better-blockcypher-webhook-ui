@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { TOKEN } from "_config/blockcypher.json";
 
 const initialState = {
-  token: TOKEN || "", // Store current token value
+  token: TOKEN || null, // Store current token value
   fetched: false,
   limits: {
     "api/day": 2000,
