@@ -65,7 +65,9 @@ function Navbar() {
                   color="primary"
                   name="checkedB"
                   data-testid="theme-switch"
-                  inputProps={{ "aria-label": "theme toggle switch" }}
+                  slotProps={{
+                    input: { "aria-label": "theme toggle switch" }
+                  }}
                 />
               </SwitchContainer>
             </Grid>
