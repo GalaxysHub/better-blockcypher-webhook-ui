@@ -41,6 +41,7 @@ const StyledSelectEvent = styled(SelectEvent)(() => ({
 const CreateWebhookForm = () => {
   const dispatch = useDispatch();
   const coin = useSelector((state) => state.pageReducer.activeCoin);
+  const token = useSelector((state) => state.tokenReducer.token);
 
   const [values, setValues] = useState({
     eventType: "",
@@ -94,6 +95,7 @@ const CreateWebhookForm = () => {
         targetURL: values.URL.trim(),
         coin: coin,
         event: values.eventType,
+        token: token,
       });
       console.log(`res`, res);
       dispatch(addWebhookData({ coin, data: res.data }));

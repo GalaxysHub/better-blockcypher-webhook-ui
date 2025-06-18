@@ -41,6 +41,7 @@ const WebhookTableBody = () => {
   const { itemsPerPage, pageNum, activeCoin: coin } = useSelector(
     (state) => state.pageReducer
   );
+  const token = useSelector((state) => state.tokenReducer.token);
   const webhooks = useSelector((state) => state.webhookReducer[coin].data);
   const selectedWebhooks = useSelector(
     (state) => state.webhookReducer.selected
@@ -65,7 +66,7 @@ const WebhookTableBody = () => {
   const deleteWebhook = async (id) => {
     try {
       setDeletingMap({ ...deletingMap, [id]: true });
-      await deleteWebhookByID({ coin, id });
+      await deleteWebhookByID({ coin, id, token });
       dispatch(removeWebhookById({ coin, id }));
       dispatch(markWebhooks({ [id]: false }));
       toast(`Deleted Webhook ${id}`, {

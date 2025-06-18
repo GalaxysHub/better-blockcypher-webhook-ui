@@ -56,7 +56,7 @@ function Navbar() {
       <AppBar position="static">
         <StyledToolbar>
           <Grid justify="space-between" container>
-            <NavlinkContainer item></NavlinkContainer>
+            <NavlinkContainer></NavlinkContainer>
             <Grid>
               <SwitchContainer>
                 <Switch
@@ -65,7 +65,9 @@ function Navbar() {
                   color="primary"
                   name="checkedB"
                   data-testid="theme-switch"
-                  inputProps={{ "aria-label": "theme toggle switch" }}
+                  slotProps={{
+                    input: { "aria-label": "theme toggle switch" }
+                  }}
                 />
               </SwitchContainer>
             </Grid>

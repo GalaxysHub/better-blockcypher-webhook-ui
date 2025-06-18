@@ -10,7 +10,7 @@ import {
 
 const primaryMain = "#000000";
 
-const initialState = {
+export const initialState = {
   mode: "light",
   palette: {
     primary: {

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { styled } from "@mui/material/styles";
 import Container from "@mui/material/Container";
@@ -8,8 +8,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { getTokenDets } from "APIs/blockcypherWebhooks";
-import { TOKEN } from "_config/blockcypher.json";
 
+import TokenInput from "@/app/Sections/TokenInput";
 import Header from "app/Sections/Header";
 import CoinTabs from "app/Sections/CoinTabs";
 import Navbar from "app/Sections/Navbar";
@@ -25,26 +25,31 @@ const RootDiv = styled("div")(({ theme }) => ({
 }));
 
 const StyledContainer = styled(Container)({
+  paddingTop: "24px",
   paddingBottom: "24px",
 });
 
 function App() {
   const dispatch = useDispatch();
+  const token = useSelector((state) => state.tokenReducer.token);
 
   useEffect(() => {
-    getTokenDets(TOKEN)
-      .then((res) => {
-        dispatch(setTokenDets(res.data));
-      })
-      .catch((err) => {
-        console.log(`Error fetching token details: `, err);
-      });
-  }, [dispatch]);
+    if (token) {
+      getTokenDets(token)
+        .then((res) => {
+          dispatch(setTokenDets(res.data));
+        })
+        .catch((err) => {
+          console.log(`Error fetching token details: `, err);
+        });
+    }
+  }, [dispatch, token]);
 
   return (
     <RootDiv data-testid="app-root">
       <Navbar />
       <StyledContainer>
+        <TokenInput />
         <Header />
         <CoinTabs />
       </StyledContainer>
