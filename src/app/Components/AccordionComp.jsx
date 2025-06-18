@@ -50,15 +50,17 @@ const AccordionComp = ({ title, children }) => {
       square
       expanded={expanded === "panel1"}
       onChange={handleChange("panel1")}
+      data-testid="accordion"
     >
       <AccordionSummary
         expandIcon={<StyledExpandIcon />}
         aria-controls="panel1d-content"
         id="panel1d-header"
+        data-testid="accordion-summary"
       >
-        <Typography>{title}</Typography>
+        <Typography data-testid="accordion-title">{title}</Typography>
       </AccordionSummary>
-      <AccordionDetails>{children}</AccordionDetails>
+      <AccordionDetails data-testid="accordion-details">{children}</AccordionDetails>
     </Accordion>
   );
 };

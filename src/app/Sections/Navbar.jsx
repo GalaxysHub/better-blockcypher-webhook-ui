@@ -52,19 +52,20 @@ function Navbar() {
   };
 
   return (
-    <StyledDiv>
-      <AppBar position="static">
-        <StyledToolbar>
-          <Grid justify="space-between" container>
-            <NavlinkContainer item></NavlinkContainer>
-            <Grid>
-              <SwitchContainer>
+    <StyledDiv data-testid="navbar-root">
+      <AppBar position="static" data-testid="navbar-appbar">
+        <StyledToolbar data-testid="navbar-toolbar">
+          <Grid justify="space-between" container data-testid="navbar-grid">
+            <NavlinkContainer item data-testid="navbar-links"></NavlinkContainer>
+            <Grid data-testid="navbar-theme-switch-grid">
+              <SwitchContainer data-testid="navbar-switch-container">
                 <Switch
                   checked={state.checkedB}
                   onChange={handleChange}
                   color="primary"
                   name="checkedB"
-                  inputProps={{ "aria-label": "primary checkbox" }}
+                  data-testid="navbar-theme-switch"
+                  inputProps={{ "aria-label": "theme toggle switch" }}
                 />
               </SwitchContainer>
             </Grid>

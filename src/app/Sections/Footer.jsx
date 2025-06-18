@@ -18,10 +18,11 @@ const StyledLink = styled("a")({
 
 export default function Footer() {
   return (
-    <StyledFooter>
-      Developed By:
+    <StyledFooter data-testid="footer-container">
+      <span data-testid="footer-text">Developed By:</span>
       <StyledLink
         href="https://github.com/GalaxysHub/better-blockcypher-webhook-ui"
+        data-testid="footer-github-link"
       >
         GalaxysHub
       </StyledLink>

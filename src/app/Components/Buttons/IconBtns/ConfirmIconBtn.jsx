@@ -10,8 +10,8 @@ export default function ConfirmIconBtn({
   tip = "Confirm",
 }) {
   return (
-    <IconBtnTemplate type={type} action={action} tip={tip}>
-      <CheckIcon size={size} />
+    <IconBtnTemplate type={type} action={action} tip={tip} testId="confirm-icon-btn">
+      <CheckIcon size={size} data-testid="confirm-icon" />
     </IconBtnTemplate>
   );
 }

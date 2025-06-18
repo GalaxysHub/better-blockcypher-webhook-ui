@@ -36,7 +36,7 @@ export default function SelectEventType({ value, handleChange, error }) {
   const RenderDropDownList = () => {
     return EventTypeOptions.map((event) => {
       return (
-        <MenuItem key={event.value} value={event.value}>
+        <MenuItem key={event.value} value={event.value} data-testid={`select-event-option-${event.value}`}>
           {event.name}
         </MenuItem>
       );
@@ -44,20 +44,21 @@ export default function SelectEventType({ value, handleChange, error }) {
   };
 
   return (
-    <FormControl variant="outlined" style={{ width: "100%" }} error={error}>
-      <InputLabel id="Select-Event-label">Event Type</InputLabel>
+    <FormControl variant="outlined" style={{ width: "100%" }} error={error} data-testid="select-event-form">
+      <InputLabel id="Select-Event-label" data-testid="select-event-label">Event Type</InputLabel>
       <Select
         id="Select-Event"
         label="Event Type"
         value={value}
         onChange={handleChange}
+        data-testid="select-event-dropdown"
       >
-        <MenuItem value={""} disabled>
+        <MenuItem value={""} disabled data-testid="select-event-placeholder">
           Select Event Type
         </MenuItem>
         {RenderDropDownList()}
       </Select>
-      {error ? <FormHelperText>Select a Event Type</FormHelperText> : <></>}
+      {error ? <FormHelperText data-testid="select-event-error">Select a Event Type</FormHelperText> : <></>}
     </FormControl>
   );
 }

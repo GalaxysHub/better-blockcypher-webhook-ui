@@ -16,8 +16,8 @@ const StyledTable = styled(Table)({
 
 const WebhookDataTable = () => {
   return (
-    <TableContainer component={Paper}>
-      <StyledTable>
+    <TableContainer component={Paper} data-testid="webhook-table-container">
+      <StyledTable data-testid="webhook-table">
         <WebhookTableHeaders />
         <WebhookTableBody />
       </StyledTable>

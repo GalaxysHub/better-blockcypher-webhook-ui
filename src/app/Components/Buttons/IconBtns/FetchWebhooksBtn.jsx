@@ -34,15 +34,15 @@ const FetchWebhooksBtn = ({
   }
 
   return (
-    <>
+    <div data-testid="fetch-webhooks-btn-container">
       {fetching ? (
-        <CircularProgress />
+        <CircularProgress data-testid="fetch-webhooks-loading" />
       ) : (
-        <IconBtnTemplate type={type} action={fetchCoinData} tip={tip}>
-          <RefreshIcon size={size} />
+        <IconBtnTemplate type={type} action={fetchCoinData} tip={tip} testId="fetch-webhooks-btn">
+          <RefreshIcon size={size} data-testid="refresh-icon" />
         </IconBtnTemplate>
       )}
-    </>
+    </div>
   );
 };
 

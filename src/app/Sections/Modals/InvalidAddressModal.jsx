@@ -37,25 +37,25 @@ const InvalidAddressModal = ({ open, setOpen, address, cb }) => {
   };
 
   const body = (
-    <>
-      <Title>{"Invalid Address Detected"}</Title>
+    <div data-testid="invalid-address-modal-content">
+      <Title data-testid="invalid-address-modal-title">{"Invalid Address Detected"}</Title>
 
-      <div>{"Address: "}</div>
-      <div style={{ fontWeight: "bold", margin: "20px" }}>{address}</div>
-      <div>
+      <div data-testid="invalid-address-modal-address-label">{"Address: "}</div>
+      <div data-testid="invalid-address-modal-address-value" style={{ fontWeight: "bold", margin: "20px" }}>{address}</div>
+      <div data-testid="invalid-address-modal-description">
         {`Does Not Appear to be a Valid ${CoinData[coin].name} Address. Do You Wish To Continue?`}
       </div>
       <br />
-      <ButtonContainer>
-        <ConfirmIconBtn action={cb} />
-        <CancelIconBtn action={handleClose} />
+      <ButtonContainer data-testid="invalid-address-modal-button-container">
+        <ConfirmIconBtn data-testid="invalid-address-modal-confirm-btn" action={cb} />
+        <CancelIconBtn data-testid="invalid-address-modal-cancel-btn" action={handleClose} />
       </ButtonContainer>
-    </>
+    </div>
   );
 
   return (
-    <Modal open={open} onClose={handleClose}>
-      <StyledPaper>{body}</StyledPaper>
+    <Modal data-testid="invalid-address-modal" open={open} onClose={handleClose}>
+      <StyledPaper data-testid="invalid-address-modal-paper">{body}</StyledPaper>
     </Modal>
   );
 };

@@ -42,14 +42,14 @@ function App() {
   }, [dispatch]);
 
   return (
-    <RootDiv>
-      <Navbar />
-      <StyledContainer>
-        <Header />
-        <CoinTabs />
+    <RootDiv data-testid="app-root">
+      <Navbar data-testid="app-navbar" />
+      <StyledContainer data-testid="app-main-container">
+        <Header data-testid="app-header" />
+        <CoinTabs data-testid="app-coin-tabs" />
       </StyledContainer>
-      <Footer />
-      <ToastContainer />
+      <Footer data-testid="app-footer" />
+      <ToastContainer data-testid="app-toast-container" />
     </RootDiv>
   );
 }

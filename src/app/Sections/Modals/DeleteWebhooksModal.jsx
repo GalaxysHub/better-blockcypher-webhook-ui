@@ -128,6 +128,7 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
             .join(", ")}
           {IdsArr.length > maxDisplay ? (
             <div
+              data-testid="delete-modal-show-more-btn"
               style={{ color: "teal", cursor: "pointer", marginTop: "16px" }}
               onClick={() => setMaxDisplay(IdsArr.length)}
             >
@@ -142,46 +143,53 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
   };
 
   const body = (
-    <div>
-      <ModalTitle>{`Are You Sure You Want To Delete The Following Webhooks?`}</ModalTitle>
-      <div>{showSelectedWebhooks()}</div>
+    <div data-testid="delete-modal-content">
+      <ModalTitle data-testid="delete-modal-title">{`Are You Sure You Want To Delete The Following Webhooks?`}</ModalTitle>
+      <div data-testid="delete-modal-webhooks-list">{showSelectedWebhooks()}</div>
       <br />
-      <ConfirmIconBtn action={deleteAllWebhooks} />
-      <CancelIconBtn action={handleClose} />
+      <div data-testid="delete-modal-button-container">
+        <ConfirmIconBtn data-testid="delete-modal-confirm-btn" action={deleteAllWebhooks} />
+        <CancelIconBtn data-testid="delete-modal-cancel-btn" action={handleClose} />
+      </div>
     </div>
   );
 
   const bodyOnDelete = (
-    <>
-      <ModalTitle>Deleting Webhooks</ModalTitle>
-      <div>{`Deleted ${
+    <div data-testid="delete-modal-deleting-content">
+      <ModalTitle data-testid="delete-modal-deleting-title">Deleting Webhooks</ModalTitle>
+      <div data-testid="delete-modal-progress-text">{`Deleted ${
         totalSelected - IdsArr.length
       } of ${totalSelected}`}</div>
       <br />
       <ProgressBar
+        data-testid="delete-modal-progress-bar"
         completed={Math.floor(
           ((totalSelected - IdsArr.length) * 100) / totalSelected
         )}
       />
-    </>
+    </div>
   );
 
   const bodyOnComplete = (
-    <div>
-      <ModalTitle>Webhooks Deleted Successfully</ModalTitle>
+    <div data-testid="delete-modal-complete-content">
+      <ModalTitle data-testid="delete-modal-complete-title">Webhooks Deleted Successfully</ModalTitle>
       <br />
-      <ConfirmIconBtn action={handleClose} />
+      <div data-testid="delete-modal-complete-button-container">
+        <ConfirmIconBtn data-testid="delete-modal-complete-confirm-btn" action={handleClose} />
+      </div>
     </div>
   );
 
   const bodyOnError = (
-    <div>
-      <ModalTitle>Error Deleting All Webhooks</ModalTitle>
-      <h3 style={{ color: "red" }}>{msg}</h3>
-      <div>{`The following webhooks were not deleted:`}</div>
+    <div data-testid="delete-modal-error-content">
+      <ModalTitle data-testid="delete-modal-error-title">Error Deleting All Webhooks</ModalTitle>
+      <h3 data-testid="delete-modal-error-message" style={{ color: "red" }}>{msg}</h3>
+      <div data-testid="delete-modal-error-description">{`The following webhooks were not deleted:`}</div>
       <br />
-      <div>{showSelectedWebhooks()}</div>
-      <CancelIconBtn action={handleClose} tip={"Close"} />
+      <div data-testid="delete-modal-error-webhooks-list">{showSelectedWebhooks()}</div>
+      <div data-testid="delete-modal-error-button-container">
+        <CancelIconBtn data-testid="delete-modal-error-close-btn" action={handleClose} tip={"Close"} />
+      </div>
     </div>
   );
 
@@ -199,8 +207,8 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
   };
 
   return (
-    <Modal disableBackdropClick={!canClose} open={open} onClose={handleClose}>
-      <StyledPaper>{renderBody()}</StyledPaper>
+    <Modal data-testid="delete-modal" disableBackdropClick={!canClose} open={open} onClose={handleClose}>
+      <StyledPaper data-testid="delete-modal-paper">{renderBody()}</StyledPaper>
     </Modal>
   );
 };

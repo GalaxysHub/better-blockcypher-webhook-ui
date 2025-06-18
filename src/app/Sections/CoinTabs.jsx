@@ -42,17 +42,18 @@ const LabTabs = () => {
   };
 
   return (
-    <StyledPaper elevation={12}>
-      <TabContext value={value}>
-        <AppBar position="static">
+    <StyledPaper elevation={12} data-testid="coin-tabs-paper">
+      <TabContext value={value} data-testid="coin-tabs-context">
+        <AppBar position="static" data-testid="coin-tabs-appbar">
           <StyledTabList
             onChange={handleChange}
             variant="scrollable"
             scrollButtons="auto"
+            data-testid="coin-tabs-list"
           >
             {CoinList.map((coin) => {
               return (
-                <Tab key={coin.name} label={coin.name} value={coin.abbr} />
+                <Tab key={coin.name} label={coin.name} value={coin.abbr} data-testid={`coin-tab-${coin.abbr}`} />
               );
             })}
           </StyledTabList>
@@ -62,17 +63,19 @@ const LabTabs = () => {
             <StyledTabPanel
               key={coin.name}
               value={coin.abbr}
+              data-testid={`coin-tab-panel-${coin.abbr}`}
             >
-              <Container>
+              <Container data-testid={`coin-tab-container-${coin.abbr}`}>
                 <AccordionComp
                   title={`Create ${CoinData[coin.abbr].name} Webhook`}
+                  data-testid={`create-webhook-accordion-${coin.abbr}`}
                 >
-                  <CreateWebhookForm />
+                  <CreateWebhookForm data-testid={`create-webhook-form-${coin.abbr}`} />
                 </AccordionComp>
-                <NumWebhooksNote />
+                <NumWebhooksNote data-testid={`num-webhooks-note-${coin.abbr}`} />
               </Container>
               <br />
-              <TableSection />
+              <TableSection data-testid={`table-section-${coin.abbr}`} />
             </StyledTabPanel>
           );
         })}

@@ -33,9 +33,13 @@ function DeleteAllBtn() {
   const isInvisible = numSelected === 0;
 
   return (
-    <RootDiv>
+    <RootDiv data-testid="delete-all-container">
       <DeleteWebhooksModal open={open} setOpen={setOpen} />
-      <DeleteButton invisible={isInvisible} onClick={() => setOpen(true)}>
+      <DeleteButton 
+        invisible={isInvisible} 
+        onClick={() => setOpen(true)}
+        data-testid="delete-all-button"
+      >
         {`Delete ${numSelected} Webhooks?`}
       </DeleteButton>
     </RootDiv>

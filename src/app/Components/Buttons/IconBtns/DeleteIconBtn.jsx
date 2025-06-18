@@ -10,8 +10,8 @@ export default function DeleteIconBtn({
   tip = "Delete",
 }) {
   return (
-    <IconBtnTemplate type={type} action={action} tip={tip}>
-      <DeleteIcon size={size} />
+    <IconBtnTemplate type={type} action={action} tip={tip} testId="delete-icon-btn">
+      <DeleteIcon size={size} data-testid="delete-icon" />
     </IconBtnTemplate>
   );
 }

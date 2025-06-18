@@ -57,23 +57,35 @@ const WebhookTableHeaders = () => {
   };
 
   return (
-    <TableHead>
-      <TableRow>
-        <StyledTableCell align="center" key={"checked"}>
-          <WhiteCheckBox checked={selected} onChange={onSelect} />
+    <TableHead data-testid="webhook-table-head">
+      <TableRow data-testid="webhook-table-header-row">
+        <StyledTableCell align="center" key={"checked"} data-testid="webhook-table-header-checkbox-cell">
+          <WhiteCheckBox 
+            checked={selected} 
+            onChange={onSelect} 
+            data-testid="webhook-table-header-select-all-checkbox"
+          />
         </StyledTableCell>
         {fieldKeys.map((key) => {
           let field = fields[key];
           if (field.checked) {
             return (
-              <StyledTableCell align="center" key={field.key}>
-                <TableHeaderDiv>
-                  <ClickableIcon as={ArrowDropUpIcon}
+              <StyledTableCell 
+                align="center" 
+                key={field.key} 
+                data-testid={`webhook-table-header-${field.key}`}
+              >
+                <TableHeaderDiv data-testid={`webhook-table-header-${field.key}-container`}>
+                  <ClickableIcon 
+                    as={ArrowDropUpIcon}
                     onClick={(event) => sort(field.key, "asc", event)}
+                    data-testid={`webhook-table-header-${field.key}-sort-asc`}
                   />
                   {field.name}
-                  <ClickableIcon as={ArrowDropDownIcon}
+                  <ClickableIcon 
+                    as={ArrowDropDownIcon}
                     onClick={(event) => sort(field.key, "desc", event)}
+                    data-testid={`webhook-table-header-${field.key}-sort-desc`}
                   />
                 </TableHeaderDiv>
               </StyledTableCell>
@@ -82,7 +94,7 @@ const WebhookTableHeaders = () => {
             return <></>;
           }
         })}
-        <StyledTableCell align="center" key={"options"}>
+        <StyledTableCell align="center" key={"options"} data-testid="webhook-table-header-options">
           Options
         </StyledTableCell>
       </TableRow>

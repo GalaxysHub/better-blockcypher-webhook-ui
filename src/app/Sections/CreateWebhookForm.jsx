@@ -139,6 +139,7 @@ const CreateWebhookForm = () => {
           onChange={handleChange}
           error={errors.URL}
           helperText={errors.URL}
+          data-testid="create-webhook-url-input"
         />
       );
     }
@@ -166,13 +167,14 @@ const CreateWebhookForm = () => {
           }}
           error={errors.address}
           helperText={errors.address}
+          data-testid="create-webhook-address-input"
         />
       );
     }
   };
 
   return (
-    <StyledContainer>
+    <StyledContainer data-testid="create-webhook-container">
       <InvalidAddressModal
         open={open}
         setOpen={setOpen}
@@ -182,27 +184,30 @@ const CreateWebhookForm = () => {
           setAcknowledged(true);
           submit(event);
         }}
+        data-testid="invalid-address-modal"
       />
-      <form>
+      <form data-testid="create-webhook-form">
         <StyledSelectEvent
           value={values.eventType}
           handleChange={changeEventType}
           error={errors.eventType}
+          data-testid="create-webhook-event-select"
         />
         {renderURLField()}
         {renderAddrField()}
         {loading ? (
-          <CircularProgress />
+          <CircularProgress data-testid="create-webhook-loading" />
         ) : (
           <StyledButton
             type="submit"
             variant="contained"
             onClick={submit}
+            data-testid="create-webhook-submit-btn"
           >
             Create Webhook
           </StyledButton>
         )}
-        <div style={{ color: "red" }}>{msg}</div>
+        <div style={{ color: "red" }} data-testid="create-webhook-error-msg">{msg}</div>
       </form>
     </StyledContainer>
   );

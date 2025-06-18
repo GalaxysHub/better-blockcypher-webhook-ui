@@ -29,9 +29,9 @@ const ProgressBar = ({ completed }) => {
   };
 
   return (
-    <div style={containerStyles}>
-      <div style={fillerStyles}>
-        <span style={labelStyles}>{`${completed}%`}</span>
+    <div style={containerStyles} data-testid="progress-bar-container">
+      <div style={fillerStyles} data-testid="progress-bar-filler">
+        <span style={labelStyles} data-testid="progress-bar-label">{`${completed}%`}</span>
       </div>
     </div>
   );
