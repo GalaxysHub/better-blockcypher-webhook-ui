@@ -50,7 +50,6 @@ const SelectWebhooksPerPage = () => {
           key={event.value}
           value={event.value}
           style={{ textAlign: "center" }}
-          data-testid={`webhooks-per-page-option-${event.value}`}
         >
           {event.name}
         </MenuItem>
@@ -59,8 +58,8 @@ const SelectWebhooksPerPage = () => {
   };
 
   return (
-    <FormControl variant="outlined" style={{ width: "100%" }} data-testid="webhooks-per-page-form">
-      <InputLabel id="Select-Event-label" data-testid="webhooks-per-page-label">Items Per Page</InputLabel>
+    <FormControl variant="outlined" style={{ width: "100%" }}>
+      <InputLabel id="Select-Event-label">Items Per Page</InputLabel>
       <Select
         id="Select-Webhooks-Per-Page"
         label="Webhooks Per Page"
@@ -69,7 +68,7 @@ const SelectWebhooksPerPage = () => {
           dispatch(setPageNum(1)); //page number must be reset in case currentPage>lastPage
           dispatch(setItemsPerPage(event.target.value));
         }}
-        data-testid="webhooks-per-page-dropdown"
+        data-testid="items-per-page-select"
       >
         {RenderDropDownList()}
       </Select>

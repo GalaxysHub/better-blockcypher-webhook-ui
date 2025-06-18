@@ -11,7 +11,7 @@ export default function CancelIconBtn({
 }) {
   return (
     <IconBtnTemplate type={type} action={action} tip={tip} testId="cancel-icon-btn">
-      <CloseIcon size={size} data-testid="cancel-icon" />
+      <CloseIcon size={size} />
     </IconBtnTemplate>
   );
 }

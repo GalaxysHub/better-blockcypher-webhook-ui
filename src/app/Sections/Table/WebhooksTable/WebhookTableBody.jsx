@@ -25,9 +25,9 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   fontSize: "16px",
 }));
 
-const NoWrapCell = ({ children, testId }) => {
+const NoWrapCell = ({ children }) => {
   return (
-    <StyledTableCell align="center" data-testid={testId}>
+    <StyledTableCell align="center">
       <StyledTypography noWrap>
         {children}
       </StyledTypography>
@@ -87,11 +87,11 @@ const WebhookTableBody = () => {
 
   const renderOptionBtns = ({ id }) => {
     if (deletingMap[id]) {
-      return <CircularProgress data-testid={`webhook-table-row-${id}-delete-loading`} />;
+      return <CircularProgress />;
     } else {
       return <DeleteIconBtn 
-        action={() => deleteWebhook(id)} 
-        data-testid={`webhook-table-row-${id}-delete-btn`}
+        action={() => deleteWebhook(id)}
+        data-testid={`delete-webhook-${id}`}
       />;
     }
   };
@@ -101,11 +101,10 @@ const WebhookTableBody = () => {
     if (coin === "BTCt") param = "btc-testnet";
     let url = `https://live.blockcypher.com/${param}/address/${address}/`;
     return (
-      <NoWrapCell testId={`webhook-table-cell-address-${address}`}>
+      <NoWrapCell>
         <a 
           href={url} 
           style={{ textDecoration: "none", color: "inherit" }}
-          data-testid={`webhook-table-address-link-${address}`}
         >
           {address}
         </a>
@@ -126,8 +125,7 @@ const WebhookTableBody = () => {
             }
             return (
               <NoWrapCell 
-                key={key + "" + id} 
-                testId={`webhook-table-cell-${key}-${id}`}
+                key={key + "" + id}
               >
                 {webhook[key]}
               </NoWrapCell>
@@ -139,26 +137,24 @@ const WebhookTableBody = () => {
   };
 
   return (
-    <TableBody data-testid="webhook-table-body">
+    <TableBody>
       {webhookIds.slice(start, end).map((id, index) => {
         index = index + start;
         return (
-          <StyledTableRow key={id} data-testid={`webhook-table-row-${id}`}>
+          <StyledTableRow key={id} data-testid={`webhook-row-${id}`}>
             <NoWrapCell 
-              key={"checkbox" + id} 
-              testId={`webhook-table-cell-checkbox-${id}`}
+              key={"checkbox" + id}
             >
               <CustomCheckBox
                 checked={selectedMap[id] || false}
                 onChange={() => onSelect(id)}
-                data-testid={`webhook-table-row-${id}-checkbox`}
+                data-testid={`webhook-checkbox-${id}`}
               />
               {index + 1}
             </NoWrapCell>
             {renderFieldCells(id)}
             <NoWrapCell 
-              key={"options" + id} 
-              testId={`webhook-table-cell-options-${id}`}
+              key={"options" + id}
             >
               {renderOptionBtns({ id })}
             </NoWrapCell>

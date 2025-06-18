@@ -48,7 +48,7 @@ const TableSection = () => {
     if (error) {
       return <h3 style={{ color: "red" }} data-testid="table-section-error">{error}</h3>;
     } else if (!fetched) {
-      return <CircularProgress data-testid="table-section-loading" />;
+      return <CircularProgress />;
     } else if (Object.keys(webhooks).length === 0) {
       return <></>;
     } else {
@@ -58,13 +58,12 @@ const TableSection = () => {
           direction="column"
           justify="space-between"
           alignItems="center"
-          data-testid="table-section-container"
         >
           <FieldSelector />
           <DeleteAllBtn />
           <WebhookDataTable />
           <br />
-          <StyledPaper elevation={11} data-testid="table-section-page-selector-wrapper">
+          <StyledPaper elevation={11}>
             <PageSelector />
           </StyledPaper>
         </Grid>

@@ -47,11 +47,9 @@ const PageSelector = () => {
     return (
       <ClickableIcon 
         className={pageNum <= 1 ? "invisible" : ""}
-        data-testid="page-selector-prev-btn"
       >
         <ArrowBackIosIcon
           onClick={() => dispatch(setPageNum(pageNum - 1))}
-          data-testid="page-selector-prev-icon"
         />
       </ClickableIcon>
     );
@@ -61,31 +59,28 @@ const PageSelector = () => {
     return (
       <ClickableIcon 
         className={pageNum >= lastPageNum ? "invisible" : ""}
-        data-testid="page-selector-next-btn"
       >
         <ArrowForwardIosIcon
           onClick={() => dispatch(setPageNum(pageNum + 1))}
-          data-testid="page-selector-next-icon"
         />
       </ClickableIcon>
     );
   };
 
   return (
-    <StyledContainer data-testid="page-selector-container">
-      <Grid item xs={6} data-testid="page-selector-select-grid">
-        <SelectWebhooksPerPage data-testid="page-selector-webhooks-per-page" />
+    <StyledContainer>
+      <Grid item xs={6}>
+        <SelectWebhooksPerPage />
       </Grid>
       <Grid 
         container 
         direction="column" 
         justify="center" 
         alignItems="center"
-        data-testid="page-selector-navigation-grid"
       >
-        <StyledGridContainer data-testid="page-selector-navigation-container">
+        <StyledGridContainer>
           {renderPrevBtn()}
-          <span data-testid="page-selector-page-display">{`Page: ${pageNum} of ${lastPageNum}`}</span>
+          <span>{`Page: ${pageNum} of ${lastPageNum}`}</span>
           {renderNextBtn()}
         </StyledGridContainer>
       </Grid>

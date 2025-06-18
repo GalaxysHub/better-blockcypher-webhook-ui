@@ -33,7 +33,7 @@ export default function IconBtnTemplate(props) {
   let { action, type, tip, children, className, testId } = props;
 
   return (
-    <Tooltip title={tip} placement="top" data-testid={`${testId}-tooltip`}>
+    <Tooltip title={tip} placement="top">
       <StyledIconButton
         buttonType={type}
         className={className}

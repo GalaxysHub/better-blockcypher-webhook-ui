@@ -139,7 +139,7 @@ const CreateWebhookForm = () => {
           onChange={handleChange}
           error={errors.URL}
           helperText={errors.URL}
-          data-testid="create-webhook-url-input"
+          data-testid="webhook-url-input"
         />
       );
     }
@@ -167,14 +167,14 @@ const CreateWebhookForm = () => {
           }}
           error={errors.address}
           helperText={errors.address}
-          data-testid="create-webhook-address-input"
+          data-testid="webhook-address-input"
         />
       );
     }
   };
 
   return (
-    <StyledContainer data-testid="create-webhook-container">
+    <StyledContainer>
       <InvalidAddressModal
         open={open}
         setOpen={setOpen}
@@ -184,30 +184,28 @@ const CreateWebhookForm = () => {
           setAcknowledged(true);
           submit(event);
         }}
-        data-testid="invalid-address-modal"
       />
       <form data-testid="create-webhook-form">
         <StyledSelectEvent
           value={values.eventType}
           handleChange={changeEventType}
           error={errors.eventType}
-          data-testid="create-webhook-event-select"
         />
         {renderURLField()}
         {renderAddrField()}
         {loading ? (
-          <CircularProgress data-testid="create-webhook-loading" />
+          <CircularProgress />
         ) : (
           <StyledButton
             type="submit"
             variant="contained"
             onClick={submit}
-            data-testid="create-webhook-submit-btn"
+            data-testid="create-webhook-btn"
           >
             Create Webhook
           </StyledButton>
         )}
-        <div style={{ color: "red" }} data-testid="create-webhook-error-msg">{msg}</div>
+        <div style={{ color: "red" }}>{msg}</div>
       </form>
     </StyledContainer>
   );

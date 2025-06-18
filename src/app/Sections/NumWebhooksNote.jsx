@@ -28,14 +28,14 @@ const NumWebhooksNote = () => {
   let numWebhooks = Object.keys(webhooks).length;
 
   return (
-    <StyledPaper elevation={12} data-testid="num-webhooks-paper">
-      <ContentContainer data-testid="num-webhooks-content">
+    <StyledPaper elevation={12}>
+      <ContentContainer>
         {numWebhooks ? (
-          <div data-testid="webhooks-count-display">{`${numWebhooks} ${CoinData[coin].name} Webhooks`}</div>
+          <div data-testid="webhooks-count">{`${numWebhooks} ${CoinData[coin].name} Webhooks`}</div>
         ) : (
-          <div data-testid="no-webhooks-message">{"No Webhooks Found"}</div>
+          <div>{"No Webhooks Found"}</div>
         )}
-        <FetchWebhooksBtn data-testid="fetch-webhooks-btn" />
+        <FetchWebhooksBtn />
       </ContentContainer>
     </StyledPaper>
   );

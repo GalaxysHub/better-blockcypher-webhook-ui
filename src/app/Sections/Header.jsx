@@ -4,11 +4,11 @@ import { TOKEN } from "_config/blockcypher";
 
 const Header = () => {
   return (
-    <div data-testid="header-container">
+    <div>
       {TOKEN ? (
-        <h3 data-testid="header-title-with-token">Active Webhooks for Token {TOKEN}</h3>
+        <h3>Active Webhooks for Token {TOKEN}</h3>
       ) : (
-        <h3 data-testid="header-title-mock-data">No Token Found. Using Mock Data</h3>
+        <h3>No Token Found. Using Mock Data</h3>
       )}
     </div>
   );

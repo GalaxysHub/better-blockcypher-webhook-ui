@@ -10,8 +10,8 @@ function AppWrapper() {
   const theme = createTheme(themeProps);
 
   return (
-    <StyledEngineProvider injectFirst data-testid="styled-engine-provider">
-      <ThemeProvider theme={theme} data-testid="theme-provider">
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
         <App />
       </ThemeProvider>
     </StyledEngineProvider>

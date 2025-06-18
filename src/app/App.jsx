@@ -43,13 +43,13 @@ function App() {
 
   return (
     <RootDiv data-testid="app-root">
-      <Navbar data-testid="app-navbar" />
-      <StyledContainer data-testid="app-main-container">
-        <Header data-testid="app-header" />
-        <CoinTabs data-testid="app-coin-tabs" />
+      <Navbar />
+      <StyledContainer>
+        <Header />
+        <CoinTabs />
       </StyledContainer>
-      <Footer data-testid="app-footer" />
-      <ToastContainer data-testid="app-toast-container" />
+      <Footer />
+      <ToastContainer />
     </RootDiv>
   );
 }

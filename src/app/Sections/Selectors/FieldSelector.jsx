@@ -34,22 +34,21 @@ const FieldSelector = () => {
   const fieldKeys = Object.keys(fields);
 
   return (
-    <FormControl component="fieldset" data-testid="field-selector-form-control">
-      <StyledPaper elevation={11} data-testid="field-selector-paper">
-        <Header data-testid="field-selector-header">Filter Fields</Header>
-        <Container data-testid="field-selector-container">
+    <FormControl component="fieldset">
+      <StyledPaper elevation={11}>
+        <Header>Filter Fields</Header>
+        <Container>
           {fieldKeys.map((key) => {
             let field = fields[key];
             return (
               <FormControlLabel
                 key={field.key}
-                data-testid={`field-selector-checkbox-label-${field.key}`}
                 control={
                   <CustomCheckBox
                     name={field.key}
                     checked={field.checked}
                     onChange={(event) => dispatch(selectField(key))}
-                    data-testid={`field-selector-checkbox-${field.key}`}
+                    data-testid={`field-checkbox-${field.key}`}
                   />
                 }
                 label={field.name}
@@ -57,7 +56,7 @@ const FieldSelector = () => {
             );
           })}
         </Container>
-        <PageSelector data-testid="field-selector-page-selector" />
+        <PageSelector />
       </StyledPaper>
     </FormControl>
   );
