@@ -56,7 +56,7 @@ function Navbar() {
       <AppBar position="static">
         <StyledToolbar>
           <Grid justify="space-between" container>
-            <NavlinkContainer item></NavlinkContainer>
+            <NavlinkContainer></NavlinkContainer>
             <Grid>
               <SwitchContainer>
                 <Switch
