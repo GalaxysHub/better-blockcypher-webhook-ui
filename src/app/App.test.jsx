@@ -67,7 +67,7 @@ describe('App', () => {
     expect(footer).toBeInTheDocument()
   })
 
-  it('should fetch token details on mount', async () => {
+  it('should fetch token details on mount when token exists', async () => {
     const { getTokenDets } = await import('APIs/blockcypherWebhooks')
     const mockTokenData = {
       limits_per_hour: 200,
@@ -76,9 +76,24 @@ describe('App', () => {
       token: 'test-token-123'
     }
     
+    const initialState = {
+      tokenReducer: {
+        token: 'test-token-123',
+        fetched: false,
+        limits: {
+          "api/day": 2000,
+          "api/hour": 200,
+          "api/second": 3,
+          "confidence/hour": 15,
+          "hooks": 200,
+          "hooks/hour": 200
+        }
+      }
+    }
+    
     getTokenDets.mockResolvedValue({ data: mockTokenData })
     
-    const { store } = renderWithProviders(<App />)
+    const { store } = renderWithProviders(<App />, { initialState })
     
     await waitFor(() => {
       expect(getTokenDets).toHaveBeenCalledWith('test-token-123')
@@ -93,9 +108,24 @@ describe('App', () => {
     const { getTokenDets } = await import('APIs/blockcypherWebhooks')
     const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
     
+    const initialState = {
+      tokenReducer: {
+        token: 'test-token-123',
+        fetched: false,
+        limits: {
+          "api/day": 2000,
+          "api/hour": 200,
+          "api/second": 3,
+          "confidence/hour": 15,
+          "hooks": 200,
+          "hooks/hour": 200
+        }
+      }
+    }
+    
     getTokenDets.mockRejectedValue(new Error('API Error'))
     
-    renderWithProviders(<App />)
+    renderWithProviders(<App />, { initialState })
     
     await waitFor(() => {
       expect(getTokenDets).toHaveBeenCalledWith('test-token-123')
@@ -120,9 +150,24 @@ describe('App', () => {
       token: 'test-token-123'
     }
     
+    const initialState = {
+      tokenReducer: {
+        token: 'test-token-123',
+        fetched: false,
+        limits: {
+          "api/day": 2000,
+          "api/hour": 200,
+          "api/second": 3,
+          "confidence/hour": 15,
+          "hooks": 200,
+          "hooks/hour": 200
+        }
+      }
+    }
+    
     getTokenDets.mockResolvedValue({ data: mockTokenData })
     
-    const { store } = renderWithProviders(<App />)
+    const { store } = renderWithProviders(<App />, { initialState })
     
     await waitFor(() => {
       expect(getTokenDets).toHaveBeenCalled()
@@ -132,6 +177,32 @@ describe('App', () => {
       const state = store.getState()
       expect(state.tokenReducer).toEqual(expect.objectContaining(mockTokenData))
     })
+  })
+
+  it('should not fetch token details when no token is set', async () => {
+    const { getTokenDets } = await import('APIs/blockcypherWebhooks')
+    
+    const initialState = {
+      tokenReducer: {
+        token: '',
+        fetched: false,
+        limits: {
+          "api/day": 2000,
+          "api/hour": 200,
+          "api/second": 3,
+          "confidence/hour": 15,
+          "hooks": 200,
+          "hooks/hour": 200
+        }
+      }
+    }
+    
+    renderWithProviders(<App />, { initialState })
+    
+    // Wait a bit to ensure effect would have run if it was going to
+    await waitFor(() => {
+      expect(getTokenDets).not.toHaveBeenCalled()
+    }, { timeout: 100 })
   })
 
   it('should render ToastContainer for notifications', () => {

@@ -18,12 +18,13 @@ const FetchWebhooksBtn = ({
 }) => {
   const dispatch = useDispatch();
   const coin = useSelector((state) => state.pageReducer.activeCoin);
+  const token = useSelector((state) => state.tokenReducer.token);
   const [fetching, setFetching] = useState(false);
 
   async function fetchCoinData() {
     try {
       setFetching(true);
-      let fetchedData = await getWebhooksByCoin(coin);
+      let fetchedData = await getWebhooksByCoin(coin, token);
       let dataObj = convertWebhookArrToObj(fetchedData);
       dispatch(setWebhookData({ coin, data: dataObj }));
     } catch (err) {

@@ -70,6 +70,15 @@ const webhookSlice = createSlice({
         }
       });
     },
+    resetAllWebhookData: (state) => {
+      // Reset all webhook data when token changes
+      Object.keys(initialState).forEach((key) => {
+        if (key !== 'selected') {
+          state[key] = { ...initialState[key] };
+        }
+      });
+      state.selected = {};
+    },
   },
 });
 
@@ -79,6 +88,7 @@ export const {
   removeWebhookById,
   addWebhookData,
   markWebhooks,
+  resetAllWebhookData,
 } = webhookSlice.actions;
 
 export default webhookSlice.reducer;

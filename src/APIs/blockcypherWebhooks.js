@@ -1,4 +1,3 @@
-import { TOKEN } from "_config/blockcypher.json";
 import { CoinData } from "_config/coinData.json";
 import mockWebhooks from "__mock__/webhooks.json";
 import mockTokenDets from "__mock__/tokenDets.json";
@@ -17,8 +16,8 @@ export function getTokenDets(TOKEN) {
   return axios.get(`${proxyURL}https://api.blockcypher.com/v1/tokens/${TOKEN}`);
 }
 
-export function createWebhook({ addr, targetURL, coin, event }) {
-  if (!TOKEN) {
+export function createWebhook({ addr, targetURL, coin, event, token }) {
+  if (!token) {
     return mockRequest(function () {
       return {
         data: {
@@ -42,18 +41,18 @@ export function createWebhook({ addr, targetURL, coin, event }) {
   const { COIN, NETWORK } = CoinData[coin];
 
   return axios.post(
-    `${proxyURL}https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks?token=${TOKEN}`,
+    `${proxyURL}https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks?token=${token}`,
     EventObj
   );
 }
 
-export function getWebhooksByCoin(coin) {
-  if (!TOKEN) return mockRequest(() => mockWebhooks[coin]);
+export function getWebhooksByCoin(coin, token) {
+  if (!token) return mockRequest(() => mockWebhooks[coin]);
 
   const { COIN, NETWORK } = CoinData[coin];
   return axios
     .get(
-      `${proxyURL}https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks?token=${TOKEN}`
+      `${proxyURL}https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks?token=${token}`
     )
     .then((res) => {
       return res.data;
@@ -64,13 +63,13 @@ export function getWebhooksByCoin(coin) {
     });
 }
 
-export function deleteWebhookByID({ id, coin }) {
-  if (!TOKEN) return mockRequest();
+export function deleteWebhookByID({ id, coin, token }) {
+  if (!token) return mockRequest();
 
   const { COIN, NETWORK } = CoinData[coin];
   return axios
     .delete(
-      `${proxyURL}https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks/${id}?token=${TOKEN}`
+      `${proxyURL}https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks/${id}?token=${token}`
     )
     .then((res) => {
       console.log(`Webhook ${id} deleted successfully`, res);

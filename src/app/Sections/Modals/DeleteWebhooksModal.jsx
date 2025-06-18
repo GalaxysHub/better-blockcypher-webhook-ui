@@ -38,6 +38,7 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
   );
   const rate = useSelector((state) => state.tokenReducer.limits["api/second"]);
   const coin = useSelector((state) => state.pageReducer.activeCoin);
+  const token = useSelector((state) => state.tokenReducer.token);
   let IdsArr = Object.keys(selectedWebhooks);
   const [totalSelected, setTotalSelected] = useState(0);
   const [maxDisplay, setMaxDisplay] = useState(displayMax);
@@ -63,7 +64,7 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
 
     setTimeout(() => {
       let removeId = IdsArr.splice(0, 1)[0];
-      deleteWebhookByID({ coin, id: removeId })
+      deleteWebhookByID({ coin, id: removeId, token })
         .then(() => {
           dispatch(removeWebhookById({ coin, id: [removeId] }));
           dispatch(markWebhooks({ [removeId]: false }));

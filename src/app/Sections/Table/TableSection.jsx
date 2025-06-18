@@ -25,6 +25,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 const TableSection = () => {
   const dispatch = useDispatch();
   const coin = useSelector((state) => state.pageReducer.activeCoin);
+  const token = useSelector((state) => state.tokenReducer.token);
   const fetched = useSelector((state) => state.webhookReducer[coin].fetched);
   const webhooks = useSelector((state) => state.webhookReducer[coin].data);
   const [error, setError] = useState(null);
@@ -32,7 +33,7 @@ const TableSection = () => {
   useEffect(() => {
     async function fetchCoinData() {
       try {
-        let fetchedData = await getWebhooksByCoin(coin);
+        let fetchedData = await getWebhooksByCoin(coin, token);
         let dataObj = convertWebhookArrToObj(fetchedData);
         dispatch(setWebhookData({ coin, data: dataObj }));
       } catch (err) {
@@ -42,7 +43,7 @@ const TableSection = () => {
     }
 
     if (!fetched) fetchCoinData();
-  }, [coin, fetched, dispatch]);
+  }, [coin, fetched, dispatch, token]);
 
   const renderSection = () => {
     if (error) {

@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { TOKEN } from "_config/blockcypher.json";
 
 const initialState = {
+  token: TOKEN || "", // Store current token value
   fetched: false,
   limits: {
     "api/day": 2000,
@@ -16,6 +18,10 @@ const tokenSlice = createSlice({
   name: "token",
   initialState,
   reducers: {
+    setToken: (state, action) => {
+      state.token = action.payload;
+      state.fetched = false; // Reset fetched status when token changes
+    },
     setTokenDets: (state, action) => {
       state.fetched = true;
       Object.assign(state, action.payload);
@@ -23,6 +29,6 @@ const tokenSlice = createSlice({
   },
 });
 
-export const { setTokenDets } = tokenSlice.actions;
+export const { setToken, setTokenDets } = tokenSlice.actions;
 
 export default tokenSlice.reducer;
