@@ -16,7 +16,9 @@ const getTypeStyles = (type) => {
   return colorMap[type] || { main: 'inherit', hover: 'inherit' };
 };
 
-const StyledIconButton = styled(IconButton)(({ buttonType }) => {
+const StyledIconButton = styled(IconButton, {
+  shouldForwardProp: (prop) => prop !== 'buttonType'
+})(({ buttonType }) => {
   const typeStyles = getTypeStyles(buttonType);
   return {
     "&:focus": {

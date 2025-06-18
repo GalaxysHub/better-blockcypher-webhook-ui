@@ -34,15 +34,13 @@ function App() {
   const token = useSelector((state) => state.tokenReducer.token);
 
   useEffect(() => {
-    if (token) {
-      getTokenDets(token)
-        .then((res) => {
-          dispatch(setTokenDets(res.data));
-        })
-        .catch((err) => {
-          console.log(`Error fetching token details: `, err);
-        });
-    }
+    getTokenDets(token)
+      .then((res) => {
+        dispatch(setTokenDets(res.data));
+      })
+      .catch((err) => {
+        console.log(`Error fetching token details: `, err);
+      });
   }, [dispatch, token]);
 
   return (

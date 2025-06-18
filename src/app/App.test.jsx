@@ -78,6 +78,8 @@ describe('App Component', () => {
     vi.clearAllMocks();
     // Reset to light theme before each test
     store.dispatch(setLightTheme());
+    // Reset token to null
+    store.dispatch({ type: 'token/setToken', payload: null });
   });
 
   it('renders all main components', () => {
@@ -110,7 +112,11 @@ describe('App Component', () => {
   });
 
   it('fetches token details on mount', async () => {
+    // Import the already mocked module
     const { getTokenDets } = await import('../APIs/blockcypherWebhooks.js');
+    
+    // Clear any previous calls
+    getTokenDets.mockClear();
     
     renderAppWithActualStore();
     
