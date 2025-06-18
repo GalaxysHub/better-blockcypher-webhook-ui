@@ -4,7 +4,7 @@ import mockTokenDets from "__mock__/tokenDets.json";
 
 import axios from "axios";
 
-const proxyURL = "https://thingproxy.freeboard.io/fetch/";
+const proxyURL = "";
 
 export function getTokenDets(TOKEN) {
   if (!TOKEN) {
