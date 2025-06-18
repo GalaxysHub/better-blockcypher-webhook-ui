@@ -33,18 +33,17 @@ const TokenInput = () => {
     setIsLoading(true);
     
     try {
-      // Update token in store to new token or null if token is empty
-      dispatch(setToken(token));
       if (token) {
         // Fetch token details if token is provided
         const response = await getTokenDets(token);
         dispatch(setTokenDets(response.data));
-        // Update token in store
+        dispatch(setToken(token));
         toast.success("Token updated successfully!");
       } else {
         // Clear token details if no token and reset test data
         dispatch(resetAllWebhookData());
         dispatch(setTokenDets({}));
+        dispatch(setToken(null));
         toast.info("Token cleared. Using mock data.");
       }
     } catch (error) {
