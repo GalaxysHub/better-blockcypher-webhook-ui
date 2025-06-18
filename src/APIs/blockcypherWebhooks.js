@@ -6,6 +6,16 @@ import axios from "axios";
 
 const proxyURL = "https://thingproxy.freeboard.io/fetch/";
 
+const isLocalhost = () => {
+  return window.location.hostname === "localhost" || 
+         window.location.hostname === "127.0.0.1" ||
+         window.location.hostname === "::1";
+};
+
+const getBaseURL = (url) => {
+  return isLocalhost() ? `${proxyURL}${url}` : url;
+};
+
 export function getTokenDets(TOKEN) {
   if (!TOKEN) {
     return mockRequest(() => {
@@ -13,7 +23,7 @@ export function getTokenDets(TOKEN) {
     });
   }
 
-  return axios.get(`${proxyURL}https://api.blockcypher.com/v1/tokens/${TOKEN}`);
+  return axios.get(getBaseURL(`https://api.blockcypher.com/v1/tokens/${TOKEN}`));
 }
 
 export function createWebhook({ addr, targetURL, coin, event, token }) {
@@ -41,7 +51,7 @@ export function createWebhook({ addr, targetURL, coin, event, token }) {
   const { COIN, NETWORK } = CoinData[coin];
 
   return axios.post(
-    `${proxyURL}https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks?token=${token}`,
+    getBaseURL(`https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks?token=${token}`),
     EventObj
   );
 }
@@ -52,7 +62,7 @@ export function getWebhooksByCoin(coin, token) {
   const { COIN, NETWORK } = CoinData[coin];
   return axios
     .get(
-      `${proxyURL}https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks?token=${token}`
+      getBaseURL(`https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks?token=${token}`)
     )
     .then((res) => {
       return res.data;
@@ -69,7 +79,7 @@ export function deleteWebhookByID({ id, coin, token }) {
   const { COIN, NETWORK } = CoinData[coin];
   return axios
     .delete(
-      `${proxyURL}https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks/${id}?token=${token}`
+      getBaseURL(`https://api.blockcypher.com/v1/${COIN}/${NETWORK}/hooks/${id}?token=${token}`)
     )
     .then((res) => {
       console.log(`Webhook ${id} deleted successfully`, res);
