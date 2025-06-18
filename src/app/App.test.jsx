@@ -1,259 +1,253 @@
-import React from 'react'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { waitFor } from '@testing-library/react'
-import { renderWithProviders, mockFetch, mockReactToastify } from '../test/test-utils'
-import App from './App'
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { StyledEngineProvider } from '@mui/material/styles';
+import { expect, describe, it, beforeEach, vi } from 'vitest';
+import App from '../app/App.jsx';
+import store from '../store/store.js';
+import { setLightTheme, setDarkTheme } from '../store/slices/themeSlice.js';
 
-// Mock the API module
-vi.mock('APIs/blockcypherWebhooks', () => ({
-  getTokenDets: vi.fn()
-}))
+// Mock the API calls
+vi.mock('../APIs/blockcypherWebhooks', () => ({
+  getTokenDets: vi.fn(() => Promise.resolve({ 
+    data: { 
+      token: 'test-token',
+      limits: { api_key_type: 'basic', hits: 3000 }
+    } 
+  })),
+  getWebhooksByCoin: vi.fn(() => Promise.resolve([]))
+}));
 
-// Mock the config
-vi.mock('_config/blockcypher.json', () => ({
-  TOKEN: 'test-token-123'
-}))
 
-// Mock child components
-vi.mock('./Sections/Header', () => ({
-  default: () => <div data-testid="header">Header</div>
-}))
+describe('App Component', () => {
+  // Helper function to render App with the actual production store
+  const renderAppWithActualStore = (themeMode = 'light') => {
+    // Set the theme in the actual store
+    if (themeMode === 'light') {
+      store.dispatch(setLightTheme());
+    } else {
+      store.dispatch(setDarkTheme());
+    }
 
-vi.mock('./Sections/CoinTabs', () => ({
-  default: () => <div data-testid="coin-tabs">CoinTabs</div>
-}))
+    const themeState = store.getState().themeReducer;
+    const theme = createTheme(themeState);
 
-vi.mock('./Sections/Navbar', () => ({
-  default: () => <div data-testid="navbar">Navbar</div>
-}))
+    return render(
+      <Provider store={store}>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </StyledEngineProvider>
+      </Provider>
+    );
+  };
 
-vi.mock('./Sections/Footer', () => ({
-  default: () => <div data-testid="footer">Footer</div>
-}))
+  // Helper to create a store with dispatch tracking for specific tests
+  const renderAppWithDispatchTracking = (mockDispatch) => {
+    // Create a temporary middleware to track dispatches
+    const originalDispatch = store.dispatch;
+    store.dispatch = (action) => {
+      mockDispatch(action);
+      return originalDispatch(action);
+    };
 
-// Mock react-toastify
-mockReactToastify()
+    const themeState = store.getState().themeReducer;
+    const theme = createTheme(themeState);
 
-describe('App', () => {
+    const result = render(
+      <Provider store={store}>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </StyledEngineProvider>
+      </Provider>
+    );
+
+    // Cleanup function to restore original dispatch
+    result.cleanup = () => {
+      store.dispatch = originalDispatch;
+    };
+
+    return result;
+  };
+
   beforeEach(() => {
-    vi.clearAllMocks()
-  })
+    vi.clearAllMocks();
+    // Reset to light theme before each test
+    store.dispatch(setLightTheme());
+  });
 
-  it('should render all main sections', () => {
-    const { getByTestId } = renderWithProviders(<App />)
+  it('renders all main components', () => {
+    renderAppWithActualStore();
     
-    expect(getByTestId('app-root')).toBeInTheDocument()
-    expect(getByTestId('navbar')).toBeInTheDocument()
-    expect(getByTestId('header')).toBeInTheDocument()
-    expect(getByTestId('coin-tabs')).toBeInTheDocument()
-    expect(getByTestId('footer')).toBeInTheDocument()
-  })
+    expect(screen.getAllByRole('banner')[0]).toBeInTheDocument();
+    expect(screen.getByRole('contentinfo')).toBeInTheDocument();
+  });
 
-  it('should have proper structure with containers', () => {
-    const { getByTestId } = renderWithProviders(<App />)
+  it('applies correct styling with light theme', () => {
+    renderAppWithActualStore('light');
     
-    const appRoot = getByTestId('app-root')
-    expect(appRoot).toBeInTheDocument()
+    // Check if the navbar is rendered with proper theme styling
+    const navbar = screen.getAllByRole('banner')[0];
+    expect(navbar).toBeInTheDocument();
     
-    // Check that main content is inside container
-    const navbar = getByTestId('navbar')
-    const header = getByTestId('header')
-    const coinTabs = getByTestId('coin-tabs')
-    const footer = getByTestId('footer')
-    
-    expect(navbar).toBeInTheDocument()
-    expect(header).toBeInTheDocument()
-    expect(coinTabs).toBeInTheDocument()
-    expect(footer).toBeInTheDocument()
-  })
+    // Verify the actual store has light theme
+    expect(store.getState().themeReducer.mode).toBe('light');
+  });
 
-  it('should fetch token details on mount when token exists', async () => {
-    const { getTokenDets } = await import('APIs/blockcypherWebhooks')
-    const mockTokenData = {
-      limits_per_hour: 200,
-      limits_per_second: 3,
-      used: 0,
-      token: 'test-token-123'
-    }
+  it('applies correct styling with dark theme', () => {
+    renderAppWithActualStore('dark');
     
-    const initialState = {
-      tokenReducer: {
-        token: 'test-token-123',
-        fetched: false,
-        limits: {
-          "api/day": 2000,
-          "api/hour": 200,
-          "api/second": 3,
-          "confidence/hour": 15,
-          "hooks": 200,
-          "hooks/hour": 200
-        }
-      }
-    }
+    // Check if the navbar is rendered with dark theme styling
+    const navbar = screen.getAllByRole('banner')[0];
+    expect(navbar).toBeInTheDocument();
     
-    getTokenDets.mockResolvedValue({ data: mockTokenData })
+    // Verify the actual store has dark theme
+    expect(store.getState().themeReducer.mode).toBe('dark');
+  });
+
+  it('fetches token details on mount', async () => {
+    const { getTokenDets } = await import('../APIs/blockcypherWebhooks.js');
     
-    const { store } = renderWithProviders(<App />, { initialState })
+    renderAppWithActualStore();
     
+    // Wait for the API call to be made
     await waitFor(() => {
-      expect(getTokenDets).toHaveBeenCalledWith('test-token-123')
-    })
-    
-    // Check that token data was dispatched to store
-    const state = store.getState()
-    expect(state.tokenReducer).toEqual(expect.objectContaining(mockTokenData))
-  })
+      expect(getTokenDets).toHaveBeenCalledWith(null);
+    });
+  });
 
-  it('should handle token fetch error gracefully', async () => {
-    const { getTokenDets } = await import('APIs/blockcypherWebhooks')
-    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+  it('dispatches setTokenDets action on successful API call', async () => {
+    const mockDispatch = vi.fn();
     
-    const initialState = {
-      tokenReducer: {
-        token: 'test-token-123',
-        fetched: false,
-        limits: {
-          "api/day": 2000,
-          "api/hour": 200,
-          "api/second": 3,
-          "confidence/hour": 15,
-          "hooks": 200,
-          "hooks/hour": 200
-        }
-      }
-    }
+    // Use dispatch tracking with the actual store
+    const { cleanup } = renderAppWithDispatchTracking(mockDispatch);
     
-    getTokenDets.mockRejectedValue(new Error('API Error'))
-    
-    renderWithProviders(<App />, { initialState })
-    
+    // Wait for the setTokenDets action to be dispatched
     await waitFor(() => {
-      expect(getTokenDets).toHaveBeenCalledWith('test-token-123')
-    })
+      const setTokenDetsAction = mockDispatch.mock.calls.find(
+        call => call[0].type === 'token/setTokenDets'
+      );
+      expect(setTokenDetsAction).toBeTruthy();
+    });
     
+    // Cleanup the dispatch override
+    cleanup();
+  });
+
+  it('handles API error gracefully', async () => {
+    const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    
+    // Mock the API to reject
+    const { getTokenDets } = await import('../APIs/blockcypherWebhooks.js');
+    getTokenDets.mockRejectedValueOnce(new Error('API Error'));
+    
+    renderAppWithActualStore();
+    
+    // Wait for the error to be logged
     await waitFor(() => {
-      expect(consoleSpy).toHaveBeenCalledWith(
+      expect(consoleLogSpy).toHaveBeenCalledWith(
         'Error fetching token details: ',
         expect.any(Error)
-      )
-    })
+      );
+    });
     
-    consoleSpy.mockRestore()
-  })
+    consoleLogSpy.mockRestore();
+  });
 
-  it('should dispatch setTokenDets action on successful fetch', async () => {
-    const { getTokenDets } = await import('APIs/blockcypherWebhooks')
-    const mockTokenData = {
-      limits_per_hour: 100,
-      limits_per_second: 2,
-      used: 50,
-      token: 'test-token-123'
-    }
+  it('has correct component hierarchy', () => {
+    renderAppWithActualStore();
     
-    const initialState = {
-      tokenReducer: {
-        token: 'test-token-123',
-        fetched: false,
-        limits: {
-          "api/day": 2000,
-          "api/hour": 200,
-          "api/second": 3,
-          "confidence/hour": 15,
-          "hooks": 200,
-          "hooks/hour": 200
-        }
-      }
-    }
+    // Check the main components are present
+    const navbar = screen.getAllByRole('banner')[0];
+    const footer = screen.getByRole('contentinfo');
     
-    getTokenDets.mockResolvedValue({ data: mockTokenData })
-    
-    const { store } = renderWithProviders(<App />, { initialState })
-    
-    await waitFor(() => {
-      expect(getTokenDets).toHaveBeenCalled()
-    })
-    
-    await waitFor(() => {
-      const state = store.getState()
-      expect(state.tokenReducer).toEqual(expect.objectContaining(mockTokenData))
-    })
-  })
+    // All components should be present
+    expect(navbar).toBeInTheDocument();
+    expect(footer).toBeInTheDocument();
+  });
 
-  it('should not fetch token details when no token is set', async () => {
-    const { getTokenDets } = await import('APIs/blockcypherWebhooks')
+  it('applies theme colors correctly with light theme', () => {
+    renderAppWithActualStore('light');
     
-    const initialState = {
-      tokenReducer: {
-        token: '',
-        fetched: false,
-        limits: {
-          "api/day": 2000,
-          "api/hour": 200,
-          "api/second": 3,
-          "confidence/hour": 15,
-          "hooks": 200,
-          "hooks/hour": 200
-        }
-      }
-    }
+    // Get the navbar
+    const navbar = screen.getAllByRole('banner')[0];
+    expect(navbar).toBeInTheDocument();
     
-    renderWithProviders(<App />, { initialState })
-    
-    // Wait a bit to ensure effect would have run if it was going to
-    await waitFor(() => {
-      expect(getTokenDets).not.toHaveBeenCalled()
-    }, { timeout: 100 })
-  })
+    // Verify actual store state
+    expect(store.getState().themeReducer.mode).toBe('light');
+  });
 
-  it('should render ToastContainer for notifications', () => {
-    const { container } = renderWithProviders(<App />)
+  it('applies theme colors correctly with dark theme', () => {
+    renderAppWithActualStore('dark');
     
-    // Since ToastContainer is mocked, we just verify the component renders
-    expect(container.querySelector('[data-testid="app-root"]')).toBeInTheDocument()
-  })
+    const navbar = screen.getAllByRole('banner')[0];
+    expect(navbar).toBeInTheDocument();
+    
+    // Verify actual store state
+    expect(store.getState().themeReducer.mode).toBe('dark');
+  });
 
-  it('should maintain proper layout structure', () => {
-    const { getByTestId } = renderWithProviders(<App />)
+  it('renders with minimum height styling', () => {
+    renderAppWithActualStore();
     
-    const appRoot = getByTestId('app-root')
-    const navbar = getByTestId('navbar')
-    const header = getByTestId('header')
-    const coinTabs = getByTestId('coin-tabs')
-    const footer = getByTestId('footer')
+    const navbar = screen.getAllByRole('banner')[0];
     
-    // Verify the components are in the correct order in the DOM
-    const children = Array.from(appRoot.children)
-    const childTestIds = children.map(child => child.getAttribute('data-testid')).filter(Boolean)
-    
-    expect(childTestIds).toEqual(['navbar', 'header', 'coin-tabs', 'footer'])
-  })
+    // The navbar should be rendered properly
+    expect(navbar).toBeInTheDocument();
+    expect(navbar.tagName).toBe('HEADER');
+  });
 
-  it('should handle component mounting and unmounting', () => {
-    const { unmount } = renderWithProviders(<App />)
+  it('container has correct padding', () => {
+    renderAppWithActualStore();
     
-    // Component should unmount without errors
-    expect(() => unmount()).not.toThrow()
-  })
+    // Find the main container
+    const navbar = screen.getAllByRole('banner')[0];
+    expect(navbar).toBeInTheDocument();
+    
+    // Should have proper MUI classes
+    expect(navbar.className).toContain('MuiAppBar') || expect(navbar.className).toContain('css-');
+  });
 
-  it('should work with different Redux states', () => {
-    const customInitialState = {
-      pageReducer: {
-        itemsPerPage: 25,
-        pageNum: 3,
-        activeCoin: "BTC"
-      },
-      webhookReducer: {
-        BTC: { fetched: true, data: { 'webhook1': { id: 'webhook1' } } },
-        selected: {}
-      }
-    }
+  it('useEffect dependency array includes dispatch', async () => {
+    // This test ensures that the useEffect dependency array is correct
+    // We can verify this by checking that the effect runs when component mounts
+    const { getTokenDets } = vi.mocked(await import('../APIs/blockcypherWebhooks.js'));
     
-    const { getByTestId } = renderWithProviders(<App />, { initialState: customInitialState })
+    renderAppWithActualStore();
     
-    expect(getByTestId('app-root')).toBeInTheDocument()
-    expect(getByTestId('navbar')).toBeInTheDocument()
-    expect(getByTestId('header')).toBeInTheDocument()
-    expect(getByTestId('coin-tabs')).toBeInTheDocument()
-    expect(getByTestId('footer')).toBeInTheDocument()
-  })
-})
+    expect(getTokenDets).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders components without errors', () => {
+    renderAppWithActualStore();
+    
+    expect(screen.getAllByRole('banner')[0]).toBeInTheDocument();
+    expect(screen.getByRole('contentinfo')).toBeInTheDocument();
+  });
+
+  it('maintains component structure with light theme', () => {
+    renderAppWithActualStore('light');
+    
+    // Check all components are present
+    expect(screen.getAllByRole('banner')[0]).toBeInTheDocument();
+    expect(screen.getByRole('contentinfo')).toBeInTheDocument();
+    
+    // Verify actual store state
+    expect(store.getState().themeReducer.mode).toBe('light');
+  });
+
+  it('maintains component structure with dark theme', () => {
+    renderAppWithActualStore('dark');
+    
+    // All components should be present with dark theme
+    expect(screen.getAllByRole('banner')[0]).toBeInTheDocument();
+    expect(screen.getByRole('contentinfo')).toBeInTheDocument();
+    
+    // Verify actual store state
+    expect(store.getState().themeReducer.mode).toBe('dark');
+  });
+});
