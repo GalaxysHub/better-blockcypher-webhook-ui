@@ -41,7 +41,7 @@ function App() {
       .catch((err) => {
         console.log(`Error fetching token details: `, err);
       });
-  }, [dispatch, token]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <RootDiv data-testid="app-root">
