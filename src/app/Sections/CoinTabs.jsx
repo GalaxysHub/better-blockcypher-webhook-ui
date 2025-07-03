@@ -25,6 +25,12 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 const StyledTabList = styled(TabList)(({ theme }) => ({
   background: theme.palette.primary[theme.mode],
+  '& .MuiTab-root': {
+    color: '#d3d3d3',
+  },
+  '& .MuiTab-root.Mui-selected': {
+    color: 'white',
+  },
 }));
 
 const StyledTabPanel = styled(TabPanel)(() => ({
