@@ -1,4 +1,5 @@
 import React from "react";
+import { styled } from "@mui/material/styles";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -32,7 +33,13 @@ const EventTypeOptions = [
   },
 ];
 
-export default function SelectEventType({ value, handleChange, error }) {
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
+  "& .MuiOutlinedInput-root": {
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+
+export default function SelectEventType({ value, handleChange, error, className }) {
   const RenderDropDownList = () => {
     return EventTypeOptions.map((event) => {
       return (
@@ -44,7 +51,7 @@ export default function SelectEventType({ value, handleChange, error }) {
   };
 
   return (
-    <FormControl variant="outlined" style={{ width: "100%" }} error={error}>
+    <StyledFormControl className={className} variant="outlined" fullWidth error={error}>
       <InputLabel id="Select-Event-label">Event Type</InputLabel>
       <Select
         id="Select-Event"
@@ -59,6 +66,6 @@ export default function SelectEventType({ value, handleChange, error }) {
         {RenderDropDownList()}
       </Select>
       {error ? <FormHelperText>Select a Event Type</FormHelperText> : <></>}
-    </FormControl>
+    </StyledFormControl>
   );
 }

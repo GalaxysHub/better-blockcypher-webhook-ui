@@ -15,17 +15,39 @@ import PageSelector from "app/Sections/Selectors/PageSelector";
 import CustomCheckBox from "app/Components/Fields/CustomCheckBox";
 
 const Header = styled('div')(({ theme }) => ({
-  borderRadius: "15px 0px 0px 0px",
-  fontSize: "16px",
-  background: theme.palette.primary[theme.mode],
-  color: theme.palette.text[theme.mode],
-  padding: "10px",
-  borderBottom: "1px solid black",
+  fontSize: "13px",
+  fontWeight: 800,
+  color: theme.palette.primary.contrastText,
+  background: theme.palette.gradient.headerSoft[theme.mode],
+  padding: "12px 16px",
+  textTransform: "uppercase",
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  borderRadius: "15px 0px 15px 0px",
-  backgroundColor: theme.palette.grey.light[theme.mode],
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: 8,
+  backgroundColor: theme.palette.background.paper,
+  boxShadow: "none",
+  overflow: "hidden",
+  minWidth: 0,
+}));
+
+const SelectorContainer = styled(Container)(({ theme }) => ({
+  display: "flex",
+  flexWrap: "wrap",
+  minWidth: 0,
+  gap: "4px 14px",
+  alignItems: "center",
+  padding: "0 16px 8px !important",
+  marginTop: "8px",
+  "& .MuiFormControlLabel-root": {
+    marginLeft: -4,
+    marginRight: 0,
+  },
+  "& .MuiFormControlLabel-label": {
+    color: theme.palette.text.primary,
+    fontSize: 14,
+  },
 }));
 
 const FieldSelector = () => {
@@ -34,10 +56,10 @@ const FieldSelector = () => {
   const fieldKeys = Object.keys(fields);
 
   return (
-    <FormControl component="fieldset">
-      <StyledPaper elevation={11}>
+    <FormControl component="fieldset" fullWidth>
+      <StyledPaper elevation={0}>
         <Header>Filter Fields</Header>
-        <Container>
+        <SelectorContainer maxWidth={false}>
           {fieldKeys.map((key) => {
             let field = fields[key];
             return (
@@ -55,7 +77,7 @@ const FieldSelector = () => {
               />
             );
           })}
-        </Container>
+        </SelectorContainer>
         <PageSelector />
       </StyledPaper>
     </FormControl>

@@ -2,18 +2,22 @@ import React from "react";
 import { styled } from "@mui/material/styles";
 
 const StyledFooter = styled("footer")(({ theme }) => ({
-  flexGrow: 1,
   textAlign: "center",
-  fontSize: "18px",
+  fontSize: "14px",
   color: theme.palette.text?.[theme.mode] || theme.palette.text.primary,
   backgroundColor: theme.palette.primary.main,
-  padding: "30px 0px",
+  padding: "18px 16px",
+  borderTop: `1px solid ${theme.palette.divider}`,
 }));
 
 const StyledLink = styled("a")({
   color: "aqua",
   textDecoration: "none",
-  padding: "10px",
+  fontWeight: 800,
+  padding: "0 6px",
+  "&:hover": {
+    textDecoration: "underline",
+  },
 });
 
 export default function Footer() {

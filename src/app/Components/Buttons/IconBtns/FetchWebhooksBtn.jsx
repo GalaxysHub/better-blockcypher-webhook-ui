@@ -40,7 +40,7 @@ const FetchWebhooksBtn = ({
         <CircularProgress data-testid="fetch-webhooks-loading" />
       ) : (
         <IconBtnTemplate type={type} action={fetchCoinData} tip={tip} testId="fetch-webhooks-btn">
-          <RefreshIcon size={size} />
+          <RefreshIcon fontSize={size} />
         </IconBtnTemplate>
       )}
     </>

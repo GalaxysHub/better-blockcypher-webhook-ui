@@ -12,7 +12,7 @@ const getTypeStyles = (type) => {
     warning: { main: yellow[700], hover: yellow[500] },
     info: { main: lightBlue[700], hover: lightBlue[500] },
   };
-  
+
   return colorMap[type] || { main: 'inherit', hover: 'inherit' };
 };
 
@@ -21,6 +21,9 @@ const StyledIconButton = styled(IconButton, {
 })(({ buttonType }) => {
   const typeStyles = getTypeStyles(buttonType);
   return {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
     "&:focus": {
       outline: "0",
     },

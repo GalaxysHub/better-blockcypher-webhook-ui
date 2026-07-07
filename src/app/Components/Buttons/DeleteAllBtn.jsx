@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import DeleteWebhooksModal from "app/Sections/Modals/DeleteWebhooksModal";
 
 const RootDiv = styled('div')(() => ({
-  margin: "16px",
+  display: "flex",
+  justifyContent: "flex-end",
+  minHeight: 40,
 }));
 
-const DeleteButton = styled('button')(({ invisible }) => ({
-  cursor: "pointer",
-  color: "white",
-  backgroundColor: "#f44336",
-  border: "1px solid black",
-  borderRadius: "10px",
-  padding: "15px 32px",
-  textAlign: "center",
-  textDecoration: "none",
-  display: "inline-block",
-  fontSize: "16px",
+const DeleteButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== "invisible",
+})(({ invisible }) => ({
   visibility: invisible ? "hidden" : "visible",
+  backgroundColor: "#f44336",
+  color: "white",
+  border: "1px solid black",
   "&:hover": {
+    backgroundColor: "#f44336",
     filter: "brightness(85%)",
   },
 }));
@@ -37,6 +37,8 @@ function DeleteAllBtn() {
       <DeleteWebhooksModal open={open} setOpen={setOpen} />
       <DeleteButton 
         invisible={isInvisible} 
+        variant="contained"
+        startIcon={<DeleteSweepIcon />}
         onClick={() => setOpen(true)}
         data-testid="delete-all-btn"
       >

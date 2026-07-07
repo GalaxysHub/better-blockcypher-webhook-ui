@@ -3,47 +3,51 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
-import Grid from "@mui/material/Grid";
 import Toolbar from "@mui/material/Toolbar";
 import Switch from "@mui/material/Switch";
+import Typography from "@mui/material/Typography";
 
 import { setLightTheme, setDarkTheme } from "store/slices";
 
 const StyledDiv = styled("div")(({ theme }) => ({
-  flexGrow: 1,
   zIndex: 99,
   position: "sticky",
   top: "0",
   width: "100%",
+  borderBottom: `1px solid ${theme.palette.divider}`,
 }));
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  background: theme.palette.primary?.[theme.mode] || theme.palette.primary.main,
+  background: theme.palette.gradient.header[theme.mode],
+  color: theme.palette.primary.contrastText,
   display: "flex",
   justifyContent: "space-between",
-  height: "100% !important",
+  minHeight: "64px !important",
+  paddingLeft: "28px !important",
+  paddingRight: "28px !important",
+  [theme.breakpoints.down("sm")]: {
+    minHeight: "56px !important",
+    paddingLeft: "16px !important",
+    paddingRight: "16px !important",
+  },
 }));
-
-const NavlinkContainer = styled(Grid)({
-  display: "flex",
-});
 
 const SwitchContainer = styled("div")({
   display: "flex",
-  justifyContent: "space-between",
+  alignItems: "center",
+});
+
+const Brand = styled(Typography)({
+  fontSize: "16px",
+  fontWeight: 800,
+  letterSpacing: 0,
 });
 
 function Navbar() {
   const dispatch = useDispatch();
   const mode = useSelector((state) => state.themeReducer.mode);
 
-  const [state, setState] = React.useState({
-    checkedA: true,
-    checkedB: true,
-  });
-
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+  const handleChange = () => {
     if (mode === "light") {
       dispatch(setDarkTheme());
     } else {
@@ -53,25 +57,21 @@ function Navbar() {
 
   return (
     <StyledDiv>
-      <AppBar position="static">
+      <AppBar position="static" elevation={0}>
         <StyledToolbar>
-          <Grid justify="space-between" container>
-            <NavlinkContainer></NavlinkContainer>
-            <Grid>
-              <SwitchContainer>
-                <Switch
-                  checked={state.checkedB}
-                  onChange={handleChange}
-                  color="primary"
-                  name="checkedB"
-                  data-testid="theme-switch"
-                  slotProps={{
-                    input: { "aria-label": "theme toggle switch" }
-                  }}
-                />
-              </SwitchContainer>
-            </Grid>
-          </Grid>
+          <Brand component="div">BlockCypher Webhooks</Brand>
+          <SwitchContainer>
+            <Switch
+              checked={mode === "dark"}
+              onChange={handleChange}
+              color="primary"
+              name="theme"
+              data-testid="theme-switch"
+              slotProps={{
+                input: { "aria-label": "theme toggle switch" }
+              }}
+            />
+          </SwitchContainer>
         </StyledToolbar>
       </AppBar>
     </StyledDiv>

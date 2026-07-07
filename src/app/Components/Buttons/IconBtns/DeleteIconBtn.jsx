@@ -11,7 +11,7 @@ export default function DeleteIconBtn({
 }) {
   return (
     <IconBtnTemplate type={type} action={action} tip={tip} testId="delete-icon-btn">
-      <DeleteIcon size={size} />
+      <DeleteIcon fontSize={size} />
     </IconBtnTemplate>
   );
 }

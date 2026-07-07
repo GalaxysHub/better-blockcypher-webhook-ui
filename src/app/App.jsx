@@ -19,15 +19,24 @@ import { setTokenDets } from "store/slices";
 
 const RootDiv = styled("div")(({ theme }) => ({
   minHeight: "100vh",
-  textAlign: "center",
+  display: "flex",
+  flexDirection: "column",
+  minWidth: 0,
   color: theme.palette.page?.text?.[theme.mode] || theme.palette.text.primary,
   backgroundColor: theme.palette.page?.background?.[theme.mode] || theme.palette.background.default,
 }));
 
-const StyledContainer = styled(Container)({
-  paddingTop: "24px",
-  paddingBottom: "24px",
-});
+const StyledContainer = styled(Container)(({ theme }) => ({
+  flex: 1,
+  minWidth: 0,
+  maxWidth: "100%",
+  paddingTop: "28px",
+  paddingBottom: "40px",
+  [theme.breakpoints.down("sm")]: {
+    paddingTop: "20px",
+    paddingBottom: "28px",
+  },
+}));
 
 function App() {
   const dispatch = useDispatch();
@@ -46,7 +55,7 @@ function App() {
   return (
     <RootDiv data-testid="app-root">
       <Navbar />
-      <StyledContainer>
+      <StyledContainer maxWidth="xl">
         <TokenInput />
         <Header />
         <CoinTabs />

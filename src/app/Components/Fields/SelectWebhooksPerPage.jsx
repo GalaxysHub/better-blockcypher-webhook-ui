@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import { styled } from "@mui/material/styles";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -39,6 +40,13 @@ const ItemsPerPageOptions = [
   },
 ];
 
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
+  width: "100%",
+  "& .MuiOutlinedInput-root": {
+    backgroundColor: theme.palette.grey.ghost[theme.mode],
+  },
+}));
+
 const SelectWebhooksPerPage = () => {
   const itemsPerPage = useSelector((state) => state.pageReducer.itemsPerPage);
   const dispatch = useDispatch();
@@ -58,11 +66,11 @@ const SelectWebhooksPerPage = () => {
   };
 
   return (
-    <FormControl variant="outlined" style={{ width: "100%" }}>
+    <StyledFormControl variant="outlined" size="small">
       <InputLabel id="Select-Event-label">Items Per Page</InputLabel>
       <Select
         id="Select-Webhooks-Per-Page"
-        label="Webhooks Per Page"
+        label="Items Per Page"
         value={itemsPerPage}
         onChange={(event) => {
           dispatch(setPageNum(1)); //page number must be reset in case currentPage>lastPage
@@ -72,7 +80,7 @@ const SelectWebhooksPerPage = () => {
       >
         {RenderDropDownList()}
       </Select>
-    </FormControl>
+    </StyledFormControl>
   );
 };
 

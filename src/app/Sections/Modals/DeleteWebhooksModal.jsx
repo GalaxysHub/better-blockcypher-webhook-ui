@@ -14,20 +14,65 @@ import { removeWebhookById, markWebhooks } from "store/slices";
 import ProgressBar from "app/Components/ProgressBar";
 
 const ModalTitle = styled('h2')(({ theme }) => ({
-  color: theme.palette.page.text[theme.mode],
+  color: theme.palette.text.primary,
+  fontSize: 22,
+  lineHeight: 1.25,
+  margin: "0 0 16px",
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  textAlign: "center",
   position: "absolute",
-  width: 400,
+  width: "min(460px, calc(100vw - 32px))",
   color: theme.palette.card.text[theme.mode],
   backgroundColor: theme.palette.card.background[theme.mode],
-  padding: theme.spacing(0, 4, 3),
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: 8,
+  boxShadow: theme.palette.mode === "dark"
+    ? "0 24px 60px rgba(0, 0, 0, 0.5)"
+    : "0 24px 60px rgba(15, 23, 42, 0.2)",
+  padding: theme.spacing(3),
   top: `50%`,
   left: `50%`,
   transform: `translate(-50%, -50%)`,
 }));
+
+const ModalBody = styled("div")(({ theme }) => ({
+  display: "grid",
+  gap: "14px",
+  color: theme.palette.text.secondary,
+  textAlign: "left",
+}));
+
+const ButtonRow = styled("div")({
+  display: "flex",
+  justifyContent: "flex-end",
+  gap: "8px",
+});
+
+const WebhookList = styled("div")(({ theme }) => ({
+  maxHeight: 220,
+  overflow: "auto",
+  overflowWrap: "anywhere",
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: 8,
+  backgroundColor: theme.palette.grey.ghost[theme.mode],
+  padding: "12px",
+  color: theme.palette.text.primary,
+  fontSize: 13,
+}));
+
+const ShowMore = styled("div")({
+  color: "teal",
+  cursor: "pointer",
+  fontWeight: 700,
+  marginTop: "12px",
+});
+
+const ErrorMessage = styled("h3")({
+  color: "red",
+  fontSize: 15,
+  margin: 0,
+});
 
 const displayMax = 25;
 
@@ -128,13 +173,12 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
             .map((id) => id.substring(0, 5) + "...")
             .join(", ")}
           {IdsArr.length > maxDisplay ? (
-            <div
+            <ShowMore
               data-testid="delete-modal-show-more-btn"
-              style={{ color: "teal", cursor: "pointer", marginTop: "16px" }}
               onClick={() => setMaxDisplay(IdsArr.length)}
             >
               {`show ${IdsArr.length - maxDisplay} more`}
-            </div>
+            </ShowMore>
           ) : (
             <></>
           )}
@@ -144,54 +188,50 @@ const DeleteWebhooksModal = ({ open, setOpen }) => {
   };
 
   const body = (
-    <div data-testid="delete-modal-content">
+    <ModalBody data-testid="delete-modal-content">
       <ModalTitle data-testid="delete-modal-title">{`Are You Sure You Want To Delete The Following Webhooks?`}</ModalTitle>
-      <div data-testid="delete-modal-webhooks-list">{showSelectedWebhooks()}</div>
-      <br />
-      <div data-testid="delete-modal-button-container">
+      <WebhookList data-testid="delete-modal-webhooks-list">{showSelectedWebhooks()}</WebhookList>
+      <ButtonRow data-testid="delete-modal-button-container">
         <ConfirmIconBtn data-testid="delete-modal-confirm-btn" action={deleteAllWebhooks} />
         <CancelIconBtn data-testid="delete-modal-cancel-btn" action={handleClose} />
-      </div>
-    </div>
+      </ButtonRow>
+    </ModalBody>
   );
 
   const bodyOnDelete = (
-    <div data-testid="delete-modal-deleting-content">
+    <ModalBody data-testid="delete-modal-deleting-content">
       <ModalTitle data-testid="delete-modal-deleting-title">Deleting Webhooks</ModalTitle>
       <div data-testid="delete-modal-progress-text">{`Deleted ${
         totalSelected - IdsArr.length
       } of ${totalSelected}`}</div>
-      <br />
       <ProgressBar
         data-testid="delete-modal-progress-bar"
         completed={Math.floor(
           ((totalSelected - IdsArr.length) * 100) / totalSelected
         )}
       />
-    </div>
+    </ModalBody>
   );
 
   const bodyOnComplete = (
-    <div data-testid="delete-modal-complete-content">
+    <ModalBody data-testid="delete-modal-complete-content">
       <ModalTitle data-testid="delete-modal-complete-title">Webhooks Deleted Successfully</ModalTitle>
-      <br />
-      <div data-testid="delete-modal-complete-button-container">
+      <ButtonRow data-testid="delete-modal-complete-button-container">
         <ConfirmIconBtn data-testid="delete-modal-complete-confirm-btn" action={handleClose} />
-      </div>
-    </div>
+      </ButtonRow>
+    </ModalBody>
   );
 
   const bodyOnError = (
-    <div data-testid="delete-modal-error-content">
+    <ModalBody data-testid="delete-modal-error-content">
       <ModalTitle data-testid="delete-modal-error-title">Error Deleting All Webhooks</ModalTitle>
-      <h3 data-testid="delete-modal-error-message" style={{ color: "red" }}>{msg}</h3>
+      <ErrorMessage data-testid="delete-modal-error-message">{msg}</ErrorMessage>
       <div data-testid="delete-modal-error-description">{`The following webhooks were not deleted:`}</div>
-      <br />
-      <div data-testid="delete-modal-error-webhooks-list">{showSelectedWebhooks()}</div>
-      <div data-testid="delete-modal-error-button-container">
+      <WebhookList data-testid="delete-modal-error-webhooks-list">{showSelectedWebhooks()}</WebhookList>
+      <ButtonRow data-testid="delete-modal-error-button-container">
         <CancelIconBtn data-testid="delete-modal-error-close-btn" action={handleClose} tip={"Close"} />
-      </div>
-    </div>
+      </ButtonRow>
+    </ModalBody>
   );
 
   const renderBody = () => {

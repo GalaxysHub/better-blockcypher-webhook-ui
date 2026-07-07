@@ -21,9 +21,19 @@ import { removeWebhookById, markWebhooks } from "store/slices";
 import { CoinData } from "_config/coinData";
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
-  color: theme.palette.grey?.contrastText?.[theme.mode] || theme.palette.text.primary,
-  fontSize: "16px",
+  color: theme.palette.table?.text?.[theme.mode] || theme.palette.text.primary,
+  fontSize: "13px",
+  lineHeight: 1.4,
 }));
+
+const CellLink = styled("a")({
+  color: "inherit",
+  textDecoration: "none",
+  "&:hover": {
+    color: "inherit",
+    textDecoration: "underline",
+  },
+});
 
 const NoWrapCell = ({ children }) => {
   return (
@@ -88,7 +98,7 @@ const WebhookTableBody = () => {
 
   const renderOptionBtns = ({ id }) => {
     if (deletingMap[id]) {
-      return <CircularProgress />;
+      return <CircularProgress size={24} />;
     } else {
       return <DeleteIconBtn 
         action={() => deleteWebhook(id)}
@@ -97,18 +107,17 @@ const WebhookTableBody = () => {
     }
   };
 
-  const renderAddressCellContent = (address) => {
+  const renderAddressCellContent = (address, key) => {
     let param = CoinData[coin].COIN;
     if (coin === "BTCt") param = "btc-testnet";
     let url = `https://live.blockcypher.com/${param}/address/${address}/`;
     return (
-      <NoWrapCell>
-        <a 
+      <NoWrapCell key={key}>
+        <CellLink
           href={url} 
-          style={{ textDecoration: "none", color: "inherit" }}
         >
           {address}
-        </a>
+        </CellLink>
       </NoWrapCell>
     );
   };
@@ -122,7 +131,7 @@ const WebhookTableBody = () => {
           let name = field.name;
           if (field.checked) {
             if (name === "Address") {
-              return renderAddressCellContent(webhook["address"]);
+              return renderAddressCellContent(webhook["address"], key + "" + id);
             }
             return (
               <NoWrapCell 

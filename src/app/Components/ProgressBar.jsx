@@ -5,11 +5,12 @@ const ProgressBar = ({ completed }) => {
   const theme = useSelector((state) => state.themeReducer);
 
   const containerStyles = {
-    height: 20,
+    height: 18,
     width: "100%",
     backgroundColor: "#e0e0de",
-    borderRadius: 50,
+    borderRadius: 999,
     margin: "auto",
+    overflow: "hidden",
   };
 
   const fillerStyles = {
@@ -23,9 +24,11 @@ const ProgressBar = ({ completed }) => {
   };
 
   const labelStyles = {
-    padding: 5,
+    padding: "0 8px",
     color: "white",
     fontWeight: "bold",
+    fontSize: 12,
+    lineHeight: "18px",
   };
 
   return (
