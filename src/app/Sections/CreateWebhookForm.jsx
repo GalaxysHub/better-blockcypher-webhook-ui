@@ -41,12 +41,12 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 const StyledButton = styled(Button)(({ theme }) => ({
   justifySelf: "start",
   minWidth: 178,
-  color: theme.palette.text[theme.mode],
-  backgroundColor: theme.palette.green.light,
+  color: theme.palette.green.contrastText,
+  backgroundColor: theme.palette.green.main,
   "&:hover": {
-    color: theme.palette.text[theme.mode],
-    backgroundColor: theme.palette.green.main,
-    boxShadow: "1px 3px 3px 3px #888888",
+    color: theme.palette.green.contrastText,
+    backgroundColor: theme.palette.green.dark,
+    boxShadow: "none",
   },
   [theme.breakpoints.down("sm")]: {
     width: "100%",

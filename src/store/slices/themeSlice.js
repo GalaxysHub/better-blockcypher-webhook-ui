@@ -25,7 +25,7 @@ const sharedPalette = {
     contrastText: "#000",
   },
   green: {
-    light: green[600],
+    light: green[800],
     main: green[800],
     dark: green[900],
     contrastText: "#ffffff",
@@ -89,13 +89,13 @@ const themeByMode = {
     },
     table: {
       headText: "#ffffff",
-      odd: grey[800],
-      even: grey[600],
-      hover: grey[700],
-      text: deepPurple[50],
+      odd: blueGrey[900],
+      even: blueGrey[800],
+      hover: blueGrey[700],
+      text: grey[50],
     },
-    softSurface: grey[300],
-    mutedSurface: grey[50],
+    softSurface: blueGrey[900],
+    mutedSurface: blueGrey[900],
   },
 };
 
@@ -224,6 +224,8 @@ const buildThemeState = (mode) => {
         hover: modeTheme.actionHover,
         selected: modeTheme.actionHover,
         disabled: modeTheme.text.disabled,
+        disabledBackground:
+          mode === "dark" ? "rgba(255, 255, 255, 0.16)" : "rgba(0, 0, 0, 0.12)",
       },
     },
     components: {
@@ -243,6 +245,14 @@ const buildThemeState = (mode) => {
             borderRadius: 8,
             minHeight: 40,
             padding: "8px 16px",
+            ...(mode === "dark"
+              ? {
+                  "&.MuiButton-contained.Mui-disabled": {
+                    color: grey[200],
+                    backgroundColor: blueGrey[700],
+                  },
+                }
+              : {}),
           },
         },
       },
@@ -251,10 +261,50 @@ const buildThemeState = (mode) => {
           size: "small",
         },
       },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            ...(mode === "dark"
+              ? {
+                  "&.Mui-focused": {
+                    color: modeTheme.text.secondary,
+                  },
+                }
+              : {}),
+          },
+        },
+      },
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
             borderRadius: 8,
+            ...(mode === "dark"
+              ? {
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor: modeTheme.text.secondary,
+                  },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: modeTheme.text.secondary,
+                  },
+                }
+              : {}),
+          },
+        },
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            ...(mode === "dark"
+              ? {
+                  "&.Mui-selected": {
+                    color: modeTheme.text.secondary,
+                    backgroundColor: "rgba(225, 190, 231, 0.16)",
+                  },
+                  "&.Mui-selected:hover, &.Mui-focusVisible": {
+                    backgroundColor: "rgba(225, 190, 231, 0.24)",
+                  },
+                }
+              : {}),
           },
         },
       },
