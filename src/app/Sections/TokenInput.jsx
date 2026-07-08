@@ -2,34 +2,51 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import { setToken, setTokenDets, resetAllWebhookData } from "store/slices";
 import { getTokenDets } from "APIs/blockcypherWebhooks";
 import { toast } from "react-toastify";
 
 const TokenContainer = styled(Box)(({ theme }) => ({
-  marginBottom: "16px",
-  padding: "16px",
+  marginBottom: "18px",
+  padding: "16px 18px",
+  minWidth: 0,
   border: `1px solid ${theme.palette.divider}`,
-  borderRadius: "4px",
+  borderRadius: 8,
   backgroundColor: theme.palette.background.paper,
+  boxShadow: theme.palette.mode === "dark"
+    ? "0 18px 40px rgba(0, 0, 0, 0.28)"
+    : "0 18px 40px rgba(15, 23, 42, 0.08)",
 }));
 
 const TokenInputRow = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  gap: "8px",
-  [theme.breakpoints.down('sm')]: {
+  gap: "12px",
+  minWidth: 0,
+  [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
     alignItems: "stretch",
   }
 }));
 
-const TokenTextField = styled(TextField)(() => ({
+const TokenLabel = styled(Typography)(({ theme }) => ({
+  minWidth: "96px",
+  color: theme.palette.text.secondary,
+  fontWeight: 700,
+}));
+
+const TokenTextField = styled(TextField)(({ theme }) => ({
   flexGrow: 1,
+  minWidth: 0,
+  "& .MuiOutlinedInput-root": {
+    backgroundColor: theme.palette.grey.ghost[theme.mode],
+  },
 }));
 
 const TokenButton = styled(Button)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
+  minWidth: "118px",
+  [theme.breakpoints.down("sm")]: {
     width: "100%",
   }
 }));
@@ -76,9 +93,9 @@ const TokenInput = () => {
   return (
     <TokenContainer>
       <TokenInputRow>
-        <Typography variant="body2" sx={{ minWidth: "120px" }}>
+        <TokenLabel variant="body2">
           API Token:
-        </Typography>
+        </TokenLabel>
         <TokenTextField
           value={inputToken}
           onChange={handleTokenChange}
@@ -90,6 +107,7 @@ const TokenInput = () => {
         <TokenButton
           onClick={handleUpdateToken}
           variant="contained"
+          startIcon={<VpnKeyIcon />}
           disabled={isLoading || inputToken === (currentToken || "")}
         >
           {isLoading ? "Updating..." : "Update"}

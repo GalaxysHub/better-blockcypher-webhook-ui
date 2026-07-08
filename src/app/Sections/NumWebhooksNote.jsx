@@ -10,17 +10,30 @@ import { CoinData } from "_config/coinData.json";
 const StyledPaper = styled(Paper)(({ theme }) => ({
   color: theme.palette.page?.text?.[theme.mode] || theme.palette.text.primary,
   backgroundColor: theme.palette.card?.background?.[theme.mode] || theme.palette.background.paper,
-  borderRadius: "20px",
-  width: "320px",
-  margin: "20px auto",
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: 8,
+  width: "fit-content",
+  maxWidth: "100%",
+  minWidth: 280,
+  margin: "0 auto",
+  boxShadow: "none",
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    minWidth: 0,
+  },
 }));
 
-const ContentContainer = styled("div")({
+const ContentContainer = styled("div")(({ theme }) => ({
   alignItems: "center",
   display: "flex",
+  gap: "10px",
   justifyContent: "center",
-  height: "80px",
-});
+  minWidth: 0,
+  minHeight: "56px",
+  padding: "10px 16px",
+  color: theme.palette.text.primary,
+  fontWeight: 700,
+}));
 
 const NumWebhooksNote = () => {
   const coin = useSelector((state) => state.pageReducer.activeCoin);
@@ -28,7 +41,7 @@ const NumWebhooksNote = () => {
   let numWebhooks = Object.keys(webhooks).length;
 
   return (
-    <StyledPaper elevation={12}>
+    <StyledPaper elevation={0}>
       <ContentContainer>
         {numWebhooks ? (
           <div data-testid="webhooks-count">{`${numWebhooks} ${CoinData[coin].name} Webhooks`}</div>

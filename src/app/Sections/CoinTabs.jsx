@@ -20,21 +20,66 @@ import { setActiveCoin } from "store/slices";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   flexGrow: 1,
+  minWidth: 0,
+  maxWidth: "100%",
+  overflow: "hidden",
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: 8,
   backgroundColor: theme.palette.grey.light[theme.mode],
+  boxShadow: theme.palette.mode === "dark"
+    ? "0 18px 42px rgba(0, 0, 0, 0.32)"
+    : "0 18px 42px rgba(15, 23, 42, 0.08)",
+}));
+
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  borderBottom: `1px solid ${theme.palette.divider}`,
+  background: theme.palette.gradient.header[theme.mode],
+  color: theme.palette.primary.contrastText,
+  boxShadow: "none",
 }));
 
 const StyledTabList = styled(TabList)(({ theme }) => ({
-  background: theme.palette.primary[theme.mode],
-  '& .MuiTab-root': {
-    color: '#d3d3d3',
+  maxWidth: "100%",
+  minHeight: 48,
+  "& .MuiTabs-scroller": {
+    overflowX: "auto !important",
   },
-  '& .MuiTab-root.Mui-selected': {
-    color: 'white',
+  "& .MuiTabs-indicator": {
+    height: 4,
+    backgroundColor: theme.palette.primary.contrastText,
+  },
+  "& .MuiTab-root": {
+    color: theme.palette.mode === "dark" ? "#f5f5f5" : "#d3d3d3",
+    minWidth: 132,
+  },
+  "& .MuiTab-root.Mui-selected": {
+    color: "white",
+    backgroundColor: theme.palette.mode === "dark"
+      ? theme.palette.secondary.main
+      : "rgba(0, 0, 0, 0.28)",
   },
 }));
 
-const StyledTabPanel = styled(TabPanel)(() => ({
-  // Custom styles for tab panel if needed
+const StyledTabPanel = styled(TabPanel)(({ theme }) => ({
+  minWidth: 0,
+  padding: "22px 24px 28px",
+  backgroundColor: "transparent",
+  [theme.breakpoints.down("sm")]: {
+    padding: "16px 12px 22px",
+  },
+}));
+
+const PanelContainer = styled(Container)(({ theme }) => ({
+  display: "grid",
+  gap: "18px",
+  minWidth: 0,
+  maxWidth: "100%",
+  paddingLeft: "0 !important",
+  paddingRight: "0 !important",
+  marginBottom: "22px",
+  [theme.breakpoints.down("sm")]: {
+    marginBottom: "16px",
+  },
 }));
 
 const LabTabs = () => {
@@ -48,9 +93,9 @@ const LabTabs = () => {
   };
 
   return (
-    <StyledPaper elevation={12}>
+    <StyledPaper elevation={0}>
       <TabContext value={value}>
-        <AppBar position="static">
+        <StyledAppBar position="static">
           <StyledTabList
             onChange={handleChange}
             variant="scrollable"
@@ -62,22 +107,21 @@ const LabTabs = () => {
               );
             })}
           </StyledTabList>
-        </AppBar>
+        </StyledAppBar>
         {CoinList.map((coin) => {
           return (
             <StyledTabPanel
               key={coin.name}
               value={coin.abbr}
             >
-              <Container>
+              <PanelContainer maxWidth={false}>
                 <AccordionComp
                   title={`Create ${CoinData[coin.abbr].name} Webhook`}
                 >
                   <CreateWebhookForm />
                 </AccordionComp>
                 <NumWebhooksNote />
-              </Container>
-              <br />
+              </PanelContainer>
               <TableSection />
             </StyledTabPanel>
           );

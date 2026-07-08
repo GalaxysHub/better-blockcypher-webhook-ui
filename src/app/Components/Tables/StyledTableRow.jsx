@@ -4,12 +4,15 @@ import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  color: theme.palette.text[theme.mode] || theme.palette.text.primary,
+  color: theme.palette.table?.text?.[theme.mode] || theme.palette.text.primary,
   "&:nth-of-type(even)": {
-    backgroundColor: theme.palette.grey?.[theme.mode]?.light || theme.palette.action.hover,
+    backgroundColor: theme.palette.table?.even?.[theme.mode] || theme.palette.action.hover,
   },
   "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.grey?.[theme.mode]?.dark || theme.palette.background.default,
+    backgroundColor: theme.palette.table?.odd?.[theme.mode] || theme.palette.background.default,
+  },
+  "&:hover": {
+    backgroundColor: theme.palette.table?.hover?.[theme.mode] || theme.palette.action.hover,
   },
 }));
 

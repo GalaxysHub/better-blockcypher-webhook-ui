@@ -16,14 +16,26 @@ import { createSortedKeyMap } from "utils";
 
 const TableHeaderDiv = styled('div')({
   display: "flex",
-  flexDirection: "row",
   alignItems: "center",
-  alignContent: "center",
   justifyContent: "center",
+  gap: "4px",
+  whiteSpace: "nowrap",
 });
+
+const HeaderRow = styled(TableRow)(({ theme }) => ({
+  background: theme.palette.gradient.header[theme.mode],
+}));
 
 const ClickableIcon = styled('div')({
   cursor: "pointer",
+  width: 18,
+  height: 18,
+  color: "inherit",
+  opacity: 0.85,
+  "&:hover": {
+    opacity: 1,
+    color: "inherit",
+  },
 });
 
 const WebhookTableHeaders = () => {
@@ -58,7 +70,7 @@ const WebhookTableHeaders = () => {
 
   return (
     <TableHead>
-      <TableRow>
+      <HeaderRow>
         <StyledTableCell align="center" key={"checked"}>
           <WhiteCheckBox 
             checked={selected} 
@@ -94,7 +106,7 @@ const WebhookTableHeaders = () => {
         <StyledTableCell align="center" key={"options"}>
           Options
         </StyledTableCell>
-      </TableRow>
+      </HeaderRow>
     </TableHead>
   );
 };

@@ -5,6 +5,7 @@ import Checkbox from "@mui/material/Checkbox";
 
 const CustomCheckBox = styled(Checkbox)(({ theme }) => ({
   color: theme.palette.primary[theme.mode] || theme.palette.primary.main,
+  padding: 6,
   "&.Mui-checked": {
     color: theme.palette.secondary[theme.mode] || theme.palette.secondary.main,
   },

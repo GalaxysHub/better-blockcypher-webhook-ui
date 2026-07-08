@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 import { toast } from "react-toastify";
 
@@ -17,25 +18,50 @@ import { isValidAddr } from "utils/isValidAddr";
 import InvalidAddressModal from "./Modals/InvalidAddressModal";
 
 const StyledContainer = styled(Container)(() => ({
-  padding: "20px",
+  padding: "0 !important",
 }));
 
-const StyledTextField = styled(TextField)(() => ({
-  margin: "16px 0px",
+const StyledForm = styled("form")(({ theme }) => ({
+  display: "grid",
+  gap: "14px",
+  maxWidth: 760,
+  margin: "0 auto",
+  padding: "4px 0",
+  [theme.breakpoints.down("sm")]: {
+    maxWidth: "100%",
+  },
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  "& .MuiOutlinedInput-root": {
+    backgroundColor: theme.palette.background.paper,
+  },
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.text[theme.mode],
-  backgroundColor: theme.palette.green["light"],
+  justifySelf: "start",
+  minWidth: 178,
+  color: theme.palette.green.contrastText,
+  backgroundColor: theme.palette.green.main,
   "&:hover": {
-    color: theme.palette.text[theme.mode],
-    backgroundColor: theme.palette.green["main"],
-    boxShadow: "1px 3px 3px 3px #888888",
+    color: theme.palette.green.contrastText,
+    backgroundColor: theme.palette.green.dark,
+    boxShadow: "none",
+  },
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
   },
 }));
 
 const StyledSelectEvent = styled(SelectEvent)(() => ({
-  margin: "16px 0px",
+  width: "100%",
+}));
+
+const ErrorText = styled("div")(({ theme }) => ({
+  minHeight: 20,
+  color: "red",
+  fontSize: 13,
+  fontWeight: 700,
 }));
 
 const CreateWebhookForm = () => {
@@ -187,7 +213,7 @@ const CreateWebhookForm = () => {
           submit(event);
         }}
       />
-      <form data-testid="create-webhook-form">
+      <StyledForm data-testid="create-webhook-form">
         <StyledSelectEvent
           value={values.eventType}
           handleChange={changeEventType}
@@ -201,14 +227,15 @@ const CreateWebhookForm = () => {
           <StyledButton
             type="submit"
             variant="contained"
+            startIcon={<AddCircleOutlineIcon />}
             onClick={submit}
             data-testid="create-webhook-btn"
           >
             Create Webhook
           </StyledButton>
         )}
-        <div style={{ color: "red" }}>{msg}</div>
-      </form>
+        <ErrorText>{msg}</ErrorText>
+      </StyledForm>
     </StyledContainer>
   );
 };

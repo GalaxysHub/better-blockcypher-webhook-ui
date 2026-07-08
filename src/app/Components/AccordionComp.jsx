@@ -6,37 +6,43 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const Accordion = styled(MuiAccordion)({
-  border: "1px solid rgba(0, 0, 0, .125)",
-  borderRadius: "10px",
-});
+const Accordion = styled(MuiAccordion)(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: 8,
+  minWidth: 0,
+  overflow: "hidden",
+  boxShadow: "none",
+  "&:before": {
+    display: "none",
+  },
+}));
 
 const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({
-  color: theme.palette.text[theme.mode],
-  backgroundColor: theme.palette.green?.[theme.mode] || theme.palette.background.default,
-  border: "2px solid green",
-  borderBottom: "1px solid rgba(0, 0, 0, .125)",
-  borderRadius: "10px",
-  margin: -1,
+  color: theme.palette.primary.contrastText,
+  backgroundColor: theme.palette.green?.[theme.mode] || theme.palette.green.main,
+  border: `1px solid ${theme.palette.green.dark}`,
+  borderBottom: `1px solid ${theme.palette.divider}`,
   minHeight: 56,
+  padding: "0 18px",
   "&.Mui-expanded": {
     minHeight: 56,
   },
   "& .MuiAccordionSummary-content": {
-    flexGrow: 0,
+    alignItems: "center",
+    margin: "14px 0",
     "&.Mui-expanded": {
-      padding: "12px 0",
+      margin: "14px 0",
     },
   },
 }));
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
+  padding: theme.spacing(2.5),
   backgroundColor: theme.palette.grey?.ghost?.[theme.mode] || theme.palette.background.paper,
 }));
 
 const StyledExpandIcon = styled(ExpandMoreIcon)(({ theme }) => ({
-  color: theme.palette.text[theme.mode],
+  color: theme.palette.primary.contrastText,
 }));
 
 const AccordionComp = ({ title, children }) => {
@@ -47,7 +53,6 @@ const AccordionComp = ({ title, children }) => {
 
   return (
     <Accordion
-      square
       expanded={expanded === "panel1"}
       onChange={handleChange("panel1")}
       data-testid="accordion"

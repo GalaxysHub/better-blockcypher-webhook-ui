@@ -5,6 +5,7 @@ import Checkbox from "@mui/material/Checkbox";
 
 const WhiteCheckBox = styled(Checkbox)({
   color: "white",
+  padding: 6,
   "&.Mui-checked": {
     color: "white",
   },
